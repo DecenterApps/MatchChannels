@@ -4,6 +4,8 @@
 	<title>Tic-tac-toe using state channels</title>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.15/vue.min.js"></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/peerjs/0.3.14/peer.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/web3@0.20.6/dist/web3.min.js"></script>
+	
 	<style type="text/css">
 		#game-wrapper {
 			display: flex;
@@ -38,6 +40,9 @@
 		</div>
 	</div>
 	<script type="text/javascript">
+
+		const web3 = new Web3(Web3.currentProvider);
+
 		const numToChar = (i) => {
 			switch (i) {
 				case 1: return 'x';
@@ -59,7 +64,8 @@
 		  computed: {
 		    getState: function () {
 		      return {
-		      	board: this.board
+		      	board: this.board,
+						turnNumber: this.turnNumber,
 		      };
 		    }
 		  },
@@ -68,6 +74,17 @@
 		  		this.char = char;
 		  	},
 		  	play(i) {
+
+					var state = {
+						currMove: i, 
+						board: this.board,
+						sequence: this.turnNumber
+					};
+
+					const hashedState = web3.sha3(JSON.stringify(state));
+
+					console.log(hashedState);
+
 		  		this.board.splice(i, 1, this.char);
 		  		this.turnNumber++;
 		  		// send state;
