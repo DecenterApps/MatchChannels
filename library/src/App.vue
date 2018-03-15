@@ -3,6 +3,7 @@
     <button @click="() => host()">Play as X (host)</button><br>
     <button @click="() => connect()">Play as O (connect)</button>
     <button @click="() => openChannel()">Open channel</button>
+    <button @click="() => joinChannel()">Join channel</button>
 
     <div id="game-wrapper" v-show="showGame">
       <button 
@@ -14,6 +15,10 @@
     </div>
     <div>
       {{ this.board }}
+    </div>
+
+    <div>
+      {{ getState }}
     </div>
   </div>
 </template>
@@ -37,13 +42,23 @@ export default {
       char: 1,
       board: [0,0,0,0,0,0,0,0,0],
       turnNumber: 0,
+      lastMove: -1
     }
   },
   computed: {
     getState: function () {
+      var state = {
+        currMove: this.lastMove, 
+        board: this.board,
+        sequence: this.turnNumber
+      };
+
+      const hashedState = web3.sha3(JSON.stringify(state));
+
       return {
         board: this.board,
         turnNumber: this.turnNumber,
+        hashedState: hashedState
       };
     }
   },
@@ -59,21 +74,16 @@ export default {
           console.log(res);
       });
     },
+    joinChannel() {
+      const res2 = stakeManager.joinChannel(0, (res) => {
+        console.log(res);
+      });
+    },
     switchToUse(char) {
       this.char = char;
     },
     play(i) {
-
-      var state = {
-        currMove: i, 
-        board: this.board,
-        sequence: this.turnNumber
-      };
-
-      const hashedState = web3.sha3(JSON.stringify(state));
-
-      console.log(hashedState);
-
+      this.lastMove = i;
       this.board.splice(i, 1, this.char);
       this.turnNumber++;
     // send state;
