@@ -20,10 +20,15 @@
 
 <script>
 
-var peer;
-var conn;
 
 var Peer = require("peerjs");
+import abi from "./../../solidity/out/StakeManager.abi";
+var address = "0xcc4fb653540d7995da1b503a073aa476ba958c78";
+
+const stakeManager = web3.eth.contract(JSON.parse(abi)).at(address);
+
+var peer;
+var conn;
 
 export default {
   data() {
@@ -50,7 +55,9 @@ export default {
       }
     },
     openChannel() {
-
+      const res2 = stakeManager.openChannel(0, (res) => {
+          console.log(res);
+      });
     },
     switchToUse(char) {
       this.char = char;
