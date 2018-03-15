@@ -1,7 +1,8 @@
 pragma solidity 0.4.21;
 
-contract TicTacToeResolver {
-    
+import "./ResolverInterface.sol";
+
+contract TicTacToeResolver is ResolverInterface {
     
     struct State {
         uint8[9] board; // 2 = O, 1 = X, 0 = not set
@@ -9,7 +10,7 @@ contract TicTacToeResolver {
         uint32 sequence; // counter
     }
 
-    function resolve(bytes _previous, bytes _current) public pure returns(bool) {
+    function resolve(bytes _previous, bytes _current) external pure returns(bool) {
         // check if the current.move is valid based on _previous state
         // check if the sequences are correct
         
@@ -32,7 +33,7 @@ contract TicTacToeResolver {
         return true;
     }
     
-    function isWinner(bytes _currState, uint _w) public pure returns(bool) {
+    function isWinner(bytes _currState, uint _w) external pure returns(bool) {
         
         uint8[9] memory b;
         
@@ -63,17 +64,17 @@ contract TicTacToeResolver {
         uint8 sequence;
 
         assembly {
-            b0 := mload(add(_state, 0))
-            b1 := mload(add(_state, 8))
-            b2 := mload(add(_state, 16))
-            b3 := mload(add(_state, 24))
-            b4 := mload(add(_state, 32))
-            b5 := mload(add(_state, 40))
-            b6 := mload(add(_state, 48))
-            b7 := mload(add(_state, 56))
-            b8 := mload(add(_state, 64))
-            move := mload(add(_state, 72))
-            sequence := mload(add(_state, 80))
+            b0 := mload(add(_state, 8))
+            b1 := mload(add(_state, 16))
+            b2 := mload(add(_state, 24))
+            b3 := mload(add(_state, 32))
+            b4 := mload(add(_state, 40))
+            b5 := mload(add(_state, 48))
+            b6 := mload(add(_state, 56))
+            b7 := mload(add(_state, 64))
+            b8 := mload(add(_state, 72))
+            move := mload(add(_state, 80))
+            sequence := mload(add(_state, 112))
         }
         
         return (
@@ -86,7 +87,7 @@ contract TicTacToeResolver {
     
     function _getMove(bytes _state) private pure returns(uint8 move) {
         assembly {
-            move := mload(add(_state, 64))
+            move := mload(add(_state, 80))
         }
     }
     
