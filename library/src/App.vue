@@ -89,10 +89,15 @@ export default {
       this.board.splice(i, 1, this.char);
       this.turnNumber++;
 
-    // send state;
-    conn.send({
-      type: 'state',
-      ...this.getState
+    var scope = this;
+
+    this.signState(function(res) {
+      // send state
+      conn.send({
+        type: 'state',
+        ...scope.getState,
+        signedState: res,
+      });
     });
   },
   signState(cb) {
@@ -115,7 +120,7 @@ export default {
     const that = this;
     this.switchToUse(2);
     peer = new Peer('connect', {
-      key: '1nxd86jzykdwjyvi',
+      key: 'knxp6u684ytu766r',
       debug: 3,
     });
     conn = peer.connect('ab');
@@ -132,7 +137,7 @@ export default {
   host() {
     const that = this;
     peer = new Peer('ab', {
-      key: '1nxd86jzykdwjyvi',
+      key: 'knxp6u684ytu766r',
       debug: 3,
     });
     peer.on('connection', function(_conn) {
