@@ -42,7 +42,9 @@ export default {
       char: 1,
       board: [0,0,0,0,0,0,0,0,0],
       turnNumber: 0,
-      lastMove: -1
+      lastMove: -1,
+      mySignedMoves: [],
+      opponentsSignedMoves: [],
     }
   },
   computed: {
@@ -86,10 +88,27 @@ export default {
       this.lastMove = i;
       this.board.splice(i, 1, this.char);
       this.turnNumber++;
+
     // send state;
     conn.send({
       type: 'state',
       ...this.getState
+    });
+  },
+  signState(cb) {
+
+    const hashedState = this.getState.hashedState;
+
+    var data = this;
+
+    var signedState = web3.eth.sign(web3.eth.accounts[0], hashedState, function(err, res) {
+      if (err) {
+        console.error(err);
+      }
+
+      data.mySignedMoves.push(res);
+
+      cb(res);
     });
   },
   connect() {
