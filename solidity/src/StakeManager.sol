@@ -2,7 +2,7 @@ pragma solidity ^0.4.21;
 pragma experimental ABIEncoderV2;
 
 import "./Ownable.sol";
-import "./Resolver.sol";
+import "./ResolverInterface.sol";
 
 contract StakeManager is Ownable {
 
@@ -79,10 +79,10 @@ contract StakeManager is Ownable {
 
 		// we are getting last two states and they must be signed with two different players
 		assert(signer != signer2);
-        assert(Resolver(c.resolver).resolve(_state[0], _state[1]));
+        assert(ResolverInterface(c.resolver).resolve(_state[0], _state[1]));
 
-		bool p1winner = Resolver(c.resolver).isWinner(_state[1], getSign(_channelId, c.p1));
-		bool p2winner = Resolver(c.resolver).isWinner(_state[1], getSign(_channelId, c.p2));
+		bool p1winner = ResolverInterface(c.resolver).isWinner(_state[1], getSign(_channelId, c.p1));
+		bool p2winner = ResolverInterface(c.resolver).isWinner(_state[1], getSign(_channelId, c.p2));
 
 		// its not possible that both players win
 		assert(p1winner == p2winner && p1winner == true);
