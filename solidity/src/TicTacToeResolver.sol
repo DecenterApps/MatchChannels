@@ -49,40 +49,26 @@ contract TicTacToeResolver is ResolverInterface {
             (b[8] == _w && b[4] == _w && b[0] == _w)); // diagonal
     }
     
-    function _getState(bytes _state) private pure returns(uint8[9], uint8, uint32) {
-        uint8 b0;
-        uint8 b1;
-        uint8 b2;
-        uint8 b3;
-        uint8 b4;
-        uint8 b5;
-        uint8 b6;
-        uint8 b7;
-        uint8 b8;
+    function _getState(bytes _state) private pure returns(uint8[9], uint8, uint8) {
+        uint8[9] memory table;
         
-        uint8 move;
-        uint8 sequence;
+        byte move;
+        byte sequence;
 
-        assembly {
-            b0 := mload(add(_state, 8))
-            b1 := mload(add(_state, 16))
-            b2 := mload(add(_state, 24))
-            b3 := mload(add(_state, 32))
-            b4 := mload(add(_state, 40))
-            b5 := mload(add(_state, 48))
-            b6 := mload(add(_state, 56))
-            b7 := mload(add(_state, 64))
-            b8 := mload(add(_state, 72))
-            move := mload(add(_state, 80))
-            sequence := mload(add(_state, 112))
+        for (uint i=0; i<9; i++){
+            byte t;
+            assembly {
+                t := mload(add(_state, add(34, i)))
+            }
+            table[i] = uint8(t) - 48;
         }
         
-        return (
-            [b0, b1, b2, b3, b4, b5, b6, b7, b8],
-            move,
-            sequence
-        );
+        assembly {
+            move := mload(add(_state, 43))
+            sequence := mload(add(_state, 44))
+        }
         
+        return (table, uint8(move)-48, uint8(sequence)-48);
     }
     
     function _getMove(bytes _state) private pure returns(uint8 move) {

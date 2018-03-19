@@ -21,7 +21,7 @@ contract StakeManager is Ownable {
 		string name;
 	}
 	
-	uint constant MAX_OPEN_TIME = 500; // 500 currBlocks
+	uint constant MAX_OPEN_TIME = 500; // 500 blocks
 	
 	Channel[] public channels;
 	ResolverStruct[] public resolvers;
