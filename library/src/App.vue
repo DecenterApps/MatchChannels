@@ -106,9 +106,8 @@ export default {
         type: 'state',
         ...scope.getState,
         signedState: res,
+        sequence: scope.turnNumber
       };
-
-      s.sequence = scope.turnNumber;
 
       scope.mySignedMoves.push(s);
 
@@ -191,7 +190,7 @@ export default {
       if (data.type === 'state') {
         that.board = data.board;
         that.opponentsSignedMoves.push(data);
-        this.turnNumber++;
+        that.turnNumber++;
       }
     });
   },
@@ -209,7 +208,7 @@ export default {
         if (data.type === 'state') {
           that.board = data.board;
           that.opponentsSignedMoves.push(data);
-          this.turnNumber++;
+          that.turnNumber++;
         }
       });
     });
