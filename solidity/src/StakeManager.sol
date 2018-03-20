@@ -134,8 +134,8 @@ contract StakeManager is Ownable {
 		_signer = ecrecover(_h, _v, _r, _s);
 	}
 	
-	function nChannel() public view returns(uint) {
-	    return channels.length;
+	function nChannel() public view returns(uint _n) {
+	    _n = channels.length;
 	}
 	
 
