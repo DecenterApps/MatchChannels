@@ -4,6 +4,7 @@
     <button @click="() => connect()">Play as O (connect)</button>
     <button @click="() => openChannel()">Open channel</button>
     <button @click="() => joinChannel()">Join channel</button>
+    <button @click="() => fastClose()">Fast Close</button>
 
     <div id="game-wrapper" v-show="showGame">
       <button 
@@ -28,7 +29,9 @@
 
 var Peer = require("peerjs");
 import abi from "./../../solidity/out/StakeManager.abi";
-var address = "0xcc4fb653540d7995da1b503a073aa476ba958c78";
+var address = "0x02bb94ddc1d378b4bf37c6c46a52848bc818fca9";
+
+import utils from 'ethereumjs-util';
 
 const stakeManager = web3.eth.contract(JSON.parse(abi)).at(address);
 
@@ -55,11 +58,10 @@ export default {
         sequence: this.turnNumber
       };
 
-      const hashedState = web3.sha3(JSON.stringify(state));
+      const hashedState = web3.sha3(this.convertStateToBytes(state));
 
       return {
-        board: this.board,
-        turnNumber: this.turnNumber,
+        ...state,
         hashedState: hashedState
       };
     }
@@ -72,13 +74,21 @@ export default {
       }
     },
     openChannel() {
-      const res2 = stakeManager.openChannel(0, (res) => {
+      const res2 = stakeManager.openChannel(0, (err, res) => {
           console.log(res);
       });
     },
     joinChannel() {
-      const res2 = stakeManager.joinChannel(0, (res) => {
-        console.log(res);
+      stakeManager.nChannel.call((err, res) => {
+        const channelNum = res.valueOf() - 1;
+
+        console.log(channelNum);
+
+        stakeManager.joinChannel(channelNum, (err, res) => {
+          if(!err) {
+            console.log('Channel joined');
+          }
+        });
       });
     },
     switchToUse(char) {
@@ -92,26 +102,75 @@ export default {
     var scope = this;
 
     this.signState(function(res) {
-      // send state
-      conn.send({
+      const s = {
         type: 'state',
         ...scope.getState,
         signedState: res,
-      });
+      };
+
+      s.sequence = scope.turnNumber;
+
+      scope.mySignedMoves.push(s);
+
+      // send state
+      conn.send(s);
     });
+  },
+  fastClose() {
+    console.log(this.mySignedMoves[0]);
+    // you must have at least 2 moves 
+    if (this.mySignedMoves.length > 0 && this.opponentsSignedMoves.length > 0) {
+      const firstMove = this.mySignedMoves[this.mySignedMoves.length - 1];
+      const secondMove = this.opponentsSignedMoves[this.opponentsSignedMoves.length - 1];
+
+      const sig1 = this.getRSV(firstMove.signedState);
+      const sig2 = this.getRSV(secondMove.signedState);
+
+      console.log(firstMove);
+
+    stakeManager.nChannel.call((err, res) => {
+        const channelNum = res.valueOf() - 1;
+
+        const input = {
+          channelId: channelNum,
+          h: [firstMove.hashedState, secondMove.hashedState],
+          v: [sig1.v, sig2.v],
+          r: [sig1.r, sig2.r],
+          s: [sig1.s, sig2.s],
+          state: [this.convertStateToBytes(firstMove), this.convertStateToBytes(secondMove)]
+        };
+
+        console.log(input);
+
+          stakeManager.fastClose(input.channelId, input.h, input.v, input.r, input.s, input.s, (res) => {
+              console.log(res);
+          });
+    });
+
+    } else {
+      alert("Must have at least 2 moves");
+    }
+  },
+  convertStateToBytes(state) {
+    return '0x' + state.board.join('') + state.currMove + state.sequence;
+  },
+  getRSV(sgn) {
+    const r = utils.toBuffer(sgn.slice(0,66))
+    const s = utils.toBuffer('0x' + sgn.slice(66,130))
+    const v = utils.toBuffer('0x' + sgn.slice(130,132))
+    
+    return {r: utils.bufferToHex(r), s: utils.bufferToHex(s), v: utils.bufferToInt(v)};
   },
   signState(cb) {
 
     const hashedState = this.getState.hashedState;
 
-    var data = this;
+    var scope = this;
 
     var signedState = web3.eth.sign(web3.eth.accounts[0], hashedState, function(err, res) {
       if (err) {
         console.error(err);
       }
-
-      data.mySignedMoves.push(res);
 
       cb(res);
     });
@@ -131,6 +190,8 @@ export default {
       console.log('Message', data);
       if (data.type === 'state') {
         that.board = data.board;
+        that.opponentsSignedMoves.push(data);
+        this.turnNumber++;
       }
     });
   },
@@ -147,6 +208,8 @@ export default {
         console.log('Message', data);
         if (data.type === 'state') {
           that.board = data.board;
+          that.opponentsSignedMoves.push(data);
+          this.turnNumber++;
         }
       });
     });
