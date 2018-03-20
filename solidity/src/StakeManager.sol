@@ -134,6 +134,10 @@ contract StakeManager is Ownable {
 		_signer = ecrecover(_h, _v, _r, _s);
 	}
 	
+	function nChannel() public view returns(uint) {
+	    return channels.length;
+	}
+	
 
 	function isActive(uint _channelId) private view returns(bool _active) {
 	
