@@ -29,7 +29,7 @@
 
 var Peer = require("peerjs");
 import abi from "./../../solidity/out/StakeManager.abi";
-var address = "0x02bb94ddc1d378b4bf37c6c46a52848bc818fca9";
+var address = "0xb8f10e90871834fed624c2fb3198899a71dfa781";
 
 import utils from 'ethereumjs-util';
 
@@ -141,9 +141,9 @@ export default {
 
         console.log(input);
 
-          stakeManager.fastClose(input.channelId, input.h, input.v, input.r, input.s, input.s, (res) => {
-              console.log(res);
-          });
+        stakeManager.fastClose(input.channelId, input.h, input.v, input.r, input.s, input.state, (res) => {
+            console.log(res);
+        });
     });
 
     } else {
