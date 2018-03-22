@@ -5025,11 +5025,11 @@
                             "attributes": {
                               "externalReferences": [
                                 {
-                                  "i": {
-                                    "declaration": 1232,
+                                  "t": {
+                                    "declaration": 1242,
                                     "isOffset": false,
                                     "isSlot": false,
-                                    "src": "2242:1:4",
+                                    "src": "2211:1:4",
                                     "valueSize": 1
                                   }
                                 },
@@ -5043,11 +5043,11 @@
                                   }
                                 },
                                 {
-                                  "t": {
-                                    "declaration": 1242,
+                                  "i": {
+                                    "declaration": 1232,
                                     "isOffset": false,
                                     "isSlot": false,
-                                    "src": "2211:1:4",
+                                    "src": "2242:1:4",
                                     "valueSize": 1
                                   }
                                 }
@@ -5247,20 +5247,20 @@
                           }
                         },
                         {
-                          "_state": {
-                            "declaration": 1208,
-                            "isOffset": false,
-                            "isSlot": false,
-                            "src": "2414:6:4",
-                            "valueSize": 1
-                          }
-                        },
-                        {
                           "sequence": {
                             "declaration": 1229,
                             "isOffset": false,
                             "isSlot": false,
                             "src": "2392:8:4",
+                            "valueSize": 1
+                          }
+                        },
+                        {
+                          "_state": {
+                            "declaration": 1208,
+                            "isOffset": false,
+                            "isSlot": false,
+                            "src": "2414:6:4",
                             "valueSize": 1
                           }
                         }
@@ -5590,20 +5590,20 @@
                     "attributes": {
                       "externalReferences": [
                         {
-                          "_state": {
-                            "declaration": 1274,
-                            "isOffset": false,
-                            "isSlot": false,
-                            "src": "2637:6:4",
-                            "valueSize": 1
-                          }
-                        },
-                        {
                           "move": {
                             "declaration": 1277,
                             "isOffset": false,
                             "isSlot": false,
                             "src": "2619:4:4",
+                            "valueSize": 1
+                          }
+                        },
+                        {
+                          "_state": {
+                            "declaration": 1274,
+                            "isOffset": false,
+                            "isSlot": false,
+                            "src": "2637:6:4",
                             "valueSize": 1
                           }
                         }
@@ -5639,13 +5639,7 @@
     "name": "solc",
     "version": "0.4.18+commit.9cf6e910.Emscripten.clang"
   },
-  "networks": {
-    "4447": {
-      "events": {},
-      "links": {},
-      "address": "0xfb88de099e13c3ed21f80a7a1e49f8caecf10df6"
-    }
-  },
+  "networks": {},
   "schemaVersion": "1.0.1",
-  "updatedAt": "2018-03-22T14:47:31.099Z"
+  "updatedAt": "2018-03-22T14:49:00.718Z"
 }

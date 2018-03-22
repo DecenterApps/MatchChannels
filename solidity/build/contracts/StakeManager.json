@@ -8931,6 +8931,15 @@
                             "attributes": {
                               "externalReferences": [
                                 {
+                                  "t": {
+                                    "declaration": 740,
+                                    "isOffset": false,
+                                    "isSlot": false,
+                                    "src": "4477:1:3",
+                                    "valueSize": 1
+                                  }
+                                },
+                                {
                                   "_state": {
                                     "declaration": 722,
                                     "isOffset": false,
@@ -8945,15 +8954,6 @@
                                     "isOffset": false,
                                     "isSlot": false,
                                     "src": "4515:1:3",
-                                    "valueSize": 1
-                                  }
-                                },
-                                {
-                                  "t": {
-                                    "declaration": 740,
-                                    "isOffset": false,
-                                    "isSlot": false,
-                                    "src": "4477:1:3",
                                     "valueSize": 1
                                   }
                                 }
@@ -9268,20 +9268,20 @@
                     "attributes": {
                       "externalReferences": [
                         {
-                          "_state": {
-                            "declaration": 722,
-                            "isOffset": false,
-                            "isSlot": false,
-                            "src": "4709:6:3",
-                            "valueSize": 1
-                          }
-                        },
-                        {
                           "winner": {
                             "declaration": 762,
                             "isOffset": false,
                             "isSlot": false,
                             "src": "4689:6:3",
+                            "valueSize": 1
+                          }
+                        },
+                        {
+                          "_state": {
+                            "declaration": 722,
+                            "isOffset": false,
+                            "isSlot": false,
+                            "src": "4709:6:3",
                             "valueSize": 1
                           }
                         }
@@ -11364,13 +11364,7 @@
     "name": "solc",
     "version": "0.4.18+commit.9cf6e910.Emscripten.clang"
   },
-  "networks": {
-    "4447": {
-      "events": {},
-      "links": {},
-      "address": "0x30753e4a8aad7f8597332e813735def5dd395028"
-    }
-  },
+  "networks": {},
   "schemaVersion": "1.0.1",
-  "updatedAt": "2018-03-22T14:47:31.090Z"
+  "updatedAt": "2018-03-22T14:49:00.712Z"
 }

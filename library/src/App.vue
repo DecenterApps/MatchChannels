@@ -29,7 +29,7 @@
 
 var Peer = require("peerjs");
 import stakeManager from "./../../solidity/build/contracts/StakeManager.json";
-var address = "0x9671ffa84e9853cb5e8d35ca12acfc13c42f2764";
+var address = "0x2b041cc65e2460637fbcf15609228bc35962aacd";
 
 import utils from 'ethereumjs-util';
 
