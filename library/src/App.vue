@@ -143,9 +143,9 @@ export default {
 
         console.log(input);
 
-          stakeManager.fastClose(input.channelId, input.h, input.v, input.r, input.s, input.s, (res) => {
-              console.log(res);
-          });
+        stakeManager.fastClose(input.channelId, input.h, input.v, input.r, input.s, input.state, (res) => {
+            console.log(res);
+        });
     });
 
     } else {

@@ -4,6 +4,7 @@ const TicTacToe = artifacts.require('./TicTacToeResolver.sol');
 const util = require('ethereumjs-util');
 
 contract('Stake Manager', async (accounts) => {
+
   it("Mega test", async () => {
 
     const stakeManager = await StakeManager.deployed();
