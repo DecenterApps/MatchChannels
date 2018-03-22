@@ -28,12 +28,12 @@
 
 
 var Peer = require("peerjs");
-import stakeManager from "./../../solidity/build/contracts/StakeManager.json";
+import sManager from "./../../solidity/build/contracts/StakeManager.json";
 var address = "0x2b041cc65e2460637fbcf15609228bc35962aacd";
 
 import utils from 'ethereumjs-util';
 
-const stakeManager = web3.eth.contract(stakeManager.abi).at(address);
+const stakeManager = web3.eth.contract(sManager.abi).at(address);
 
 var peer;
 var conn;
