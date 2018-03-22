@@ -59,6 +59,7 @@ contract StakeManager is Ownable {
 		c.p2 = _currUser();
 	}
 
+	///@dev Maybe put contract address in state as well so cross contract reply attacks are prevented 
 	// state should be first 8 places for number as channelId and after that one number where 0-draw,1-p1 wins,2-p2 wins
 	// for example "000012340"-this is channelId == 1234 and its a draw
 	function fastClose(uint _channelId, 

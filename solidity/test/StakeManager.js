@@ -5,16 +5,24 @@ const util = require('ethereumjs-util');
 
 contract('Stake Manager', async (accounts) => {
 
-  it("Mega test", async () => {
+  const privateKeys = [
+    '0xc87509a1c067bbde78beb793e6fa76530b6382a4c0241e5e4a9ec0a0f44dc0d3',
+    '0xae6ae8e5ccbfb04590405997ee2d52d2b330726137b875053c36d94e974d162f'
+  ];
 
-    const stakeManager = await StakeManager.deployed();
+  let stakeManager, ticTacToe, user1, user2;
 
-    const ticTacToe = await TicTacToe.deployed();
+  before(async () => {
+    stakeManager = await StakeManager.deployed();
+    ticTacToe = await TicTacToe.deployed();
+
+    user1 = accounts[0];
+    user2 = accounts[1];
 
     await stakeManager.addResolver("TicTacToeResolver", ticTacToe.address);
+  });
 
-    const user1 = accounts[0];
-    const user2 = accounts[1];
+  it("Closing a channel", async () => {
 
     const openChannel = await stakeManager.openChannel(0, {from: user1});
     const joinChannel = await stakeManager.joinChannel(0, {from: user2});
@@ -27,17 +35,11 @@ contract('Stake Manager', async (accounts) => {
 
     console.log('Address of first user: ', user1, 'Address of seconds user: ', user2);
 
-    const privateKeys = [
-        '0xc87509a1c067bbde78beb793e6fa76530b6382a4c0241e5e4a9ec0a0f44dc0d3',
-        '0xae6ae8e5ccbfb04590405997ee2d52d2b330726137b875053c36d94e974d162f'
-    ];
-
     const sig1 = util.ecsign(hashedState1, util.toBuffer(privateKeys[0]));
     const sig2 = util.ecsign(hashedState2, util.toBuffer(privateKeys[1]));
 
-
     try {
-        const tx = await stakeManager.fastClose(
+        const tx = await stakeManager.close(
         0,
         [util.bufferToHex(hashedState1), util.bufferToHex(hashedState2)],
         [util.bufferToInt(sig1.v), util.bufferToInt(sig2.v)],
@@ -47,7 +49,7 @@ contract('Stake Manager', async (accounts) => {
         util.bufferToHex(util.toBuffer(state2)),
         {from: user1});
 
-        console.log(tx.logs[0]);
+        //console.log(tx.logs[0]);
         } catch(err) {
             console.log(err);
         }
@@ -62,6 +64,28 @@ contract('Stake Manager', async (accounts) => {
 
   });
 
+  it("Calling fast close on a channel", async () => {
+    const openChannel = await stakeManager.openChannel(0, {from: user1});
+    const joinChannel = await stakeManager.joinChannel(1, {from: user2});
+
+    const state = "000000012";
+
+    const hashedState = util.sha3(state);
+
+    const sig = util.ecsign(hashedState, util.toBuffer(privateKeys[1]));
+
+    const tx = await stakeManager.fastClose(1,
+        util.bufferToHex(hashedState),
+        util.bufferToInt(sig.v),
+        util.bufferToHex(sig.r),
+        util.bufferToHex(sig.s),
+        util.bufferToHex(util.toBuffer(state)),
+        {from: user1});
+
+        const channel = await stakeManager.channels(1);
+
+        console.log(channel);
+  });
 
 
 
