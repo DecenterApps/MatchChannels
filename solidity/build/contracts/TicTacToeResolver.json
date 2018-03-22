@@ -1135,7 +1135,7 @@
                               "overloadedDeclarations": [
                                 null
                               ],
-                              "referencedDeclaration": 1833,
+                              "referencedDeclaration": 1137,
                               "type": "function (bool) pure",
                               "value": "require"
                             },
@@ -5025,15 +5025,6 @@
                             "attributes": {
                               "externalReferences": [
                                 {
-                                  "t": {
-                                    "declaration": 1082,
-                                    "isOffset": false,
-                                    "isSlot": false,
-                                    "src": "2211:1:4",
-                                    "valueSize": 1
-                                  }
-                                },
-                                {
                                   "_state": {
                                     "declaration": 1048,
                                     "isOffset": false,
@@ -5048,6 +5039,15 @@
                                     "isOffset": false,
                                     "isSlot": false,
                                     "src": "2242:1:4",
+                                    "valueSize": 1
+                                  }
+                                },
+                                {
+                                  "t": {
+                                    "declaration": 1082,
+                                    "isOffset": false,
+                                    "isSlot": false,
+                                    "src": "2211:1:4",
                                     "valueSize": 1
                                   }
                                 }
@@ -5230,44 +5230,14 @@
                       "externalReferences": [
                         {
                           "_state": {
-                            "declaration": 1056,
+                            "declaration": 1048,
                             "isOffset": false,
                             "isSlot": false,
                             "src": "2414:6:4",
                             "valueSize": 1
-                          },
-                          "move": {
-                            "declaration": 1066,
-                            "isOffset": false,
-                            "isSlot": false,
-                            "src": "2349:4:4",
-                            "valueSize": 1
                           }
                         },
                         {
-                          "sequence": {
-                            "declaration": 1077,
-                            "isOffset": false,
-                            "isSlot": false,
-                            "src": "2392:8:4",
-                            "valueSize": 1
-                          },
-                          "_state": {
-                            "declaration": 1048,
-                            "isOffset": false,
-                            "isSlot": false,
-                            "src": "2367:6:4",
-                            "valueSize": 1
-                          }
-                        },
-                        {
-                          "_state": {
-                            "declaration": 1056,
-                            "isOffset": false,
-                            "isSlot": false,
-                            "src": "2367:6:4",
-                            "valueSize": 1
-                          },
                           "sequence": {
                             "declaration": 1069,
                             "isOffset": false,
@@ -5277,18 +5247,20 @@
                           }
                         },
                         {
-                          "move": {
-                            "declaration": 1074,
-                            "isOffset": false,
-                            "isSlot": false,
-                            "src": "2349:4:4",
-                            "valueSize": 1
-                          },
                           "_state": {
                             "declaration": 1048,
                             "isOffset": false,
                             "isSlot": false,
-                            "src": "2414:6:4",
+                            "src": "2367:6:4",
+                            "valueSize": 1
+                          }
+                        },
+                        {
+                          "move": {
+                            "declaration": 1066,
+                            "isOffset": false,
+                            "isSlot": false,
+                            "src": "2349:4:4",
                             "valueSize": 1
                           }
                         }
@@ -5619,33 +5591,19 @@
                       "externalReferences": [
                         {
                           "_state": {
-                            "declaration": 1122,
+                            "declaration": 1114,
                             "isOffset": false,
                             "isSlot": false,
                             "src": "2637:6:4",
-                            "valueSize": 1
-                          },
-                          "move": {
-                            "declaration": 1117,
-                            "isOffset": false,
-                            "isSlot": false,
-                            "src": "2619:4:4",
                             "valueSize": 1
                           }
                         },
                         {
                           "move": {
-                            "declaration": 1125,
+                            "declaration": 1117,
                             "isOffset": false,
                             "isSlot": false,
                             "src": "2619:4:4",
-                            "valueSize": 1
-                          },
-                          "_state": {
-                            "declaration": 1114,
-                            "isOffset": false,
-                            "isSlot": false,
-                            "src": "2637:6:4",
                             "valueSize": 1
                           }
                         }
@@ -5681,18 +5639,7 @@
     "name": "solc",
     "version": "0.4.18+commit.9cf6e910.Emscripten.clang"
   },
-  "networks": {
-    "42": {
-      "events": {},
-      "links": {},
-      "address": "0xb24c30701de225aa6e6b66195adb1675aff89088"
-    },
-    "4447": {
-      "events": {},
-      "links": {},
-      "address": "0xae237710d942c4b7b08eec7260ceadd95b22ea90"
-    }
-  },
+  "networks": {},
   "schemaVersion": "1.0.1",
-  "updatedAt": "2018-03-22T14:08:21.118Z"
+  "updatedAt": "2018-03-22T14:44:17.362Z"
 }
