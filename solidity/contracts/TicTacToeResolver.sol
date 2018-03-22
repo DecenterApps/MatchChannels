@@ -1,9 +1,11 @@
-pragma solidity 0.4.21;
+pragma solidity 0.4.18;
 
 import "./ResolverInterface.sol";
 
 contract TicTacToeResolver is ResolverInterface {
     
+    event Log(uint32 sequence1, uint32 sequence2);
+
     struct State {
         uint8[9] board; // 2 = O, 1 = X, 0 = not set
         uint8 currMove; // position on the board of the current move
@@ -58,14 +60,14 @@ contract TicTacToeResolver is ResolverInterface {
         for (uint i=0; i<9; i++){
             byte t;
             assembly {
-                t := mload(add(_state, add(34, i)))
+                t := mload(add(_state, add(32, i)))
             }
             table[i] = uint8(t) - 48;
         }
         
         assembly {
-            move := mload(add(_state, 43))
-            sequence := mload(add(_state, 44))
+            move := mload(add(_state, 41))
+            sequence := mload(add(_state, 42))
         }
         
         return (table, uint8(move)-48, uint8(sequence)-48);

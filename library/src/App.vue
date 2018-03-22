@@ -28,12 +28,12 @@
 
 
 var Peer = require("peerjs");
-import abi from "./../../solidity/out/StakeManager.abi";
-var address = "0x02bb94ddc1d378b4bf37c6c46a52848bc818fca9";
+import stakeManager from "./../../solidity/build/contracts/StakeManager.json";
+var address = "0x9671ffa84e9853cb5e8d35ca12acfc13c42f2764";
 
 import utils from 'ethereumjs-util';
 
-const stakeManager = web3.eth.contract(JSON.parse(abi)).at(address);
+const stakeManager = web3.eth.contract(stakeManager.abi).at(address);
 
 var peer;
 var conn;
@@ -108,6 +108,8 @@ export default {
         signedState: res,
         sequence: scope.turnNumber
       };
+
+      console.log('Board: ', scope.board);
 
       scope.mySignedMoves.push(s);
 

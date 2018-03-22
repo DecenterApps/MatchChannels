@@ -1,4 +1,4 @@
-pragma solidity ^0.4.21;
+pragma solidity ^0.4.18;
 pragma experimental ABIEncoderV2;
 
 import "./Ownable.sol";
@@ -63,15 +63,18 @@ contract StakeManager is Ownable {
 		bytes32[2] _h, 
 		uint8[2] _v, 
 		bytes32[2] _r, 
-		bytes32[2] _s, 
-		bytes[2] _state) public {
+		bytes32[2] _s,
+		bytes _state1,
+		bytes _state2
+		) public {
 
 		require(isActive(_channelId));
 
 		Channel storage c = channels[_channelId];
 
-		address signer = resolveRecover(_h[0], _v[0], _r[0], _s[0], _state[0]);
-		address signer2 = resolveRecover(_h[1], _v[1], _r[1], _s[1], _state[1]);
+
+		address signer = resolveRecover(_h[0], _v[0], _r[0], _s[0], _state1);
+		address signer2 = resolveRecover(_h[1], _v[1], _r[1], _s[1], _state2);
 
         // it must be signed by one of the players in the channel
         assert(signer == c.p1 || signer == c.p2);
@@ -79,19 +82,12 @@ contract StakeManager is Ownable {
 
 		// we are getting last two states and they must be signed with two different players
 		assert(signer != signer2);
-        assert(ResolverInterface(c.resolver).resolve(_state[0], _state[1]));
+        assert(ResolverInterface(c.resolver).resolve(_state1, _state2));
 
-		bool p1winner = ResolverInterface(c.resolver).isWinner(_state[1], getSign(_channelId, c.p1));
-		bool p2winner = ResolverInterface(c.resolver).isWinner(_state[1], getSign(_channelId, c.p2));
+		address _winner = _getWinner(_channelId, _state1, _state2);
 
-		// its not possible that both players win
-		assert(p1winner == p2winner && p1winner == true);
-
-		// if its both false then _winner is 0x0 else if p1winner then p1 else p2
-		address _winner = (p1winner == p2winner) ? 0x0 : (p1winner ? c.p1 : c.p2);
-
-        if (c.winner == 0x0 && c.resolveStart == 0){
-	    	c.winner = _winner;    
+        if (c.winner == 0x0 && c.resolveStart == 0) {
+	    	c.winner = _winner;
 	    	c.resolveStart = currBlock();
     	} else {
     		if (c.winner == _winner) {
@@ -102,6 +98,19 @@ contract StakeManager is Ownable {
     			//// 2. ?
     		}
     	}
+	}
+
+	function _getWinner(uint _channelId, bytes _state1, bytes _state2) private returns(address _winner) {
+		Channel memory c = channels[_channelId];
+
+		bool p1winner = ResolverInterface(c.resolver).isWinner(_state2, getSign(_channelId, c.p1));
+		bool p2winner = ResolverInterface(c.resolver).isWinner(_state2, getSign(_channelId, c.p2));
+
+		// its not possible that both players win
+		assert(!(p1winner == p2winner && p1winner));
+
+		//if its both false then _winner is 0x0 else if p1winner then p1 else p2
+		_winner = (p1winner == p2winner) ? 0x0 : (p1winner ? c.p1 : c.p2);
 	}
 
 	function closeTimeoutedChannel(uint _channelId) public {
@@ -138,7 +147,6 @@ contract StakeManager is Ownable {
 	    _n = channels.length;
 	}
 	
-
 	function isActive(uint _channelId) private view returns(bool _active) {
 	
 		_active = (channels[_channelId].p1 != 0x0) && (channels[_channelId].p2 != 0x0) && !channels[_channelId].finished;
