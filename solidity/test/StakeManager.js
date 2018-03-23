@@ -27,8 +27,9 @@ contract('Stake Manager', async (accounts) => {
     const openChannel = await stakeManager.openChannel(0, {from: user1});
     const joinChannel = await stakeManager.joinChannel(0, {from: user2});
 
-    const state1 = '000100000310';//'0x1112000000'
-    const state2 = '002120200220';
+    const state1 = '000020000410';//'0x1112000000'
+    const state2 = '000021000520';
+                   // 000021000520
 
     const hashedState1 = util.sha3(state1);
     const hashedState2 = util.sha3(state2);

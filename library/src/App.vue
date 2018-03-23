@@ -1,10 +1,9 @@
 <template>
   <div id="app">
-    <button @click="() => host()">Play as X (host)</button><br>
-    <button @click="() => connect()">Play as O (connect)</button>
-    <button @click="() => openChannel()">Open channel</button>
-    <button @click="() => joinChannel()">Join channel</button>
+    <button @click="() => host()">Open Channel</button><br>
+    <button @click="() => connect()">Join Channel</button>
     <button @click="() => fastClose()">Fast Close</button>
+    <button @click="() => dispute()">Dispute</button>
 
     <div id="game-wrapper" v-show="showGame">
       <button 
@@ -29,7 +28,7 @@
 
 var Peer = require("peerjs");
 import sManager from "./../../solidity/build/contracts/StakeManager.json";
-var address = "0xa271571c76a1eca6d95b03fee275f89ab5c4fe64";
+var address = "0x89b60aaf8434bff5ad7092b3a73a52b81cdf9593";
 
 import utils from 'ethereumjs-util';
 
@@ -37,6 +36,8 @@ const stakeManager = web3.eth.contract(sManager.abi).at(address);
 
 var peer;
 var conn;
+
+let playerType = 0;
 
 export default {
   data() {
@@ -118,6 +119,11 @@ export default {
     });
   },
   fastClose() {
+    const request = {type: 'request_sig', result: playerType.toString()};
+
+    conn.send(request);
+  },
+  dispute() {
     console.log(this.mySignedMoves[0]);
     // you must have at least 2 moves 
     if (this.mySignedMoves.length > 0 && this.opponentsSignedMoves.length > 0) {
@@ -132,18 +138,24 @@ export default {
     stakeManager.nChannel.call((err, res) => {
         const channelNum = res.valueOf() - 1;
 
+       console.log(this.convertStateToBytes(firstMove), this.convertStateToBytes(secondMove));
+
+        const s1 = utils.bufferToHex(utils.toBuffer(this.convertStateToBytes(firstMove)));
+        const s2 = utils.bufferToHex(utils.toBuffer(this.convertStateToBytes(secondMove)));
+
         const input = {
           channelId: channelNum,
-          h: [firstMove.hashedState, secondMove.hashedState],
+          h: [web3.sha3(this.convertStateToBytes(firstMove)), web3.sha3(this.convertStateToBytes(secondMove))],
           v: [sig1.v, sig2.v],
           r: [sig1.r, sig2.r],
           s: [sig1.s, sig2.s],
-          state: [this.convertStateToBytes(firstMove), this.convertStateToBytes(secondMove)]
+          s1,
+          s2
         };
 
         console.log(input);
 
-        stakeManager.fastClose(input.channelId, input.h, input.v, input.r, input.s, input.state, (res) => {
+        stakeManager.close(input.channelId, input.h, input.v, input.r, input.s, input.s1, input.s2, (res) => {
             console.log(res);
         });
     });
@@ -153,7 +165,9 @@ export default {
     }
   },
   convertStateToBytes(state) {
-    return '0x' + state.board.join('') + state.currMove + state.sequence;
+    let parsedState = state.board.join('') + state.currMove + state.sequence;
+
+    return (parsedState.length % 2 === 0) ? parsedState : parsedState + '0';
   },
   getRSV(sgn) {
     const r = utils.toBuffer(sgn.slice(0,66))
@@ -176,7 +190,53 @@ export default {
       cb(res);
     });
   },
+  agreeAndSignState(result) {
+     stakeManager.nChannel.call((err, res) => {
+      const channelNum = res.valueOf() - 1;
+
+      let state = channelNum + result;
+
+      state = state.padStart(9, '0');
+
+      const hashedState = web3.sha3(state);
+
+      web3.eth.sign(web3.eth.accounts[0], hashedState, (err, signedState) => {
+        conn.send({
+          type: 'receive_sig',
+          state,
+          hashedState,
+          signedState,
+          channelNum,
+        });
+      });
+
+    });
+  },
+  callFastClose(data) {
+    const {r, s, v} = this.getRSV(data.signedState);
+
+    console.log(data.channelNum,
+        data.hashedState,
+        v,
+        r,
+        s,
+        utils.bufferToHex(utils.toBuffer(data.state)));
+
+    stakeManager.fastClose(data.channelNum,
+        data.hashedState,
+        v,
+        r,
+        s,
+        utils.bufferToHex(utils.toBuffer(data.state)),
+        {from: web3.eth.accounts[0]}, (err, res) => {
+          console.log(res);
+        });
+  },
   connect() {
+    this.joinChannel();
+
+    playerType = 2;
+
     const that = this;
     this.switchToUse(2);
     peer = new Peer('connect', {
@@ -193,10 +253,18 @@ export default {
         that.board = data.board;
         that.opponentsSignedMoves.push(data);
         that.turnNumber++;
-      }
+      } else if(data.type === 'request_sig') {
+        that.agreeAndSignState(data.result);
+      } else if(data.type === 'receive_sig') {
+          that.callFastClose(data);
+        }
     });
   },
   host() {
+    this.openChannel();
+
+    playerType = 1;
+
     const that = this;
     peer = new Peer('ab', {
       key: 'knxp6u684ytu766r',
@@ -211,6 +279,10 @@ export default {
           that.board = data.board;
           that.opponentsSignedMoves.push(data);
           that.turnNumber++;
+        } else if(data.type === 'request_sig') {
+          that.agreeAndSignState(data.result);
+        } else if(data.type === 'receive_sig') {
+          that.callFastClose(data);
         }
       });
     });
