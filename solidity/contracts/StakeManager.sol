@@ -109,6 +109,8 @@ contract StakeManager is Ownable {
 
         if (ResolverInterface(c.resolver).resolve(_state1, _state2)) {
         	_closeChannel(_channelId, _getOtherPlayer(_channelId, _currUser()));
+        } else {
+        	_closeChannel(_channelId, _currUser());
         }
 	}
 
