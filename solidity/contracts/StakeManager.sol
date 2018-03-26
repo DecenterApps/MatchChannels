@@ -1,5 +1,4 @@
 pragma solidity ^0.4.18;
-pragma experimental ABIEncoderV2;
 
 import "./Ownable.sol";
 import "./ResolverInterface.sol";
@@ -85,16 +84,10 @@ contract StakeManager is Ownable {
 
 		assert(_channelId == channelId);
 
-		if (winner == 0) {
-			c.winner = 0x0;
-		} else {
-			c.winner = winner == 1 ? c.p1 : c.p2;
-		}
-
-		c.finished = true;
+		_closeChannel(_channelId, winner == 0 ? 0x0 : (winner == 1 ? c.p1 : c.p2));
 	}
 
-	function close(uint _channelId, 
+	function disputeMove(uint _channelId, 
 		bytes32[2] _h, 
 		uint8[2] _v, 
 		bytes32[2] _r, 
@@ -102,37 +95,21 @@ contract StakeManager is Ownable {
 		bytes _state1,
 		bytes _state2
 		) public {
-
+		
 		require(_isActive(_channelId));
 
 		Channel storage c = channels[_channelId];
 
-
 		address signer = _resolveRecover(_h[0], _v[0], _r[0], _s[0], _state1);
 		address signer2 = _resolveRecover(_h[1], _v[1], _r[1], _s[1], _state2);
 
-        // it must be signed by one of the players in the channel
-        assert(signer == c.p1 || signer == c.p2);
-        assert(signer2 == c.p1 || signer2 == c.p2);
+        // both moves must be signed by other player
+        assert(signer == signer2);
+        assert(signer == _getOtherPlayer(_channelId, _currUser()));
 
-		// we are getting last two states and they must be signed with two different players
-		assert(signer != signer2);
-        assert(ResolverInterface(c.resolver).resolve(_state1, _state2));
-
-		address _winner = _getWinner(_channelId, _state2);
-
-        if (c.winner == 0x0 && c.resolveStart == 0) {
-	    	c.winner = _winner;
-	    	c.resolveStart = _currBlock();
-    	} else {
-    		if (c.winner == _winner) {
-    			c.finished = true;
-    		} else {
-    			//// OPTIONS:
-    			//// 1. if first player send some previous state with no winner
-    			//// 2. ?
-    		}
-    	}
+        if (ResolverInterface(c.resolver).resolve(_state1, _state2)) {
+        	_closeChannel(_channelId, _getOtherPlayer(_channelId, _currUser()));
+        }
 	}
 
 	function _getWinner(uint _channelId, bytes _state) private view returns(address _winner) {
@@ -161,6 +138,23 @@ contract StakeManager is Ownable {
 			c.winner.transfer(c.stake * 2);
 		}
 	}
+
+	function _closeChannel(uint _channelId, address _winner) private {
+		require (_isActive(_channelId));
+
+		Channel storage c = channels[_channelId];
+
+		if (_winner == 0x0) {
+			c.p1.transfer(c.stake);
+			c.p2.transfer(c.stake);
+		} else {
+			_winner.transfer(c.stake * 2);
+		}
+
+		c.finished = true;
+		c.winner = _winner;
+	}
+	
 
 	function _getSign(uint _channelId, address _player) private view returns(uint _sign) {
 		
