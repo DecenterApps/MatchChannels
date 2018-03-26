@@ -59,11 +59,10 @@ export default {
         sequence: this.turnNumber
       };
 
-      const hashedState = web3.sha3(this.convertStateToBytes(state));
+      //const hashedState = web3.sha3(this.convertStateToBytes(state));
 
       return {
         ...state,
-        hashedState: hashedState
       };
     }
   },
@@ -79,52 +78,47 @@ export default {
           console.log(res);
       });
     },
-    joinChannel() {
-      stakeManager.nChannel.call((err, res) => {
-        const channelNum = res.valueOf() - 1;
+    async joinChannel() {
+      const channelNum = await this.getChannelId();
 
-        console.log(channelNum);
-
-        stakeManager.joinChannel(channelNum, (err, res) => {
-          if(!err) {
-            console.log('Channel joined');
-          }
-        });
+      stakeManager.joinChannel(channelNum, (err, res) => {
+        if(!err) {
+          console.log('Channel joined');
+        }
       });
     },
     switchToUse(char) {
       this.char = char;
     },
-    play(i) {
+    async play(i) {
       this.lastMove = i;
       this.board.splice(i, 1, this.char);
       this.turnNumber++;
 
-    var scope = this;
+      const state = this.getState;
 
-    this.signState(function(res) {
-      const s = {
+      const hashedState = web3.sha3(this.convertStateToBytes(state));
+      const signedState = await this.signState(hashedState);
+
+      const msg = {
         type: 'state',
-        ...scope.getState,
-        signedState: res,
-        sequence: scope.turnNumber
+        ...state,
+        signedState,
+        sequence: this.turnNumber
       };
 
-      console.log('Board: ', scope.board);
+      this.mySignedMoves.push(msg);
 
-      scope.mySignedMoves.push(s);
-
-      // send state
-      conn.send(s);
-    });
+      conn.send(msg);
   },
   fastClose() {
     const request = {type: 'request_sig', result: playerType.toString()};
 
     conn.send(request);
   },
-  dispute() {
-    console.log(this.mySignedMoves[0]);
+  async dispute() {
+    console.log(this.mySignedMoves, this.opponentsSignedMoves);
+
     // you must have at least 2 moves 
     if (this.mySignedMoves.length > 0 && this.opponentsSignedMoves.length > 0) {
       const firstMove = this.mySignedMoves[this.mySignedMoves.length - 1];
@@ -135,30 +129,28 @@ export default {
 
       console.log(firstMove);
 
-    stakeManager.nChannel.call((err, res) => {
-        const channelNum = res.valueOf() - 1;
+      const channelNum = await this.getChannelId();
 
-       console.log(this.convertStateToBytes(firstMove), this.convertStateToBytes(secondMove));
+      console.log(this.convertStateToBytes(firstMove), this.convertStateToBytes(secondMove));
 
-        const s1 = utils.bufferToHex(utils.toBuffer(this.convertStateToBytes(firstMove)));
-        const s2 = utils.bufferToHex(utils.toBuffer(this.convertStateToBytes(secondMove)));
+      const s1 = utils.bufferToHex(utils.toBuffer(this.convertStateToBytes(firstMove)));
+      const s2 = utils.bufferToHex(utils.toBuffer(this.convertStateToBytes(secondMove)));
 
-        const input = {
-          channelId: channelNum,
-          h: [web3.sha3(this.convertStateToBytes(firstMove)), web3.sha3(this.convertStateToBytes(secondMove))],
-          v: [sig1.v, sig2.v],
-          r: [sig1.r, sig2.r],
-          s: [sig1.s, sig2.s],
-          s1,
-          s2
-        };
+      const input = {
+        channelId: channelNum,
+        h: [web3.sha3(this.convertStateToBytes(firstMove)), web3.sha3(this.convertStateToBytes(secondMove))],
+        v: [sig1.v, sig2.v],
+        r: [sig1.r, sig2.r],
+        s: [sig1.s, sig2.s],
+        s1,
+        s2
+      };
 
-        console.log(input);
+      console.log(input);
 
-        stakeManager.close(input.channelId, input.h, input.v, input.r, input.s, input.s1, input.s2, (res) => {
-            console.log(res);
-        });
-    });
+      stakeManager.close(input.channelId, input.h, input.v, input.r, input.s, input.s1, input.s2, (res) => {
+          console.log(res);
+      });
 
     } else {
       alert("Must have at least 2 moves");
@@ -176,51 +168,49 @@ export default {
     
     return {r: utils.bufferToHex(r), s: utils.bufferToHex(s), v: utils.bufferToInt(v)};
   },
-  signState(cb) {
+  signState(hashedState) {
+    return new Promise((resolve, reject) => {
+      web3.eth.sign(web3.eth.accounts[0], hashedState, function(err, res) {
+        if (err) {
+          reject(err);
+        }
 
-    const hashedState = this.getState.hashedState;
-
-    var scope = this;
-
-    var signedState = web3.eth.sign(web3.eth.accounts[0], hashedState, function(err, res) {
-      if (err) {
-        console.error(err);
-      }
-
-      cb(res);
+        resolve(res);
+      });
     });
   },
-  agreeAndSignState(result) {
-     stakeManager.nChannel.call((err, res) => {
-      const channelNum = res.valueOf() - 1;
+  async agreeAndSignState(result) {
+    const channelNum = await this.getChannelId();
 
-      let state = channelNum + result;
+    let state = channelNum + result;
 
-      state = state.padStart(9, '0');
+    state = state.padStart(9, '0');
 
-      const hashedState = web3.sha3(state);
+    const hashedState = web3.sha3(state);
 
-      web3.eth.sign(web3.eth.accounts[0], hashedState, (err, signedState) => {
-        conn.send({
-          type: 'receive_sig',
-          state,
-          hashedState,
-          signedState,
-          channelNum,
-        });
+    const signedState = await this.signState(hashedState);
+
+    conn.send({
+      type: 'receive_sig',
+      state,
+      hashedState,
+      signedState,
+      channelNum,
+    });
+  },
+  getChannelId() {
+    return new Promise((resolve, reject) => {
+      stakeManager.nChannel.call((err, res) => {
+        if (err) {
+          reject(err);
+        }
+
+        resolve(res.valueOf() - 1);
       });
-
     });
   },
   callFastClose(data) {
     const {r, s, v} = this.getRSV(data.signedState);
-
-    console.log(data.channelNum,
-        data.hashedState,
-        v,
-        r,
-        s,
-        utils.bufferToHex(utils.toBuffer(data.state)));
 
     stakeManager.fastClose(data.channelNum,
         data.hashedState,
@@ -228,64 +218,55 @@ export default {
         r,
         s,
         utils.bufferToHex(utils.toBuffer(data.state)),
-        {from: web3.eth.accounts[0]}, (err, res) => {
-          console.log(res);
-        });
+        {from: web3.eth.accounts[0]}, (err, res) => { console.log(res); });
   },
-  connect() {
+  async msgReceived(data) {
+    switch(data.type) {
+      case 'state':
+        this.board = data.board;
+        this.opponentsSignedMoves.push(data);
+        this.turnNumber++;
+      break;
+      case 'request_sig':
+        await this.agreeAndSignState(data.result);
+      break;
+      case 'receive_sig':
+        this.callFastClose(data);
+      break;
+    }
+  },
+  async connect() {
     this.joinChannel();
-
     playerType = 2;
 
-    const that = this;
     this.switchToUse(2);
+
     peer = new Peer('connect', {
       key: 'knxp6u684ytu766r',
       debug: 3,
     });
+
     conn = peer.connect('ab');
     conn.on('open', function(){
-      that.showGame = true;
-    });
-    conn.on('data', function(data){
-      console.log('Message', data);
-      if (data.type === 'state') {
-        that.board = data.board;
-        that.opponentsSignedMoves.push(data);
-        that.turnNumber++;
-      } else if(data.type === 'request_sig') {
-        that.agreeAndSignState(data.result);
-      } else if(data.type === 'receive_sig') {
-          that.callFastClose(data);
-        }
-    });
-  },
-  host() {
-    this.openChannel();
+      this.showGame = true;
+    }.bind(this));
 
+    conn.on('data', this.msgReceived);
+  },
+  async host() {
+    this.openChannel();
     playerType = 1;
 
-    const that = this;
     peer = new Peer('ab', {
       key: 'knxp6u684ytu766r',
       debug: 3,
     });
+
     peer.on('connection', function(_conn) {
-      that.showGame = true;
-      conn = _conn
-      conn.on('data', function(data){
-        console.log('Message', data);
-        if (data.type === 'state') {
-          that.board = data.board;
-          that.opponentsSignedMoves.push(data);
-          that.turnNumber++;
-        } else if(data.type === 'request_sig') {
-          that.agreeAndSignState(data.result);
-        } else if(data.type === 'receive_sig') {
-          that.callFastClose(data);
-        }
-      });
-    });
+      this.showGame = true;
+      conn = _conn;
+      conn.on('data', this.msgReceived);
+    }.bind(this));
   }
 }
 }
