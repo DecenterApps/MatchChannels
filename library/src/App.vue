@@ -1,5 +1,10 @@
 <template>
   <div id="app">
+
+    <div id="address">
+      Your address: <b><u> {{ wallet.address }} </u></b>
+    </div>
+
     <button @click="() => host()">Open Channel</button><br>
     <button @click="() => connect()">Join Channel</button>
     <button @click="() => fastClose()">Fast Close</button>
@@ -26,17 +31,23 @@
 <script>
 
 
-var Peer = require("peerjs");
+const Peer = require("peerjs");
 import sManager from "./../../solidity/build/contracts/StakeManager.json";
-var address = "0x89b60aaf8434bff5ad7092b3a73a52b81cdf9593";
+const address = "0x71d6045d993f033f4f4f0478a5ba4aab0b918b64";
 
 import utils from 'ethereumjs-util';
 
 const stakeManager = web3.eth.contract(sManager.abi).at(address);
 
-var peer;
-var conn;
+const ethers = require('ethers');
+const provider = ethers.providers.getDefaultProvider('kovan');
 
+const wallet = ethers.Wallet.createRandom();
+wallet.provider = provider;
+
+const contract = new ethers.Contract(address, sManager.abi, provider);
+
+let peer, conn;
 let playerType = 0;
 
 export default {
@@ -49,20 +60,15 @@ export default {
       lastMove: -1,
       mySignedMoves: [],
       opponentsSignedMoves: [],
+      wallet,
     }
   },
   computed: {
     getState: function () {
-      var state = {
+      return {
         currMove: this.lastMove, 
         board: this.board,
-        sequence: this.turnNumber
-      };
-
-      //const hashedState = web3.sha3(this.convertStateToBytes(state));
-
-      return {
-        ...state,
+        sequence: this.turnNumber,
       };
     }
   },
@@ -74,14 +80,14 @@ export default {
       }
     },
     openChannel() {
-      const res2 = stakeManager.openChannel(0, (err, res) => {
+      const res2 = stakeManager.openChannel(0, wallet.address, (err, res) => {
           console.log(res);
       });
     },
     async joinChannel() {
-      const channelNum = await this.getChannelId();
+      const channelNum = await contract.nChannel() - 1;
 
-      stakeManager.joinChannel(channelNum, (err, res) => {
+      stakeManager.joinChannel(channelNum, wallet.address, (err, res) => {
         if(!err) {
           console.log('Channel joined');
         }
@@ -98,7 +104,9 @@ export default {
       const state = this.getState;
 
       const hashedState = web3.sha3(this.convertStateToBytes(state));
-      const signedState = await this.signState(hashedState);
+      const signedState = this.signState(hashedState);
+
+      console.log('Signed state: ', signedState);
 
       const msg = {
         type: 'state',
@@ -129,7 +137,7 @@ export default {
 
       console.log(firstMove);
 
-      const channelNum = await this.getChannelId();
+      const channelNum = await contract.nChannel() - 1;
 
       console.log(this.convertStateToBytes(firstMove), this.convertStateToBytes(secondMove));
 
@@ -169,18 +177,10 @@ export default {
     return {r: utils.bufferToHex(r), s: utils.bufferToHex(s), v: utils.bufferToInt(v)};
   },
   signState(hashedState) {
-    return new Promise((resolve, reject) => {
-      web3.eth.sign(web3.eth.accounts[0], hashedState, function(err, res) {
-        if (err) {
-          reject(err);
-        }
-
-        resolve(res);
-      });
-    });
+    return wallet.signMessage(hashedState);
   },
   async agreeAndSignState(result) {
-    const channelNum = await this.getChannelId();
+    const channelNum = await contract.nChannel() - 1;
 
     let state = channelNum + result;
 
@@ -188,7 +188,7 @@ export default {
 
     const hashedState = web3.sha3(state);
 
-    const signedState = await this.signState(hashedState);
+    const signedState = this.signState(hashedState);
 
     conn.send({
       type: 'receive_sig',
@@ -196,17 +196,6 @@ export default {
       hashedState,
       signedState,
       channelNum,
-    });
-  },
-  getChannelId() {
-    return new Promise((resolve, reject) => {
-      stakeManager.nChannel.call((err, res) => {
-        if (err) {
-          reject(err);
-        }
-
-        resolve(res.valueOf() - 1);
-      });
     });
   },
   callFastClose(data) {
@@ -242,7 +231,7 @@ export default {
     this.switchToUse(2);
 
     peer = new Peer('connect', {
-      key: 'knxp6u684ytu766r',
+      key: '05q6s34ba66iggb9',
       debug: 3,
     });
 
@@ -258,7 +247,7 @@ export default {
     playerType = 1;
 
     peer = new Peer('ab', {
-      key: 'knxp6u684ytu766r',
+      key: '05q6s34ba66iggb9',
       debug: 3,
     });
 
@@ -294,5 +283,9 @@ export default {
   background: transparent;
   font-size: 24px;
   border: 1px solid gray;
+}
+
+#address {
+  margin-bottom: 50px;
 }
 </style>
