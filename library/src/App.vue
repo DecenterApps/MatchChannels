@@ -60,6 +60,7 @@ export default {
       lastMove: -1,
       mySignedMoves: [],
       opponentsSignedMoves: [],
+      signedMoves: [],
       wallet,
     }
   },
@@ -109,18 +110,21 @@ export default {
       console.log('Signed state: ', signedState);
 
       const msg = {
-        type: 'state',
+        type: 'send_sig',
         ...state,
         signedState,
         sequence: this.turnNumber
       };
 
-      this.mySignedMoves.push(msg);
+      // this.mySignedMoves.push(msg);
+      this.signedMoves.push(msg);
+
+      console.log('PLAY');
 
       conn.send(msg);
   },
   fastClose() {
-    const request = {type: 'request_sig', result: playerType.toString()};
+    const request = {type: 'request_win_sig', result: playerType.toString()};
 
     conn.send(request);
   },
@@ -191,7 +195,7 @@ export default {
     const signedState = this.signState(hashedState);
 
     conn.send({
-      type: 'receive_sig',
+      type: 'receive_win_sig',
       state,
       hashedState,
       signedState,
@@ -209,17 +213,39 @@ export default {
         utils.bufferToHex(utils.toBuffer(data.state)),
         {from: web3.eth.accounts[0]}, (err, res) => { console.log(res); });
   },
+  signBack(data) {
+    const hashedState = web3.sha3(this.convertStateToBytes(data));
+
+    const signedState = this.signState(hashedState);
+    
+    const msg = {
+      type: 'opponents_sig',
+      hashedState,
+      signedState,
+      sequence: this.turnNumber
+    };
+
+    conn.send(msg);
+  },
   async msgReceived(data) {
+    console.log(data.type);
+
     switch(data.type) {
-      case 'state':
+      case 'send_sig':
         this.board = data.board;
         this.opponentsSignedMoves.push(data);
         this.turnNumber++;
+        
+        this.signBack(data);
       break;
-      case 'request_sig':
+      case 'opponents_sig':
+        //console.log('SECOND SIG RECEIVED');
+        this.signedMoves.push(data);
+      break;
+      case 'request_win_sig':
         await this.agreeAndSignState(data.result);
       break;
-      case 'receive_sig':
+      case 'receive_win_sig':
         this.callFastClose(data);
       break;
     }
@@ -238,9 +264,9 @@ export default {
     conn = peer.connect('ab');
     conn.on('open', function(){
       this.showGame = true;
-    }.bind(this));
 
-    conn.on('data', this.msgReceived);
+      conn.on('data', this.msgReceived);
+    }.bind(this));
   },
   async host() {
     this.openChannel();
