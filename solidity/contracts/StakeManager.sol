@@ -5,6 +5,9 @@ import "./ResolverInterface.sol";
 
 contract StakeManager is Ownable {
 
+	// _type - 0 is for fastClose and 1 is for a dispute
+	event MatchOutcome(uint _channelId, address _winner, uint _stake, uint _type);
+
 	struct Channel {
 		address p1;
 		address p2;
@@ -84,7 +87,11 @@ contract StakeManager is Ownable {
 
 		assert(_channelId == channelId);
 
-		_closeChannel(_channelId, winner == 0 ? 0x0 : (winner == 1 ? c.p1 : c.p2));
+		address winnerAddr = winner == 0 ? 0x0 : (winner == 1 ? c.p1 : c.p2);
+
+		_closeChannel(_channelId, winnerAddr);
+
+		MatchOutcome(_channelId, winnerAddr, c.stake, 0);
 	}
 
 	function disputeMove(uint _channelId, 
@@ -103,12 +110,15 @@ contract StakeManager is Ownable {
 		address signer = _resolveRecover(_h[0], _v[0], _r[0], _s[0], _state1);
 		address signer2 = _resolveRecover(_h[1], _v[1], _r[1], _s[1], _state2);
 
+		address otherPlayer = _getOtherPlayer(_channelId, _currUser());
+
         // both moves must be signed by other player
         assert(signer == signer2);
-        assert(signer == _getOtherPlayer(_channelId, _currUser()));
+        assert(signer == otherPlayer);
 
         if (ResolverInterface(c.resolver).resolve(_state1, _state2)) {
-        	_closeChannel(_channelId, _getOtherPlayer(_channelId, _currUser()));
+        	_closeChannel(_channelId, otherPlayer);
+			MatchOutcome(_channelId, otherPlayer, c.stake, 1);
         }
 	}
 

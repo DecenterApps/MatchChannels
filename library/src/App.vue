@@ -31,21 +31,22 @@
 <script>
 
 
-const Peer = require("peerjs");
-import sManager from "./../../solidity/build/contracts/StakeManager.json";
-const address = "0x71d6045d993f033f4f4f0478a5ba4aab0b918b64";
-
+import Peer from "peerjs";
 import utils from 'ethereumjs-util';
+import ethers from 'ethers';
 
-const stakeManager = web3.eth.contract(sManager.abi).at(address);
+import sManager from "./../../solidity/build/contracts/StakeManager.json";
 
-const ethers = require('ethers');
+// Set up web3 contract
+const CONTRACT_ADDRESS = "0x016e335dc1fe3c7afefd7af3b96217cc40826068";
+const stakeManager = web3.eth.contract(sManager.abi).at(CONTRACT_ADDRESS);
+
+// Set up ether wallet for signing
 const provider = ethers.providers.getDefaultProvider('kovan');
-
 const wallet = ethers.Wallet.createRandom();
 wallet.provider = provider;
 
-const contract = new ethers.Contract(address, sManager.abi, provider);
+const contract = new ethers.Contract(CONTRACT_ADDRESS, sManager.abi, provider);
 
 let peer, conn;
 let playerType = 0;
@@ -217,7 +218,7 @@ export default {
     const hashedState = web3.sha3(this.convertStateToBytes(data));
 
     const signedState = this.signState(hashedState);
-    
+
     const msg = {
       type: 'opponents_sig',
       hashedState,
@@ -228,8 +229,6 @@ export default {
     conn.send(msg);
   },
   async msgReceived(data) {
-    console.log(data.type);
-
     switch(data.type) {
       case 'send_sig':
         this.board = data.board;
@@ -239,7 +238,6 @@ export default {
         this.signBack(data);
       break;
       case 'opponents_sig':
-        //console.log('SECOND SIG RECEIVED');
         this.signedMoves.push(data);
       break;
       case 'request_win_sig':
