@@ -1,4 +1,4 @@
-pragma solidity 0.4.18;
+pragma solidity ^0.4.18;
 
 interface ResolverInterface {
     function resolve(bytes _previous, bytes _current) external pure returns(bool);

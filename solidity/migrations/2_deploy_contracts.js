@@ -3,11 +3,22 @@ const TicTacResolver = artifacts.require('TicTacToeResolver.sol');
 
 module.exports = async (deployer, acc) => {
   // deployment steps
-  deployer.deploy(StakeManager);
-  //const stakeManager = await StakeManager.deployed();
+  let stakeManager, ticTacToeResolver;
 
-  deployer.deploy(TicTacResolver);
-  //const tictactoeResolver = await TicTacResolver.deployed();
+  deployer.then(() => {
+    return StakeManager.new();
+  }).then(instance => {
+    stakeManager = instance;
 
-  //await stakeManager.addResolver("TicTacToeResolver", TicTacResolver.address);
+    return TicTacResolver.new();
+  }).then(instance => {
+    ticTacToeResolver = instance;
+
+    stakeManager.addResolver("TicTacToeResolver", ticTacToeResolver.address);
+
+    console.log(`StakeManager: ${stakeManager.address}`);
+    console.log(`TicTacToeResolver: ${ticTacToeResolver.address}`);
+
+    return true;
+  });
 }

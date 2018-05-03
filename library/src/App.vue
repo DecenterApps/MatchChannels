@@ -34,12 +34,17 @@
 import Peer from "peerjs";
 import utils from 'ethereumjs-util';
 import ethers from 'ethers';
+import truffleContract from "truffle-contract";
 
 import sManager from "./../../solidity/build/contracts/StakeManager.json";
 
 // Set up web3 contract
-const CONTRACT_ADDRESS = "0x016e335dc1fe3c7afefd7af3b96217cc40826068";
-const stakeManager = web3.eth.contract(sManager.abi).at(CONTRACT_ADDRESS);
+const CONTRACT_ADDRESS = "0x7a7f708e20c3042314cd250c5d15e5a43a2561d6";
+
+const stakeManager = truffleContract(sManager);
+stakeManager.setProvider(web3.currentProvider);
+
+const stakeManagerInstance = stakeManager.at(CONTRACT_ADDRESS);
 
 // Set up ether wallet for signing
 const provider = ethers.providers.getDefaultProvider('kovan');
@@ -81,19 +86,18 @@ export default {
         case 2: return 'o';
       }
     },
-    openChannel() {
-      const res2 = stakeManager.openChannel(0, wallet.address, (err, res) => {
-          console.log(res);
-      });
+    async openChannel() {
+      console.log(0, wallet.address);
+      const res2 = await stakeManagerInstance.openChannel(0, wallet.address, {from: web3.eth.accounts[0]});
+
+      console.log('Channel opened');
     },
     async joinChannel() {
       const channelNum = await contract.nChannel() - 1;
 
-      stakeManager.joinChannel(channelNum, wallet.address, (err, res) => {
-        if(!err) {
-          console.log('Channel joined');
-        }
-      });
+      const res = await stakeManagerInstance.joinChannel(channelNum, wallet.address, {from: web3.eth.accounts[0]});
+      
+      console.log('Channel joined');
     },
     switchToUse(char) {
       this.char = char;
@@ -161,9 +165,8 @@ export default {
 
       console.log(input);
 
-      stakeManager.close(input.channelId, input.h, input.v, input.r, input.s, input.s1, input.s2, (res) => {
-          console.log(res);
-      });
+      await stakeManagerInstance.close(input.channelId, input.h, input.v, input.r, input.s, input.s1, input.s2,
+        {from: web3.eth.accounts[0]});
 
     } else {
       alert("Must have at least 2 moves");
@@ -203,16 +206,21 @@ export default {
       channelNum,
     });
   },
-  callFastClose(data) {
+  async callFastClose(data) {
     const {r, s, v} = this.getRSV(data.signedState);
 
-    stakeManager.fastClose(data.channelNum,
+    await stakeManagerInstance.fastClose(data.channelNum,
         data.hashedState,
         v,
         r,
         s,
         utils.bufferToHex(utils.toBuffer(data.state)),
-        {from: web3.eth.accounts[0]}, (err, res) => { console.log(res); });
+        {from: web3.eth.accounts[0]});
+        
+
+    stakeManager.MatchOutcome().watch((err, event) => {
+      console.log(event, err);
+    });
   },
   signBack(data) {
     const hashedState = web3.sha3(this.convertStateToBytes(data));
@@ -249,14 +257,16 @@ export default {
     }
   },
   async connect() {
-    this.joinChannel();
+    await this.joinChannel();
     playerType = 2;
 
     this.switchToUse(2);
 
     peer = new Peer('connect', {
-      key: '05q6s34ba66iggb9',
+      key: 'asdf',
       debug: 3,
+      host: '139.59.146.81',
+      port: 9000,
     });
 
     conn = peer.connect('ab');
@@ -267,12 +277,14 @@ export default {
     }.bind(this));
   },
   async host() {
-    this.openChannel();
+    await this.openChannel();
     playerType = 1;
 
     peer = new Peer('ab', {
-      key: '05q6s34ba66iggb9',
+      key: 'asdf',
       debug: 3,
+      host: '139.59.146.81',
+      port: 9000,
     });
 
     peer.on('connection', function(_conn) {

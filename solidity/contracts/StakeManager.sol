@@ -27,6 +27,8 @@ contract StakeManager is Ownable {
 	
 	Channel[] public channels;
 	ResolverStruct[] public resolvers;
+	mapping(address => address) signAddresses;
+	
 
 	function addResolver(string _name, address _resolverAddress) public onlyOwner returns(uint _resolverId) {
 		
@@ -39,10 +41,12 @@ contract StakeManager is Ownable {
 	}
 	
 
-	function openChannel(uint _resolverId) public payable returns(uint _channelId) {
+	function openChannel(uint _resolverId, address _signAddress) public payable returns(uint _channelId) {
 
         _channelId = channels.length;
         channels.length++;
+
+        signAddresses[msg.sender] = _signAddress;
 
         Channel storage c = channels[_channelId];
 		c.p1 = _currUser();
@@ -50,9 +54,11 @@ contract StakeManager is Ownable {
 		c.resolver = resolvers[_resolverId].resolverAddress;
 	}
 
-	function joinChannel(uint _channelId) public payable {
+	function joinChannel(uint _channelId, address _signAddress) public payable {
 		require(_channelId < channels.length);
 		require(!_isActive(_channelId));
+
+		signAddresses[msg.sender] = _signAddress;
 
 		Channel storage c = channels[_channelId];
 		
@@ -91,7 +97,7 @@ contract StakeManager is Ownable {
 
 		_closeChannel(_channelId, winnerAddr);
 
-		MatchOutcome(_channelId, winnerAddr, c.stake, 0);
+		MatchOutcome(_channelId, winnerAddr, c.stake, 1);
 	}
 
 	function disputeMove(uint _channelId, 
@@ -113,13 +119,39 @@ contract StakeManager is Ownable {
 		address otherPlayer = _getOtherPlayer(_channelId, _currUser());
 
         // both moves must be signed by other player
-        assert(signer == signer2);
+        assert(signer2 == otherPlayer);
         assert(signer == otherPlayer);
 
         if (ResolverInterface(c.resolver).resolve(_state1, _state2)) {
         	_closeChannel(_channelId, otherPlayer);
 			MatchOutcome(_channelId, otherPlayer, c.stake, 1);
+        } else {
+        	_closeChannel(_channelId, _currUser());
         }
+	}
+
+	function challengeTimeout(uint _channelId, 
+		bytes32[2] _h, 
+		uint8[2] _v, 
+		bytes32[2] _r, 
+		bytes32[2] _s,
+		bytes _state1,
+		bytes _state2
+		) public {
+
+		require(_isActive(_channelId));
+
+		Channel storage c = channels[_channelId];
+
+		address signer = _resolveRecover(_h[0], _v[0], _r[0], _s[0], _state1);
+		address signer2 = _resolveRecover(_h[1], _v[1], _r[1], _s[1], _state2);
+
+		require(signer == _getOtherPlayer(_channelId, _currUser()));
+		require(signer2 == _currUser());
+		
+		if (ResolverInterface(c.resolver).resolve(_state1, _state2)) {
+
+		} 
 	}
 
 	function _getWinner(uint _channelId, bytes _state) private view returns(address _winner) {
@@ -142,11 +174,7 @@ contract StakeManager is Ownable {
 		require(!c.finished);
 		require(c.resolveStart + MAX_OPEN_TIME < _currBlock());
 
-		if (c.winner == 0x0) {
-			owner.transfer(c.stake * 2);
-		} else {
-			c.winner.transfer(c.stake * 2);
-		}
+
 	}
 
 	function _closeChannel(uint _channelId, address _winner) private {
@@ -217,7 +245,7 @@ contract StakeManager is Ownable {
 	}
 
 	function _currUser() private view returns(address currUser) {
-		currUser = msg.sender;
+		currUser = signAddresses[msg.sender];
 	}
 
 	function _currBlock() private view returns(uint currBlock) {
