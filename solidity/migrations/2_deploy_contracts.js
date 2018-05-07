@@ -14,8 +14,8 @@ module.exports = async (deployer, acc) => {
   }).then(instance => {
     ticTacToeResolver = instance;
 
-    stakeManager.addResolver("TicTacToeResolver", ticTacToeResolver.address);
-
+    return stakeManager.addResolver("TicTacToeResolver", ticTacToeResolver.address);
+  }).then(() => {
     console.log(`StakeManager: ${stakeManager.address}`);
     console.log(`TicTacToeResolver: ${ticTacToeResolver.address}`);
 

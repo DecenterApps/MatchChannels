@@ -1,4 +1,4 @@
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.23;
 
 import "./Ownable.sol";
 import "./ResolverInterface.sol";
@@ -7,6 +7,8 @@ contract StakeManager is Ownable {
 
 	// _type - 0 is for fastClose and 1 is for a dispute
 	event MatchOutcome(uint _channelId, address _winner, uint _stake, uint _type);
+
+	event Test(address signer, address opponent);
 
 	struct Channel {
 		address p1;
@@ -49,7 +51,7 @@ contract StakeManager is Ownable {
         signAddresses[msg.sender] = _signAddress;
 
         Channel storage c = channels[_channelId];
-		c.p1 = _currUser();
+		c.p1 = msg.sender;
 		c.stake = msg.value;
 		c.resolver = resolvers[_resolverId].resolverAddress;
 	}
@@ -64,7 +66,7 @@ contract StakeManager is Ownable {
 		
 		require(c.stake <= msg.value);
 
-		c.p2 = _currUser();
+		c.p2 = msg.sender;
 	}
 
 	///@dev Maybe put contract address in state as well so cross contract reply attacks are prevented 
@@ -82,9 +84,11 @@ contract StakeManager is Ownable {
 		Channel storage c = channels[_channelId];
 
 		address signer = _resolveRecover(_h, _v, _r, _s, _state);
-		address opponent = _getOtherPlayer(_channelId, _currUser());
 
-		assert(signer == opponent);
+		address opponent = _getOtherPlayer(_channelId, signer);
+
+		// TODO: security check if this is enough
+		assert(opponent == msg.sender);
 
 		uint channelId;
 		uint winner;
@@ -97,7 +101,7 @@ contract StakeManager is Ownable {
 
 		_closeChannel(_channelId, winnerAddr);
 
-		MatchOutcome(_channelId, winnerAddr, c.stake, 1);
+		emit MatchOutcome(_channelId, winnerAddr, c.stake, 1);
 	}
 
 	function disputeMove(uint _channelId, 
@@ -124,7 +128,7 @@ contract StakeManager is Ownable {
 
         if (ResolverInterface(c.resolver).resolve(_state1, _state2)) {
         	_closeChannel(_channelId, otherPlayer);
-			MatchOutcome(_channelId, otherPlayer, c.stake, 1);
+			emit MatchOutcome(_channelId, otherPlayer, c.stake, 1);
         } else {
         	_closeChannel(_channelId, _currUser());
         }
@@ -225,6 +229,7 @@ contract StakeManager is Ownable {
 	}
 
 	function _resolveRecover(bytes32 _h, uint8 _v, bytes32 _r, bytes32 _s, bytes _currState) private pure returns(address _signer) {
+		// bytes memory prefix = "\x19Ethereum Signed Message:\n32";
 		bytes32 proof = keccak256(_currState);
 		assert(proof == _h);
 

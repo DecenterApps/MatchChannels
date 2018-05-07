@@ -39,7 +39,7 @@ import truffleContract from "truffle-contract";
 import sManager from "./../../solidity/build/contracts/StakeManager.json";
 
 // Set up web3 contract
-const CONTRACT_ADDRESS = "0x7a7f708e20c3042314cd250c5d15e5a43a2561d6";
+const CONTRACT_ADDRESS = "0xb9c1f4dd042b62f1e5fa1918fe80c4d75fd6dfb4";
 
 const stakeManager = truffleContract(sManager);
 stakeManager.setProvider(web3.currentProvider);
@@ -132,6 +132,16 @@ export default {
     const request = {type: 'request_win_sig', result: playerType.toString()};
 
     conn.send(request);
+
+  //   const hashMsg = ethers.utils.solidityKeccak256(['string'], ['000000011']);
+
+  //   var hashData = ethers.utils.arrayify(hashMsg);
+	// const signature = wallet.signMessage(hashData);
+
+
+
+  // console.log('local verify: ', ethers.Wallet.verifyMessage(hashData, signature));
+
   },
   async dispute() {
     console.log(this.mySignedMoves, this.opponentsSignedMoves);
@@ -185,7 +195,14 @@ export default {
     return {r: utils.bufferToHex(r), s: utils.bufferToHex(s), v: utils.bufferToInt(v)};
   },
   signState(hashedState) {
-    return wallet.signMessage(hashedState);
+    return wallet.signMessage(ethers.utils.arrayify(hashedState));
+  },
+  signStateMM(hashedState) {
+    return new Promise((resolve, reject) => {
+     web3.eth.sign(web3.eth.accounts[0], hashedState, (err, res) => {
+         resolve(res);
+       });
+    });
   },
   async agreeAndSignState(result) {
     const channelNum = await contract.nChannel() - 1;
@@ -194,9 +211,12 @@ export default {
 
     state = state.padStart(9, '0');
 
+
     const hashedState = web3.sha3(state);
 
-    const signedState = this.signState(hashedState);
+    const signedState = await this.signStateMM(hashedState);
+
+    // console.log('Singed by: ', wallet.address);
 
     conn.send({
       type: 'receive_win_sig',
@@ -207,15 +227,20 @@ export default {
     });
   },
   async callFastClose(data) {
+
     const {r, s, v} = this.getRSV(data.signedState);
 
-    await stakeManagerInstance.fastClose(data.channelNum,
+    console.log(data.channelNum, data.hashedState, data.signedState, data.state, r, s, v);
+
+    const res = await stakeManagerInstance.fastClose(data.channelNum,
         data.hashedState,
         v,
         r,
         s,
         utils.bufferToHex(utils.toBuffer(data.state)),
         {from: web3.eth.accounts[0]});
+
+    console.log(res);
         
 
     stakeManager.MatchOutcome().watch((err, event) => {
@@ -252,7 +277,7 @@ export default {
         await this.agreeAndSignState(data.result);
       break;
       case 'receive_win_sig':
-        this.callFastClose(data);
+        await this.callFastClose(data);
       break;
     }
   },
@@ -269,7 +294,7 @@ export default {
       port: 9000,
     });
 
-    conn = peer.connect('ab');
+    conn = peer.connect('abc');
     conn.on('open', function(){
       this.showGame = true;
 
@@ -280,7 +305,7 @@ export default {
     await this.openChannel();
     playerType = 1;
 
-    peer = new Peer('ab', {
+    peer = new Peer('abc', {
       key: 'asdf',
       debug: 3,
       host: '139.59.146.81',
