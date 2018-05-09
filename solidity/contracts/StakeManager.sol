@@ -109,7 +109,7 @@ contract StakeManager is Ownable, ECTools {
 		
 		require(_isActive(_channelId));
 
-		Channel storage c = channels[_channelId];
+		Channel memory c = channels[_channelId];
 
 		address signer = recoverSig(_h[0], _sig1, _state1);
 		address signer2 = recoverSig(_h[1], _sig2, _state2);
