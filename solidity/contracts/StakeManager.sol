@@ -83,7 +83,7 @@ contract StakeManager is Ownable, ECTools {
 
 		address signer = recoverSig(_h, sig, _state);
 		// to close channel you need to have signature of other player
-		require(signAddresses[_getOtherPlayer(_channelId, msg.sender)] == signer);
+		require(_signingAddress(_getOpponent(_channelId, msg.sender)) == signer);
 
 		uint channelId;
 		uint winner;
@@ -114,15 +114,15 @@ contract StakeManager is Ownable, ECTools {
 		address signer = recoverSig(_h[0], _sig1, _state1);
 		address signer2 = recoverSig(_h[1], _sig2, _state2);
 
-		address otherPlayer = _getOtherPlayer(_channelId, msg.sender);
+		address opponent = _getOpponent(_channelId, msg.sender);
 
         // both moves must be signed by other player
-        assert(signer2 == otherPlayer);
-        assert(signer == otherPlayer);
+        assert(signer2 == _signingAddress(opponent));
+        assert(signer == _signingAddress(opponent));
 
         if (ResolverInterface(c.resolver).resolve(_state1, _state2)) {
-        	_closeChannel(_channelId, otherPlayer);
-			emit MatchOutcome(_channelId, otherPlayer, c.stake, 1);
+        	_closeChannel(_channelId, opponent);
+			emit MatchOutcome(_channelId, opponent, c.stake, 1);
         } else {
         	_closeChannel(_channelId, msg.sender);
         }
@@ -143,8 +143,8 @@ contract StakeManager is Ownable, ECTools {
 		address signer = recoverSig(_h[0], _sig1, _state1);
 		address signer2 = recoverSig(_h[1], _sig2, _state2);
 
-		require(signer == _getOtherPlayer(_channelId, msg.sender));
-		require(signer2 == msg.sender);
+		require(signer == _signingAddress(_getOpponent(_channelId, msg.sender)));
+		require(signer2 == _signingAddress(msg.sender));
 		
 		if (ResolverInterface(c.resolver).resolve(_state1, _state2)) {
 
@@ -234,8 +234,8 @@ contract StakeManager is Ownable, ECTools {
 		_active = (channels[_channelId].p1 != 0x0) && (channels[_channelId].p2 != 0x0) && !channels[_channelId].finished;
 	}
 
-	function _getOtherPlayer(uint _channelId, address _player) private view returns(address _otherPlayer) {
-		_otherPlayer = (channels[_channelId].p1 == _player) ? channels[_channelId].p2 : channels[_channelId].p1;  
+	function _getOpponent(uint _channelId, address _player) private view returns(address _opponent) {
+		_opponent = (channels[_channelId].p1 == _player) ? channels[_channelId].p2 : channels[_channelId].p1;  
 	}
 
 	function _signingAddress(address _address) private view returns(address signingAddress) {
