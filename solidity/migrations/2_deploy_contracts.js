@@ -1,5 +1,6 @@
 const StakeManager = artifacts.require('StakeManager.sol');
 const TicTacResolver = artifacts.require('TicTacToeResolver.sol');
+const ECTools = artifacts.require('ECTools.sol');
 
 module.exports = async (deployer, acc) => {
   // deployment steps
@@ -18,7 +19,8 @@ module.exports = async (deployer, acc) => {
   }).then(() => {
     console.log(`StakeManager: ${stakeManager.address}`);
     console.log(`TicTacToeResolver: ${ticTacToeResolver.address}`);
+    //deployer.link(ECTools, ECToolsTest);
 
     return true;
-  });
+  })
 }

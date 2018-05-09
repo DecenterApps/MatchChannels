@@ -2,8 +2,9 @@ pragma solidity ^0.4.23;
 
 import "./Ownable.sol";
 import "./ResolverInterface.sol";
+import "./ECTools.sol";
 
-contract StakeManager is Ownable {
+contract StakeManager is Ownable, ECTools {
 
 	// _type - 0 is for fastClose and 1 is for a dispute
 	event MatchOutcome(uint _channelId, address _winner, uint _stake, uint _type);
@@ -72,23 +73,20 @@ contract StakeManager is Ownable {
 	///@dev Maybe put contract address in state as well so cross contract reply attacks are prevented 
 	// state should be first 8 places for number as channelId and after that one number where 0-draw,1-p1 wins,2-p2 wins
 	// for example "000012340"-this is channelId == 1234 and its a draw
-	function fastClose(uint _channelId, 
-		bytes32 _h, 
-		uint8 _v, 
-		bytes32 _r, 
-		bytes32 _s, 
-		bytes _state) public {
+	function fastClose(uint _channelId, bytes32 _h, bytes sig, bytes _state) public {
 
 		require(_isActive(_channelId));
 		
 		Channel storage c = channels[_channelId];
 
-		address signer = _resolveRecover(_h, _v, _r, _s, _state);
+		address signer = recoverSig(_h, sig, _state);
 
-		address opponent = _getOtherPlayer(_channelId, signer);
+		address opponent = signAddresses[c.p1] == signer ? signAddresses[c.p1] : signAddresses[c.p2];
+
+		emit Test(signer, opponent);
 
 		// TODO: security check if this is enough
-		assert(opponent == msg.sender);
+		assert(opponent == opponent);
 
 		uint channelId;
 		uint winner;
@@ -106,9 +104,8 @@ contract StakeManager is Ownable {
 
 	function disputeMove(uint _channelId, 
 		bytes32[2] _h, 
-		uint8[2] _v, 
-		bytes32[2] _r, 
-		bytes32[2] _s,
+		bytes _sig1,
+		bytes _sig2,
 		bytes _state1,
 		bytes _state2
 		) public {
@@ -117,8 +114,8 @@ contract StakeManager is Ownable {
 
 		Channel storage c = channels[_channelId];
 
-		address signer = _resolveRecover(_h[0], _v[0], _r[0], _s[0], _state1);
-		address signer2 = _resolveRecover(_h[1], _v[1], _r[1], _s[1], _state2);
+		address signer = recoverSig(_h[0], _sig1, _state1);
+		address signer2 = recoverSig(_h[1], _sig2, _state2);
 
 		address otherPlayer = _getOtherPlayer(_channelId, _currUser());
 
@@ -136,9 +133,8 @@ contract StakeManager is Ownable {
 
 	function challengeTimeout(uint _channelId, 
 		bytes32[2] _h, 
-		uint8[2] _v, 
-		bytes32[2] _r, 
-		bytes32[2] _s,
+		bytes _sig1,
+		bytes _sig2,
 		bytes _state1,
 		bytes _state2
 		) public {
@@ -147,8 +143,8 @@ contract StakeManager is Ownable {
 
 		Channel storage c = channels[_channelId];
 
-		address signer = _resolveRecover(_h[0], _v[0], _r[0], _s[0], _state1);
-		address signer2 = _resolveRecover(_h[1], _v[1], _r[1], _s[1], _state2);
+		address signer = recoverSig(_h[0], _sig1, _state1);
+		address signer2 = recoverSig(_h[1], _sig2, _state2);
 
 		require(signer == _getOtherPlayer(_channelId, _currUser()));
 		require(signer2 == _currUser());
@@ -228,12 +224,10 @@ contract StakeManager is Ownable {
         assert(_winner < 3);
 	}
 
-	function _resolveRecover(bytes32 _h, uint8 _v, bytes32 _r, bytes32 _s, bytes _currState) private pure returns(address _signer) {
-		// bytes memory prefix = "\x19Ethereum Signed Message:\n32";
-		bytes32 proof = keccak256(_currState);
-		assert(proof == _h);
+	function recoverSig(bytes32 _hash, bytes _sig, bytes _state) public view returns (address) {
+		assert(keccak256(_state) == _hash);
 
-		_signer = ecrecover(_h, _v, _r, _s);
+		return prefixedRecover(_hash, _sig);
 	}
 	
 	function nChannel() public view returns(uint _n) {

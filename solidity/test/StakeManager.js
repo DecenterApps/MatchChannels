@@ -42,8 +42,8 @@ contract('Stake Manager', async (accounts) => {
     const sig1 = util.ecsign(hashedState1, util.toBuffer(privateKeys[0]));
     const sig2 = util.ecsign(hashedState2, util.toBuffer(privateKeys[1]));
 
-    try {
-        const tx = await stakeManager.close(
+   
+        const tx = await stakeManager.disputeMove(
         0,
         [util.bufferToHex(hashedState1), util.bufferToHex(hashedState2)],
         [util.bufferToInt(sig1.v), util.bufferToInt(sig2.v)],
@@ -53,10 +53,8 @@ contract('Stake Manager', async (accounts) => {
         util.bufferToHex(util.toBuffer(state2)),
         {from: user1});
 
-        //console.log(tx.logs[0]);
-        } catch(err) {
-            console.log(err);
-        }
+        console.log(tx);
+        
 
         const channel = await stakeManager.channels(0);
 
@@ -76,6 +74,8 @@ contract('Stake Manager', async (accounts) => {
     const hashedState = util.sha3(state);
 
     const sig = util.ecsign(hashedState, util.toBuffer(privateKeys[0]));
+
+    console.log(sig);
 
     const tx = await stakeManager.fastClose(1,
         util.bufferToHex(hashedState),

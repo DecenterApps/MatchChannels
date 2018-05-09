@@ -39,7 +39,7 @@ import truffleContract from "truffle-contract";
 import sManager from "./../../solidity/build/contracts/StakeManager.json";
 
 // Set up web3 contract
-const CONTRACT_ADDRESS = "0xb9c1f4dd042b62f1e5fa1918fe80c4d75fd6dfb4";
+const CONTRACT_ADDRESS = "0xfb8f55dc1416471f6f72ba2df57e07bdb5802ff8";
 
 const stakeManager = truffleContract(sManager);
 stakeManager.setProvider(web3.currentProvider);
@@ -128,19 +128,28 @@ export default {
 
       conn.send(msg);
   },
-  fastClose() {
+  async fastClose() {
     const request = {type: 'request_win_sig', result: playerType.toString()};
 
     conn.send(request);
 
-  //   const hashMsg = ethers.utils.solidityKeccak256(['string'], ['000000011']);
+    // const hashMsg = ethers.utils.solidityKeccak256(['string'], ['000000001']);
 
-  //   var hashData = ethers.utils.arrayify(hashMsg);
-	// const signature = wallet.signMessage(hashData);
+    // var hashData = ethers.utils.arrayify(hashMsg);
 
+	  // const signature = wallet.signMessage(hashData);
 
+    // console.log(`"${hashMsg}", "${signature}"`);
 
-  // console.log('local verify: ', ethers.Wallet.verifyMessage(hashData, signature));
+    // // const signMM = await this.signStateMM(hashMsg);
+
+    // // console.log(`"${hashMsg}", "${signMM}"`);
+
+    // var sig = this.getRSV(signature);
+
+    // const res = await stakeManagerInstance.recoverSig(hashMsg, signature, utils.bufferToHex(utils.toBuffer('000000001')), {from: web3.eth.accounts[0]}); //, {from: web3.eth.accounts[0]});
+
+    // console.log(res);
 
   },
   async dispute() {
@@ -166,16 +175,13 @@ export default {
       const input = {
         channelId: channelNum,
         h: [web3.sha3(this.convertStateToBytes(firstMove)), web3.sha3(this.convertStateToBytes(secondMove))],
-        v: [sig1.v, sig2.v],
-        r: [sig1.r, sig2.r],
-        s: [sig1.s, sig2.s],
         s1,
         s2
       };
 
       console.log(input);
 
-      await stakeManagerInstance.close(input.channelId, input.h, input.v, input.r, input.s, input.s1, input.s2,
+      await stakeManagerInstance.disputeMove(input.channelId, input.h, sig1, sig2, input.s1, input.s2,
         {from: web3.eth.accounts[0]});
 
     } else {
@@ -211,10 +217,9 @@ export default {
 
     state = state.padStart(9, '0');
 
-
     const hashedState = web3.sha3(state);
 
-    const signedState = await this.signStateMM(hashedState);
+    const signedState = this.signState(hashedState);
 
     // console.log('Singed by: ', wallet.address);
 
@@ -228,15 +233,11 @@ export default {
   },
   async callFastClose(data) {
 
-    const {r, s, v} = this.getRSV(data.signedState);
-
-    console.log(data.channelNum, data.hashedState, data.signedState, data.state, r, s, v);
+    console.log(data.channelNum, data.hashedState, data.signedState, data.state);
 
     const res = await stakeManagerInstance.fastClose(data.channelNum,
         data.hashedState,
-        v,
-        r,
-        s,
+        data.signedState,
         utils.bufferToHex(utils.toBuffer(data.state)),
         {from: web3.eth.accounts[0]});
 
