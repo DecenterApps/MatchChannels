@@ -79,7 +79,7 @@ contract StakeManager is Ownable, ECTools {
 		// only player from this channel can close channel
 		require(msg.sender == channels[_channelId].p1 || msg.sender == channels[_channelId].p2);
 		
-		Channel storage c = channels[_channelId];
+		Channel memory c = channels[_channelId];
 
 		address signer = recoverSig(_h, sig, _state);
 		// to close channel you need to have signature of other player
