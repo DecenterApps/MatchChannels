@@ -96,7 +96,7 @@ contract StakeManager is Ownable, ECTools {
 
 		_closeChannel(_channelId, winnerAddr);
 
-		emit MatchOutcome(_channelId, winnerAddr, c.stake, 1);
+		emit MatchOutcome(_channelId, winnerAddr, c.stake, 0);
 	}
 
 	function disputeMove(uint _channelId, 
@@ -125,6 +125,7 @@ contract StakeManager is Ownable, ECTools {
 			emit MatchOutcome(_channelId, opponent, c.stake, 1);
         } else {
         	_closeChannel(_channelId, msg.sender);
+        	emit MatchOutcome(_channelId, msg.sender, c.stake, 1);
         }
 	}
 
