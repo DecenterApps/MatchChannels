@@ -11,6 +11,7 @@ module.exports = {
         return new HDWalletProvider(mnemonic, `https://kovan.infura.io/`);
       },
       network_id: '42',
+      gasPrice: 1000000000
     },
     rinkeby: {
       provider: function() {
