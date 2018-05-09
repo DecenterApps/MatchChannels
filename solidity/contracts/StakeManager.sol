@@ -74,19 +74,16 @@ contract StakeManager is Ownable, ECTools {
 	// state should be first 8 places for number as channelId and after that one number where 0-draw,1-p1 wins,2-p2 wins
 	// for example "000012340"-this is channelId == 1234 and its a draw
 	function fastClose(uint _channelId, bytes32 _h, bytes sig, bytes _state) public {
-
+		// channel must be active
 		require(_isActive(_channelId));
+		// only player from this channel can close channel
+		require(msg.sender == channels[_channelId].p1 || msg.sender == channels[_channelId].p2);
 		
 		Channel storage c = channels[_channelId];
 
 		address signer = recoverSig(_h, sig, _state);
-
-		address opponent = signAddresses[c.p1] == signer ? signAddresses[c.p1] : signAddresses[c.p2];
-
-		emit Test(signer, opponent);
-
-		// TODO: security check if this is enough
-		assert(opponent == opponent);
+		// to close channel you need to have signature of other player
+		require(signAddresses[_getOtherPlayer(_channelId, msg.sender)] == signer);
 
 		uint channelId;
 		uint winner;
@@ -117,7 +114,7 @@ contract StakeManager is Ownable, ECTools {
 		address signer = recoverSig(_h[0], _sig1, _state1);
 		address signer2 = recoverSig(_h[1], _sig2, _state2);
 
-		address otherPlayer = _getOtherPlayer(_channelId, _currUser());
+		address otherPlayer = _getOtherPlayer(_channelId, msg.sender);
 
         // both moves must be signed by other player
         assert(signer2 == otherPlayer);
@@ -127,7 +124,7 @@ contract StakeManager is Ownable, ECTools {
         	_closeChannel(_channelId, otherPlayer);
 			emit MatchOutcome(_channelId, otherPlayer, c.stake, 1);
         } else {
-        	_closeChannel(_channelId, _currUser());
+        	_closeChannel(_channelId, msg.sender);
         }
 	}
 
@@ -146,8 +143,8 @@ contract StakeManager is Ownable, ECTools {
 		address signer = recoverSig(_h[0], _sig1, _state1);
 		address signer2 = recoverSig(_h[1], _sig2, _state2);
 
-		require(signer == _getOtherPlayer(_channelId, _currUser()));
-		require(signer2 == _currUser());
+		require(signer == _getOtherPlayer(_channelId, msg.sender));
+		require(signer2 == msg.sender);
 		
 		if (ResolverInterface(c.resolver).resolve(_state1, _state2)) {
 
@@ -173,8 +170,6 @@ contract StakeManager is Ownable, ECTools {
 		require(_isActive(_channelId));
 		require(!c.finished);
 		require(c.resolveStart + MAX_OPEN_TIME < _currBlock());
-
-
 	}
 
 	function _closeChannel(uint _channelId, address _winner) private {
@@ -243,8 +238,8 @@ contract StakeManager is Ownable, ECTools {
 		_otherPlayer = (channels[_channelId].p1 == _player) ? channels[_channelId].p2 : channels[_channelId].p1;  
 	}
 
-	function _currUser() private view returns(address currUser) {
-		currUser = signAddresses[msg.sender];
+	function _signingAddress(address _address) private view returns(address signingAddress) {
+		signingAddress = signAddresses[_address];
 	}
 
 	function _currBlock() private view returns(uint currBlock) {
