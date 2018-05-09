@@ -93,7 +93,7 @@ contract StakeManager is Ownable {
 		uint channelId;
 		uint winner;
 
-		(channelId, winner) = _getState(_state);
+		(channelId, winner) = _readWinner(_state);
 
 		assert(_channelId == channelId);
 
@@ -207,7 +207,7 @@ contract StakeManager is Ownable {
 		}
 	}
 
-	function _getState(bytes _state) private pure returns(uint _channelId, uint _winner) {
+	function _readWinner(bytes _state) private pure returns(uint _channelId, uint _winner) {
 
         for (uint i=8; i>0; i--){
             byte t;
