@@ -8,6 +8,8 @@ contract StakeManager is Ownable, ECTools {
 
 	// _type - 0 is for fastClose and 1 is for a dispute
 	event MatchOutcome(uint _channelId, address _winner, uint _stake, uint _type);
+	event ChallengeTimeoutStarted(uint _channelId, address _challenger);
+	event ChallengeTimeoutAnswered(uint _channelId, address _responder);
 
 	event Test(address signer, address opponent);
 
@@ -19,6 +21,8 @@ contract StakeManager is Ownable, ECTools {
 		address winner;
 		bool finished;
 		uint resolveStart;
+		address timeoutChallenger;
+		bytes lastState;
 	}
 
 	struct ResolverStruct {
@@ -138,19 +142,82 @@ contract StakeManager is Ownable, ECTools {
 		) public {
 
 		require(_isActive(_channelId));
+		// only player from this channel can close channel
+		require(msg.sender == channels[_channelId].p1 || msg.sender == channels[_channelId].p2);
 
 		Channel storage c = channels[_channelId];
+		// can't challenge timeout if it is already challenged
+		require (c.resolveStart == 0);
 
 		address signer = recoverSig(_h[0], _sig1, _state1);
 		address signer2 = recoverSig(_h[1], _sig2, _state2);
 
+		uint seq1 = ResolverInterface(c.resolver).getSequence(_state1);
+		uint seq2 = ResolverInterface(c.resolver).getSequence(_state2);
+		// you need to send last step from opponent and your current move
+		require(seq1+1 == seq2);
+
 		require(signer == _signingAddress(_getOpponent(_channelId, msg.sender)));
 		require(signer2 == _signingAddress(msg.sender));
 		
-		if (ResolverInterface(c.resolver).resolve(_state1, _state2)) {
+		c.timeoutChallenger = msg.sender;
+		c.lastState = _state2;
+		c.resolveStart = _currBlock();
 
-		} 
+		emit ChallengeTimeoutStarted(_channelId, msg.sender);
 	}
+
+	function challengeResponse(uint _channelId, 
+		bytes32[2] _h, 
+		bytes _sig1,
+		bytes _sig2,
+		bytes _state1,
+		bytes _state2
+		) public {
+
+		require(_isActive(_channelId));
+		// only player from this channel can close channel
+		require(msg.sender == channels[_channelId].p1 || msg.sender == channels[_channelId].p2);
+
+		Channel storage c = channels[_channelId];
+		// can't respond if there is nothing to respond to
+		require(c.resolveStart > 0);
+		require(c.timeoutChallenger != msg.sender);
+		// you need to send last state signed by you
+		require(keccak256(c.lastState) == keccak256(_state1));
+		
+		address signer1 = recoverSig(_h[0], _sig1, _state1);
+		address signer2 = recoverSig(_h[1], _sig2, _state2);
+		// both moves must be signed by responder
+		require (signer1 == signer2 && signer1 == _signingAddress(msg.sender));
+
+		uint seq1 = ResolverInterface(c.resolver).getSequence(_state1);
+		uint seq2 = ResolverInterface(c.resolver).getSequence(_state2);
+		// you need to signed both last move by last player and your next move
+		require(seq1 + 1 == seq2);
+		
+		c.resolveStart = 0;
+
+		emit ChallengeTimeoutAnswered(_channelId, msg.sender);
+	}
+
+	function closeTimeoutedChannel(uint _channelId) public {
+		Channel memory c = channels[_channelId];
+
+		require(_isActive(_channelId));
+		require(!c.finished);
+		require(c.resolveStart + MAX_OPEN_TIME < _currBlock());
+
+		_closeChannel(_channelId, c.timeoutChallenger);
+        emit MatchOutcome(_channelId, msg.sender, c.stake, 1);
+	}
+
+	function nChannel() public view returns(uint _n) {
+	    _n = channels.length;
+	}
+
+
+
 
 	function _getWinner(uint _channelId, bytes _state) private view returns(address _winner) {
 		Channel memory c = channels[_channelId];
@@ -163,14 +230,6 @@ contract StakeManager is Ownable, ECTools {
 
 		//if its both false then _winner is 0x0 else if p1winner then p1 else p2
 		_winner = (p1winner == p2winner) ? 0x0 : (p1winner ? c.p1 : c.p2);
-	}
-
-	function closeTimeoutedChannel(uint _channelId) public {
-		Channel memory c = channels[_channelId];
-
-		require(_isActive(_channelId));
-		require(!c.finished);
-		require(c.resolveStart + MAX_OPEN_TIME < _currBlock());
 	}
 
 	function _closeChannel(uint _channelId, address _winner) private {
@@ -220,14 +279,10 @@ contract StakeManager is Ownable, ECTools {
         assert(_winner < 3);
 	}
 
-	function recoverSig(bytes32 _hash, bytes _sig, bytes _state) public view returns (address) {
+	function recoverSig(bytes32 _hash, bytes _sig, bytes _state) private view returns (address) {
 		assert(keccak256(_state) == _hash);
 
 		return prefixedRecover(_hash, _sig);
-	}
-	
-	function nChannel() public view returns(uint _n) {
-	    _n = channels.length;
 	}
 	
 	function _isActive(uint _channelId) private view returns(bool _active) {
