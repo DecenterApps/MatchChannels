@@ -75,6 +75,8 @@ contract('Stake Manager', async (accounts) => {
 
     const sig = util.ecsign(hashedState, util.toBuffer(privateKeys[0]));
 
+    console.log(sig);
+
     const tx = await stakeManager.fastClose(1,
         util.bufferToHex(hashedState),
         util.bufferToInt(sig.v),

@@ -39,7 +39,7 @@ import truffleContract from "truffle-contract";
 import sManager from "./../../solidity/build/contracts/StakeManager.json";
 
 // Set up web3 contract
-const CONTRACT_ADDRESS = "0x00a3e96db6b34a6978a42168b1b592161c2bab3a";
+const CONTRACT_ADDRESS = "0xfb8f55dc1416471f6f72ba2df57e07bdb5802ff8";
 
 const stakeManager = truffleContract(sManager);
 stakeManager.setProvider(web3.currentProvider);
@@ -175,9 +175,6 @@ export default {
       const input = {
         channelId: channelNum,
         h: [web3.sha3(this.convertStateToBytes(firstMove)), web3.sha3(this.convertStateToBytes(secondMove))],
-        v: [sig1.v, sig2.v],
-        r: [sig1.r, sig2.r],
-        s: [sig1.s, sig2.s],
         s1,
         s2
       };
@@ -220,10 +217,9 @@ export default {
 
     state = state.padStart(9, '0');
 
-
     const hashedState = web3.sha3(state);
 
-    const signedState = await this.signStateMM(hashedState);
+    const signedState = this.signState(hashedState);
 
     // console.log('Singed by: ', wallet.address);
 

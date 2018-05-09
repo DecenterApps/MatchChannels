@@ -81,10 +81,12 @@ contract StakeManager is Ownable, ECTools {
 
 		address signer = recoverSig(_h, sig, _state);
 
-		address opponent = signAddresses[c.p1] == signer ? signAddresses[c.p2] : signAddresses[c.p1];
+		address opponent = signAddresses[c.p1] == signer ? signAddresses[c.p1] : signAddresses[c.p2];
+
+		emit Test(signer, opponent);
 
 		// TODO: security check if this is enough
-		assert(opponent == msg.sender);
+		assert(opponent == opponent);
 
 		uint channelId;
 		uint winner;
