@@ -19,7 +19,6 @@ module.exports = async (deployer, acc) => {
   }).then(() => {
     console.log(`StakeManager: ${stakeManager.address}`);
     console.log(`TicTacToeResolver: ${ticTacToeResolver.address}`);
-    //deployer.link(ECTools, ECToolsTest);
 
     return true;
   })

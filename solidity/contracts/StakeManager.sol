@@ -116,16 +116,18 @@ contract StakeManager is Ownable, ECTools {
 
 		address opponent = _getOpponent(_channelId, msg.sender);
 
-        // both moves must be signed by other player
-        assert(signer2 == _signingAddress(opponent));
-        assert(signer == _signingAddress(opponent));
+		emit Test(signer, signer2);
 
-        if (ResolverInterface(c.resolver).resolve(_state1, _state2)) {
-        	_closeChannel(_channelId, opponent);
-			emit MatchOutcome(_channelId, opponent, c.stake, 1);
-        } else {
-        	_closeChannel(_channelId, msg.sender);
-        }
+        // both moves must be signed by other player
+        // assert(signer2 == _signingAddress(opponent));
+        // assert(signer == _signingAddress(opponent));
+
+        // if (ResolverInterface(c.resolver).resolve(_state1, _state2)) {
+        // 	_closeChannel(_channelId, opponent);
+		// 	emit MatchOutcome(_channelId, opponent, c.stake, 1);
+        // } else {
+        // 	_closeChannel(_channelId, msg.sender);
+        // }
 	}
 
 	function challengeTimeout(uint _channelId, 

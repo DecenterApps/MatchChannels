@@ -39,7 +39,7 @@ import truffleContract from "truffle-contract";
 import sManager from "./../../solidity/build/contracts/StakeManager.json";
 
 // Set up web3 contract
-const CONTRACT_ADDRESS = "0xfb8f55dc1416471f6f72ba2df57e07bdb5802ff8";
+const CONTRACT_ADDRESS = "0x3075d08c58595efb4e4463af9a0b48c65d5695c9";
 
 const stakeManager = truffleContract(sManager);
 stakeManager.setProvider(web3.currentProvider);
@@ -117,14 +117,14 @@ export default {
       const msg = {
         type: 'send_sig',
         ...state,
+        hashedState,
         signedState,
         sequence: this.turnNumber
       };
 
-      // this.mySignedMoves.push(msg);
       this.signedMoves.push(msg);
 
-      console.log('PLAY');
+      console.log('Created a move');
 
       conn.send(msg);
   },
@@ -133,59 +133,29 @@ export default {
 
     conn.send(request);
 
-    // const hashMsg = ethers.utils.solidityKeccak256(['string'], ['000000001']);
-
-    // var hashData = ethers.utils.arrayify(hashMsg);
-
-	  // const signature = wallet.signMessage(hashData);
-
-    // console.log(`"${hashMsg}", "${signature}"`);
-
-    // // const signMM = await this.signStateMM(hashMsg);
-
-    // // console.log(`"${hashMsg}", "${signMM}"`);
-
-    // var sig = this.getRSV(signature);
-
-    // const res = await stakeManagerInstance.recoverSig(hashMsg, signature, utils.bufferToHex(utils.toBuffer('000000001')), {from: web3.eth.accounts[0]}); //, {from: web3.eth.accounts[0]});
-
-    // console.log(res);
-
   },
   async dispute() {
-    console.log(this.mySignedMoves, this.opponentsSignedMoves);
+    console.log(this.signedMoves);
 
-    // you must have at least 2 moves 
-    if (this.mySignedMoves.length > 0 && this.opponentsSignedMoves.length > 0) {
-      const firstMove = this.mySignedMoves[this.mySignedMoves.length - 1];
-      const secondMove = this.opponentsSignedMoves[this.opponentsSignedMoves.length - 1];
+    if (this.signedMoves.length >= 2) {
+      const currMove = this.signedMoves[this.signedMoves.length - 1];
+      const previousMove = this.signedMoves[this.signedMoves.length - 2];
 
-      const sig1 = this.getRSV(firstMove.signedState);
-      const sig2 = this.getRSV(secondMove.signedState);
-
-      console.log(firstMove);
+      console.log(currMove, previousMove);
 
       const channelNum = await contract.nChannel() - 1;
 
-      console.log(this.convertStateToBytes(firstMove), this.convertStateToBytes(secondMove));
+      const hashes = [previousMove.hashedState, currMove.hashedState];
 
-      const s1 = utils.bufferToHex(utils.toBuffer(this.convertStateToBytes(firstMove)));
-      const s2 = utils.bufferToHex(utils.toBuffer(this.convertStateToBytes(secondMove)));
+      const states = [utils.bufferToHex(utils.toBuffer(this.convertStateToBytes(previousMove))), 
+                      utils.bufferToHex(utils.toBuffer(this.convertStateToBytes(currMove)))];
 
-      const input = {
-        channelId: channelNum,
-        h: [web3.sha3(this.convertStateToBytes(firstMove)), web3.sha3(this.convertStateToBytes(secondMove))],
-        s1,
-        s2
-      };
+      console.log(channelNum, hashes, previousMove.signedState, currMove.signedState, states[0], states[1]);
 
-      console.log(input);
+      const res = await stakeManagerInstance.disputeMove(channelNum, hashes, previousMove.signedState,
+       currMove.signedState, states[0], states[1], {from: web3.eth.accounts[0]});
 
-      await stakeManagerInstance.disputeMove(input.channelId, input.h, sig1, sig2, input.s1, input.s2,
-        {from: web3.eth.accounts[0]});
-
-    } else {
-      alert("Must have at least 2 moves");
+       console.log(res);
     }
   },
   convertStateToBytes(state) {
@@ -219,17 +189,19 @@ export default {
 
     const hashedState = web3.sha3(state);
 
-    const signedState = this.signState(hashedState);
+    const answer = confirm('Your opponent claims he won, do you want to sign that he is the winner?');
 
-    // console.log('Singed by: ', wallet.address);
+    if (answer) {
+      const signedState = this.signState(hashedState);
 
-    conn.send({
-      type: 'receive_win_sig',
-      state,
-      hashedState,
-      signedState,
-      channelNum,
-    });
+      conn.send({
+        type: 'receive_win_sig',
+        state,
+        hashedState,
+        signedState,
+        channelNum,
+      });
+    }
   },
   async callFastClose(data) {
 
@@ -241,12 +213,11 @@ export default {
         utils.bufferToHex(utils.toBuffer(data.state)),
         {from: web3.eth.accounts[0]});
 
-    console.log(res);
-        
+    console.log(res.logs[1].args.winner, web3.eth.accounts[0]);
 
-    stakeManager.MatchOutcome().watch((err, event) => {
-      console.log(event, err);
-    });
+    if (res.logs[1].args.winner === web3.eth.accounts[0]) {
+      alert('You won yay!');
+    }
   },
   signBack(data) {
     const hashedState = web3.sha3(this.convertStateToBytes(data));
@@ -254,6 +225,7 @@ export default {
     const signedState = this.signState(hashedState);
 
     const msg = {
+      ...data,
       type: 'opponents_sig',
       hashedState,
       signedState,
@@ -272,6 +244,7 @@ export default {
         this.signBack(data);
       break;
       case 'opponents_sig':
+        console.log('Received opponents move');
         this.signedMoves.push(data);
       break;
       case 'request_win_sig':
