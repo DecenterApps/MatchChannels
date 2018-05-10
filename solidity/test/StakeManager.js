@@ -3,6 +3,8 @@ const TicTacToe = artifacts.require('./TicTacToeResolver.sol');
 
 const util = require('ethereumjs-util');
 
+const ethers = require('ethers');
+
 contract('Stake Manager', async (accounts) => {
 
   const privateKeys = [
@@ -13,7 +15,7 @@ contract('Stake Manager', async (accounts) => {
     '0x588c684foba1ef5017716adb5d21a055ea8e90277d0868557519f97bede61418',
   ];
 
-  let stakeManager, ticTacToe, user1, user2;
+  let stakeManager, ticTacToe, user1, user2, wallet1, wallet2;
 
   before(async () => {
     stakeManager = await StakeManager.new();
@@ -22,16 +24,62 @@ contract('Stake Manager', async (accounts) => {
     user1 = accounts[0];
     user2 = accounts[1];
 
+    wallet1 = new ethers.Wallet(privateKeys[2]);
+
+    wallet1.provider = ethers.providers.getDefaultProvider();
+
+    wallet2 = new ethers.Wallet(privateKeys[3]);
+
     await stakeManager.addResolver("TicTacToeResolver", ticTacToe.address);
   });
 
-  it("Closing a channel", async () => {
+  it("Calling fast close on a channel, first user got a sig from the second", async () => {
+    const openChannel = await stakeManager.openChannel(0, wallet1.address, {from: user1});
+    const joinChannel = await stakeManager.joinChannel(0, wallet2.address, {from: user2});
 
-    const openChannel = await stakeManager.openChannel(0, user1, {from: user1});
-    const joinChannel = await stakeManager.joinChannel(0, user2, {from: user2});
+    const state = "000000001"; 
+    const hashedState = util.sha3(state);
+
+    const sig = wallet2.signMessage(ethers.utils.arrayify(hashedState));
+
+    const tx = await stakeManager.fastClose(0,
+        util.bufferToHex(hashedState),
+        sig,
+        util.bufferToHex(util.toBuffer(state)),
+        {from: user1});
+
+
+    assert.equal(tx.logs[0].args._winner, accounts[0], "The winner is the first account");
+  });
+
+  it("Calling fast close on a channel (with stake), second user got a sig from the first user", async () => {
+    const openChannel = await stakeManager.openChannel(0, wallet1.address, {from: user1, value: 40000000});
+    const joinChannel = await stakeManager.joinChannel(1, wallet2.address, {from: user2, value: 40000000});
+
+    const state = "000000012"; 
+    const hashedState = util.sha3(state);
+
+    const sig = wallet1.signMessage(ethers.utils.arrayify(hashedState));
+
+    const tx = await stakeManager.fastClose(1,
+        util.bufferToHex(hashedState),
+        sig,
+        util.bufferToHex(util.toBuffer(state)),
+        {from: user2});
+
+
+    console.log(tx.logs[0].args._stake.valueOf());
+    assert.equal(tx.logs[0].args._winner, accounts[1], "The winner is the second account");
+  });
+
+
+  it("Calling dispute move", async () => {
+
+    const openChannel = await stakeManager.openChannel(0, wallet1.address, {from: user1});
+    const joinChannel = await stakeManager.joinChannel(2, wallet2.address, {from: user2});
 
     const state1 = '000020000410';//'0x1112000000'
-    const state2 = '000021000520';
+    const state2 = '000010000420';
                    // 000021000520
 
     const hashedState1 = util.sha3(state1);
@@ -39,59 +87,29 @@ contract('Stake Manager', async (accounts) => {
 
     console.log('Address of first user: ', user1, 'Address of seconds user: ', user2);
 
-    const sig1 = util.ecsign(hashedState1, util.toBuffer(privateKeys[0]));
-    const sig2 = util.ecsign(hashedState2, util.toBuffer(privateKeys[1]));
+    const sig1 = wallet1.signMessage(ethers.utils.arrayify(hashedState1));
+    const sig2 = wallet1.signMessage(ethers.utils.arrayify(hashedState2));
 
-   
-        const tx = await stakeManager.disputeMove(
-        0,
+    const tx = await stakeManager.disputeMove(
+        2,
         [util.bufferToHex(hashedState1), util.bufferToHex(hashedState2)],
-        [util.bufferToInt(sig1.v), util.bufferToInt(sig2.v)],
-        [util.bufferToHex(sig1.r), util.bufferToHex(sig2.r)],
-        [util.bufferToHex(sig1.s), util.bufferToHex(sig2.s)],
+        sig1,
+        sig2,
         util.bufferToHex(util.toBuffer(state1)),
         util.bufferToHex(util.toBuffer(state2)),
-        {from: user1});
+        {from: user2});
 
-        console.log(tx);
-        
+    console.log(tx.logs);
+    
 
-        const channel = await stakeManager.channels(0);
+    // const channel = await stakeManager.channels(0);
 
-        console.log(channel);
+    // console.log(channel);
 
-        // const resolve = await ticTacToe.resolve(util.bufferToHex(util.toBuffer(state1)), util.bufferToHex(util.toBuffer(state2)), {from: user1});
+    // const resolve = await ticTacToe.resolve(util.bufferToHex(util.toBuffer(state1)), util.bufferToHex(util.toBuffer(state2)), {from: user1});
 
-        // console.log(resolve[0]*1, resolve[1]*1);
+    // console.log(resolve[0]*1, resolve[1]*1);
 
   });
-
-  it("Calling fast close on a channel", async () => {
-    const openChannel = await stakeManager.openChannel(0, accounts[0], {from: user1});
-    const joinChannel = await stakeManager.joinChannel(1, accounts[1], {from: user2});
-
-    const state = "000000022"; 
-    const hashedState = util.sha3(state);
-
-    const sig = util.ecsign(hashedState, util.toBuffer(privateKeys[0]));
-
-    console.log(sig);
-
-    const tx = await stakeManager.fastClose(1,
-        util.bufferToHex(hashedState),
-        util.bufferToInt(sig.v),
-        util.bufferToHex(sig.r),
-        util.bufferToHex(sig.s),
-        util.bufferToHex(util.toBuffer(state)),
-        {from: accounts[1]});
-
-        console.log(accounts[1], tx.logs[0].args.signer, accounts[0], tx.logs[0].args.opponent);
-
-        const channel = await stakeManager.channels(1);
-
-        //console.log(channel);
-  });
-
-
 
 });

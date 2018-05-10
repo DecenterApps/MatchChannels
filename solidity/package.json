@@ -13,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "dotenv": "^5.0.1",
+    "ethers": "^3.0.15",
     "truffle-hdwallet-provider-privkey": "^0.1.0"
   }
 }

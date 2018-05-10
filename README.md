@@ -17,6 +17,8 @@ To run the smart contract, navigate to /solidity and run `truffle develop` (you'
 In the `truffle develop` console run `migrate --reset` to compile and deploy the contracts to local testnet.
 To deploy on the kovan testnet run `migrate --network kovan --reset`
 
+In order to run tests first run `yarn install` or `npm install` and then `test` in truffle develop console.
+
 To run the frontend library code, navigate to /library folde and run the following:
 
 * `yarn install` or `npm install`

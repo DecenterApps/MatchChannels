@@ -37,7 +37,7 @@ contract TicTacToeResolver is ResolverInterface {
 
     function getSequence(bytes _state) external view returns(uint) {
         uint sequence;
-        (,,sequence) = _getState(_previous);
+        (,,sequence) = _getState(_state);
 
         return sequence;
     }

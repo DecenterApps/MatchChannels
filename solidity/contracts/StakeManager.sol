@@ -120,7 +120,7 @@ contract StakeManager is Ownable, ECTools {
 
 		address opponent = _getOpponent(_channelId, msg.sender);
 
-		emit Test(signer, signer2);
+		emit Test(signer, _signingAddress(opponent));
 
         // both moves must be signed by other player
         assert(signer2 == _signingAddress(opponent));
