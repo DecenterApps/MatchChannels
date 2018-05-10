@@ -34,6 +34,13 @@ contract TicTacToeResolver is ResolverInterface {
         
         return true;
     }
+
+    function getSequence(bytes _state) external view returns(uint) {
+        uint sequence;
+        (,,sequence) = _getState(_previous);
+
+        return sequence;
+    }
     
     function isWinner(bytes _currState, uint _w) external pure returns(bool) {
         
