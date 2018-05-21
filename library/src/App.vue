@@ -163,13 +163,6 @@ export default {
 
     return (parsedState.length % 2 === 0) ? parsedState : parsedState + '0';
   },
-  getRSV(sgn) {
-    const r = utils.toBuffer(sgn.slice(0,66))
-    const s = utils.toBuffer('0x' + sgn.slice(66,130))
-    const v = utils.toBuffer('0x' + sgn.slice(130,132))
-    
-    return {r: utils.bufferToHex(r), s: utils.bufferToHex(s), v: utils.bufferToInt(v)};
-  },
   signState(hashedState) {
     return wallet.signMessage(ethers.utils.arrayify(hashedState));
   },

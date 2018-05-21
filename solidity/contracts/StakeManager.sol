@@ -135,7 +135,7 @@ contract StakeManager is Ownable, ECTools {
         }
 	}
 
-	function challengeTimeout(uint _channelId, 
+	function challengeTimeout(uint _channelId,
 		bytes32[2] _h, 
 		bytes _sig1,
 		bytes _sig2,
@@ -217,9 +217,6 @@ contract StakeManager is Ownable, ECTools {
 	function nChannel() public view returns(uint _n) {
 	    _n = channels.length;
 	}
-
-
-
 
 	function _getWinner(uint _channelId, bytes _state) private view returns(address _winner) {
 		Channel memory c = channels[_channelId];

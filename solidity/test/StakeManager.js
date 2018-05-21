@@ -3,6 +3,8 @@ const TicTacToe = artifacts.require('./TicTacToeResolver.sol');
 
 const util = require('ethereumjs-util');
 
+const advanceToBlock = require('./helpers/advanceToBlock').advanceToBlock;
+
 const ethers = require('ethers');
 
 contract('Stake Manager', async (accounts) => {
@@ -79,7 +81,7 @@ contract('Stake Manager', async (accounts) => {
     const joinChannel = await stakeManager.joinChannel(2, wallet2.address, {from: user2});
 
     const state1 = '000020000410';//'0x1112000000'
-    const state2 = '000010000420';
+    const state2 = '000021000520';
                    // 000021000520
 
     const hashedState1 = util.sha3(state1);
@@ -100,16 +102,18 @@ contract('Stake Manager', async (accounts) => {
         {from: user2});
 
     console.log(tx.logs);
-    
+  });
 
-    // const channel = await stakeManager.channels(0);
+  it('Should close a channel if the max timeout period has run out', async () => {
+    const openChannel = await stakeManager.openChannel(0, wallet1.address, {from: user1});
+    const joinChannel = await stakeManager.joinChannel(3, wallet2.address, {from: user2});
 
-    // console.log(channel);
+    // mine 501 blocks to simulate a timeout
+    await advanceToBlock(web3.eth.blockNumber + 501);
 
-    // const resolve = await ticTacToe.resolve(util.bufferToHex(util.toBuffer(state1)), util.bufferToHex(util.toBuffer(state2)), {from: user1});
+    const res = await stakeManager.closeTimeoutedChannel(3);
 
-    // console.log(resolve[0]*1, resolve[1]*1);
-
+    console.log(res);
   });
 
 });
