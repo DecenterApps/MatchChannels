@@ -208,10 +208,11 @@ contract StakeManager is Ownable, ECTools {
 
 		require(_isActive(_channelId));
 		require(!c.finished);
+		require(c.resolveStart > 0);
 		require(c.resolveStart + MAX_OPEN_TIME < _currBlock());
 
 		_closeChannel(_channelId, c.timeoutChallenger);
-        emit MatchOutcome(_channelId, msg.sender, c.stake, 1);
+        emit MatchOutcome(_channelId, c.timeoutChallenger, c.stake, 1);
 	}
 
 	function nChannel() public view returns(uint _n) {
