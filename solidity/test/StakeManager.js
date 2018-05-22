@@ -17,7 +17,9 @@ contract('Stake Manager', async (accounts) => {
     '0x588c684foba1ef5017716adb5d21a055ea8e90277d0868557519f97bede61418',
   ];
 
-  let stakeManager, ticTacToe, user1, user2, wallet1, wallet2;
+  let stakeManager, ticTacToe, user1, user2, user3, wallet1, wallet2;
+
+  const TIC_TAC_TOE_RESOLVER = 0;
 
   before(async () => {
     stakeManager = await StakeManager.new();
@@ -25,6 +27,7 @@ contract('Stake Manager', async (accounts) => {
 
     user1 = accounts[0];
     user2 = accounts[1];
+    user3 = accounts[2];
 
     wallet1 = new ethers.Wallet(privateKeys[2]);
 
@@ -36,7 +39,7 @@ contract('Stake Manager', async (accounts) => {
   });
 
   it("Should call fast close on a channel, first user got a sig from the second", async () => {
-    const openChannel = await stakeManager.openChannel(0, wallet1.address, {from: user1});
+    const openChannel = await stakeManager.openChannel(TIC_TAC_TOE_RESOLVER, wallet1.address, {from: user1});
 
     const currChannel = await currentChannel();
     const joinChannel = await stakeManager.joinChannel(currChannel, wallet2.address, {from: user2});
@@ -57,7 +60,7 @@ contract('Stake Manager', async (accounts) => {
   });
 
   it("Should call fast close on a channel (with stake), second user got a sig from the first user", async () => {
-    const openChannel = await stakeManager.openChannel(0, wallet1.address, {from: user1, value: 40000000});
+    const openChannel = await stakeManager.openChannel(TIC_TAC_TOE_RESOLVER, wallet1.address, {from: user1, value: 40000000});
 
     const currChannel = await currentChannel();
     const joinChannel = await stakeManager.joinChannel(currChannel, wallet2.address, {from: user2, value: 40000000});
@@ -77,10 +80,32 @@ contract('Stake Manager', async (accounts) => {
     assert.equal(tx.logs[0].args._winner, accounts[1], "The winner is the second account");
   });
 
+  it("Should FAIL tocall fast close on a channel because the user isnt part of that channel", async () => {
+    const openChannel = await stakeManager.openChannel(TIC_TAC_TOE_RESOLVER, wallet1.address, {from: user1, value: 40000000});
+
+    const currChannel = await currentChannel();
+    const joinChannel = await stakeManager.joinChannel(currChannel, wallet2.address, {from: user2, value: 40000000});
+
+    const state = "000000012"; 
+    const hashedState = util.sha3(state);
+
+    const sig = wallet1.signMessage(ethers.utils.arrayify(hashedState));
+
+    try {
+      const tx = await stakeManager.fastClose(currChannel,
+        util.bufferToHex(hashedState),
+        sig,
+        util.bufferToHex(util.toBuffer(state)),
+        {from: user3});
+    } catch(err) {
+      assert.isTrue(err.toString().includes('revert'));
+    }
+  });
+
 
   it("Should make the second user the winner becase he disputed that the other player played an already played field", async () => {
 
-    const openChannel = await stakeManager.openChannel(0, wallet1.address, {from: user1});
+    const openChannel = await stakeManager.openChannel(TIC_TAC_TOE_RESOLVER, wallet1.address, {from: user1});
 
     const currChannel = await currentChannel();
     const joinChannel = await stakeManager.joinChannel(currChannel, wallet2.address, {from: user2});
@@ -108,7 +133,7 @@ contract('Stake Manager', async (accounts) => {
 
   it("Should make the second user the winner becase he disputed that the other player played as the wrong player", async () => {
 
-    const openChannel = await stakeManager.openChannel(0, wallet1.address, {from: user1});
+    const openChannel = await stakeManager.openChannel(TIC_TAC_TOE_RESOLVER, wallet1.address, {from: user1});
 
     const currChannel = await currentChannel();
     const joinChannel = await stakeManager.joinChannel(currChannel, wallet2.address, {from: user2});
@@ -136,7 +161,7 @@ contract('Stake Manager', async (accounts) => {
 
   it("Should make the first user the winner becase the second player had an invalid dispute", async () => {
 
-    const openChannel = await stakeManager.openChannel(0, wallet1.address, {from: user1});
+    const openChannel = await stakeManager.openChannel(TIC_TAC_TOE_RESOLVER, wallet1.address, {from: user1});
 
     const currChannel = await currentChannel();
     const joinChannel = await stakeManager.joinChannel(currChannel, wallet2.address, {from: user2});
@@ -163,7 +188,7 @@ contract('Stake Manager', async (accounts) => {
   });
 
   it('Should FAIL to close a timeouted channel if enough time hasnt passed', async () => {
-    const openChannel = await stakeManager.openChannel(0, wallet1.address, {from: user1});
+    const openChannel = await stakeManager.openChannel(TIC_TAC_TOE_RESOLVER, wallet1.address, {from: user1});
 
     const currChannel = await currentChannel();
     const joinChannel = await stakeManager.joinChannel(currChannel, wallet2.address, {from: user2});
@@ -176,24 +201,78 @@ contract('Stake Manager', async (accounts) => {
     }
   });
 
-  // it('Should close a channel if the max timeout period has run out', async () => {
-  //   const openChannel = await stakeManager.openChannel(0, wallet1.address, {from: user1});
+  it('Should close a channel if the max timeout period has run out', async () => {
+    const openChannel = await stakeManager.openChannel(TIC_TAC_TOE_RESOLVER, wallet1.address, {from: user1});
 
-  //   const currChannel = await currentChannel();
-  //   const joinChannel = await stakeManager.joinChannel(currChannel, wallet2.address, {from: user2});
+    const currChannel = await currentChannel();
+    const joinChannel = await stakeManager.joinChannel(currChannel, wallet2.address, {from: user2});
 
-  //   // mine 501 blocks to simulate a timeout
-  //   await advanceToBlock(web3.eth.blockNumber + 501);
+    let state1 = '000020000410';
+    let state2 = '000001000520';
 
-  //   try {
-  //     const res = await stakeManager.closeTimeoutedChannel(currChannel);
+    let hashedState1 = util.sha3(state1);
+    let hashedState2 = util.sha3(state2);
 
-  //     assert.isTrue(true);      
-  //   } catch(err) {
-  //     assert.isTrue(false);  
-  //   }
+    let sig1 = wallet2.signMessage(ethers.utils.arrayify(hashedState1));
+    let sig2 = wallet1.signMessage(ethers.utils.arrayify(hashedState2));
 
-  // });
+    const tx = await stakeManager.challengeTimeout(
+        currChannel,
+        [util.bufferToHex(hashedState1), util.bufferToHex(hashedState2)],
+        sig1,
+        sig2,
+        util.bufferToHex(util.toBuffer(state1)),
+        util.bufferToHex(util.toBuffer(state2)),
+        {from: user1});
+
+    state1 = '000001000520';
+    state2 = '000021000430';
+
+    hashedState1 = util.sha3(state1);
+    hashedState2 = util.sha3(state2);
+
+    sig1 = wallet2.signMessage(ethers.utils.arrayify(hashedState1));
+    sig2 = wallet2.signMessage(ethers.utils.arrayify(hashedState2));
+
+    await stakeManager.challengeResponse(
+        currChannel,
+        [util.bufferToHex(hashedState1), util.bufferToHex(hashedState2)],
+        sig1,
+        sig2,
+        util.bufferToHex(util.toBuffer(state1)),
+        util.bufferToHex(util.toBuffer(state2)),
+        {from: user2});
+
+    state1 = '000021000430';
+    state2 = '010021000140';
+
+    hashedState1 = util.sha3(state1);
+    hashedState2 = util.sha3(state2);
+
+    sig1 = wallet2.signMessage(ethers.utils.arrayify(hashedState1));
+    sig2 = wallet1.signMessage(ethers.utils.arrayify(hashedState2));
+
+    await stakeManager.challengeTimeout(
+        currChannel,
+        [util.bufferToHex(hashedState1), util.bufferToHex(hashedState2)],
+        sig1,
+        sig2,
+        util.bufferToHex(util.toBuffer(state1)),
+        util.bufferToHex(util.toBuffer(state2)),
+        {from: user1});
+
+    // mine 501 blocks to simulate a timeout
+    await advanceToBlock(web3.eth.blockNumber + 501);
+
+    try {
+      const res = await stakeManager.closeTimeoutedChannel(currChannel);
+
+      assert.isTrue(true);      
+    } catch(err) {
+      assert.isTrue(false);  
+    }
+
+  });
 
   // Helper
   async function currentChannel() {
