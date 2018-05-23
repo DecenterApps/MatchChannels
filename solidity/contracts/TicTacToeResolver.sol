@@ -58,6 +58,11 @@ contract TicTacToeResolver is ResolverInterface {
             (b[8] == _w && b[4] == _w && b[0] == _w)); // diagonal
     }
     
+    function payout(bytes _state, uint _total) external pure returns(uint, uint) {
+        
+    }
+    
+
     function _getState(bytes _state) private pure returns(uint8[9], uint8, uint8) {
         uint8[9] memory table;
         

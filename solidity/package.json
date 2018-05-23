@@ -11,6 +11,10 @@
   },
   "author": "",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DecenterApps/MatchChannels.git"
+  },
   "dependencies": {
     "dotenv": "^5.0.1",
     "ethers": "^3.0.15",
