@@ -8,7 +8,9 @@ const ethers = require('ethers');
 
 const MerkleTree = require('merkle-tree-solidity').default;
 
-contract('Stake Manager', async (accounts) => {
+const leftPad = require('left-pad');
+
+contract('Ether Ships', async (accounts) => {
 
   const privateKeys = [
     '0xc87509a1c067bbde78beb793e6fa76530b6382a4c0241e5e4a9ec0a0f44dc0d3',
@@ -71,6 +73,28 @@ contract('Stake Manager', async (accounts) => {
 
   });
 
+  function keccak256(...args) {
+      args = args.map(arg => {
+        if (typeof arg === 'string') {
+          if (arg.substring(0, 2) === '0x') {
+              return arg.slice(2)
+          } else {
+              return web3.toHex(arg).slice(2)
+          }
+        }
+
+        if (typeof arg === 'number') {
+          return leftPad((arg).toString(16), 64, 0)
+        } else {
+          return ''
+        }
+      })
+
+      args = args.join('')
+
+      return web3.sha3(args, { encoding: 'hex' })
+    }
+
   function generateMerkel(board) {
     const elements = board.map(((type, i) => ([i, type, getRandomInt(Number.MAX_SAFE_INTEGER)])));
 
@@ -108,7 +132,7 @@ contract('Stake Manager', async (accounts) => {
 
     const signature = wallet2.signMessage(ethers.utils.arrayify('0x' + sig));
 
-    console.log('Hashed on the front: ', util.bufferToHex(util.sha3([ELEMENT_POS, elements2[0][0], elements2[0][2]])))
+    console.log('Hashed on the front: ', util.bufferToHex(keccak256(ELEMENT_POS, elements2[0][0], elements2[0][2])));
 
     const res = await etherShips.closeChannel(
         0, // channelId

@@ -6,6 +6,8 @@ build
 lib/core/metadata.js
 lib/core/MetadataBlog.js
 
+solidity/package-lock.json
+
 website/translated_docs
 website/build/
 website/yarn.lock
