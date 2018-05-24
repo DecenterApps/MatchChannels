@@ -73,6 +73,47 @@ contract('Ether Ships', async (accounts) => {
 
   });
 
+  function createMerkel(elements) {
+    const tree = [elements];
+     _createMerkel(elements, tree);
+
+     return tree;
+  }
+
+  function _createMerkel(elements, tree) {
+    const lvl2 = [];
+
+    for (let i = 0; i < elements.length - 1; i += 2) {
+        lvl2.push(util.bufferToHex(keccak256(elements[i], elements[i + 1])));
+    }
+
+    tree.push(lvl2);
+
+    if (lvl2.length === 1) {
+        return tree;
+    }
+
+    return _createMerkel(lvl2, tree);
+  }
+
+  function findPath(tree, elem) {
+      let index = tree[0].findIndex(e => e === elem);
+
+       if (index === -1) {
+           console.log('Unable to find the node in a tree');
+           return;
+       }
+
+      let path = [tree[0][index]];
+
+      for (let i = 1; i < tree.length; ++i) {
+          index = Math.floor(index / 2);
+          path.push(tree[i][index]);
+      }
+
+      return path;
+  }
+
   function keccak256(...args) {
       args = args.map(arg => {
         if (typeof arg === 'string') {
@@ -95,14 +136,16 @@ contract('Ether Ships', async (accounts) => {
       return web3.sha3(args, { encoding: 'hex' })
     }
 
+  const getRoot = tree => tree[tree.length - 1][0];
+
   function generateMerkel(board) {
     const elements = board.map(((type, i) => ([i, type, getRandomInt(Number.MAX_SAFE_INTEGER)])));
+    const elementsHashed = elements.map(e => keccak256(...e));
 
-
-    const elementsHashed = elements.map(e => util.sha3(e));
+    const tree = createMerkel(elementsHashed.map(p => util.bufferToHex(p)));
 
     return { 
-        tree: new MerkleTree(elementsHashed),
+        tree,
         elements,
         elementsHashed,
     };
@@ -111,28 +154,27 @@ contract('Ether Ships', async (accounts) => {
 
   it("Calls close channel, user1 challanges user2", async () => {
 
-    await etherShips.openChannel(user1, util.bufferToHex(merkleTree1.getRoot()), {from: user1});
-    await etherShips.joinChannel(0, user2, util.bufferToHex(merkleTree2.getRoot()), {from: user2});
+    await etherShips.openChannel(user1, getRoot(merkleTree1), {from: user1});
+    await etherShips.joinChannel(0, user2, getRoot(merkleTree2), {from: user2});
 
     const ELEMENT_POS = 0;
 
     // get user 2 merkel path
 
-    const proof = merkleTree2.getProof(elements2Hashed[ELEMENT_POS]).map(p => util.bufferToHex(p));
+    const path = findPath(merkleTree2, util.bufferToHex(elements2Hashed[ELEMENT_POS]));
 
-    console.log(util.bufferToHex(merkleTree2.getRoot()))
+    console.log(merkleTree2);
 
-    // sign the merkle path
-
-    // there are 7 proofs, merge them together and sign them
     let sig = ""; 
-    proof.forEach((elem) => {
+    path.forEach((elem) => {
         sig += elem.substring(2);
     });
 
-    const signature = wallet2.signMessage(ethers.utils.arrayify('0x' + sig));
+    const hash = keccak256(ELEMENT_POS, 0, elements2[0][0], elements2[0][2], 5, 5, path);
 
-    console.log('Hashed on the front: ', util.bufferToHex(keccak256(ELEMENT_POS, elements2[0][0], elements2[0][2])));
+    console.log(hash);
+
+    const signature = wallet2.signMessage(ethers.utils.arrayify(hash));
 
     const res = await etherShips.closeChannel(
         0, // channelId
@@ -143,7 +185,7 @@ contract('Ether Ships', async (accounts) => {
         elements2[0][2], // _nonce
         5, // _hp
         5, // _ap
-        proof,
+        path,
         { from: user1}
     );
 

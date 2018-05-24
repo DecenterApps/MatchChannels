@@ -14,7 +14,7 @@ contract EtherShips is ECTools {
 		bool finished;
 	}
 
-	event Test(bytes32 first, bytes32 second);
+	event Test(address first, address second, bytes32 _hash);
 
 	Channel[] public channels;
 	mapping(address => address) signAddresses;
@@ -49,23 +49,24 @@ contract EtherShips is ECTools {
 	}
     
     function closeChannel(uint _channelId, bytes _sig, uint _pos, uint _seq, uint _type, uint _nonce, uint _hp, uint _ap, bytes32[7] _path) public {
-    	//require(keccak256(abi.encodePacked(_pos, _type, _nonce)) == _path[0]);
+    	require(keccak256(abi.encodePacked(_pos, _type, _nonce)) == _path[0]);
 
-		Test(keccak256(abi.encodePacked(_pos, _type, _nonce)), _path[0]);
-    	// require(channels[_channelId].p1 == msg.sender || channels[_channelId].p2 == msg.sender);
-    	// require(!channels[_channelId].finished);
+    	require(channels[_channelId].p1 == msg.sender || channels[_channelId].p2 == msg.sender);
+    	require(!channels[_channelId].finished);
     	
-    	// address opponent = channels[_channelId].p1 == msg.sender ? channels[_channelId].p1 : channels[_channelId].p2;
+    	address opponent = channels[_channelId].p1 == msg.sender ? signAddresses[channels[_channelId].p1] : signAddresses[channels[_channelId].p2];
 
-    	// bytes32 hash = keccak256(abi.encodePacked(_pos, _seq, _type, _nonce, _hp, _ap, _path));
+    	bytes32 hash = keccak256(abi.encodePacked(_pos, _seq, _type, _nonce, _hp, _ap, _path));
 
-    	// require(_recoverSig(hash, _sig) == opponent);
-    	// require(_hp == 5 || _ap == 5);
+		Test(_recoverSig(hash, _sig), opponent, hash);
 
-    	// channels[_channelId].finished = true;	
-    	// address winner = _hp == 5 ? channels[_channelId].p1 : channels[_channelId].p2;
+    	//require(_recoverSig(hash, _sig) == opponent);
+    	require(_hp == 5 || _ap == 5);
 
-    	// emit MatchWinner(_channelId, winner);
+    	channels[_channelId].finished = true;	
+    	address winner = _hp == 5 ? channels[_channelId].p1 : channels[_channelId].p2;
+
+    	emit MatchWinner(_channelId, winner);
 	}
 
 	function _recoverSig(bytes32 _hash, bytes _sig) private pure returns (address) {
