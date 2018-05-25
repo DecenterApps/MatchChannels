@@ -106,9 +106,14 @@ contract('Ether Ships', async (accounts) => {
 
       let path = [tree[0][index]];
 
-      for (let i = 1; i < tree.length; ++i) {
+      for (let i = 0; i < tree.length-1; ++i) {          
+          if (index%2==0) {
+            path.push(tree[i][index+1]);
+          } else {
+            path.push(tree[i][index-1]);
+          }
+
           index = Math.floor(index / 2);
-          path.push(tree[i][index]);
       }
 
       return path;
@@ -186,7 +191,6 @@ contract('Ether Ships', async (accounts) => {
     );
 
     console.log(res.logs[0]);
-
   });
 
 });

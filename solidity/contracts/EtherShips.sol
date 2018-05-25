@@ -53,6 +53,7 @@ contract EtherShips is ECTools {
 
     	require(channels[_channelId].p1 == msg.sender || channels[_channelId].p2 == msg.sender);
     	require(!channels[_channelId].finished);
+    	require(_getRoot(_path) == channels[_channelId].p1root || _getRoot(_path) == channels[_channelId].p2root); 
     	
     	address opponent = channels[_channelId].p1 == msg.sender ? signAddresses[channels[_channelId].p2] : signAddresses[channels[_channelId].p1];
 
@@ -72,10 +73,10 @@ contract EtherShips is ECTools {
 		return prefixedRecover(_hash, _sig);
 	}
 
-	function _getRoot(bytes32[8] _path) private pure returns(bytes32 _root) {
+	function _getRoot(bytes32[7] _path) private pure returns(bytes32 _root) {
         _root = _path[0];
         
-        for (uint i=1; i<8; i++) {
+        for (uint i=1; i<7; i++) {
             _root = keccak256(abi.encodePacked(_root, _path[i]));
         }
     }
