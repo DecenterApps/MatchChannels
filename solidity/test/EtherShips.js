@@ -163,16 +163,12 @@ contract('Ether Ships', async (accounts) => {
 
     const path = findPath(merkleTree2, util.bufferToHex(elements2Hashed[ELEMENT_POS]));
 
-    console.log(merkleTree2);
-
-    let sig = ""; 
+    let sig = "";
     path.forEach((elem) => {
         sig += elem.substring(2);
     });
 
-    const hash = keccak256(ELEMENT_POS, 0, elements2[0][0], elements2[0][2], 5, 5);
-
-    console.log(hash, user2);
+    const hash = keccak256(ELEMENT_POS, 0, elements2[0][0], elements2[0][2], 5, 5, '0x' + sig);
 
     const signature = wallet2.signMessage(ethers.utils.arrayify(hash));
 
