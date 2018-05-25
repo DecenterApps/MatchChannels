@@ -154,8 +154,8 @@ contract('Ether Ships', async (accounts) => {
 
   it("Calls close channel, user1 challanges user2", async () => {
 
-    await etherShips.openChannel(user1, getRoot(merkleTree1), {from: user1});
-    await etherShips.joinChannel(0, user2, getRoot(merkleTree2), {from: user2});
+    await etherShips.openChannel(wallet1.address, getRoot(merkleTree1), {from: user1});
+    await etherShips.joinChannel(0, wallet2.address, getRoot(merkleTree2), {from: user2});
 
     const ELEMENT_POS = 0;
 
@@ -170,9 +170,9 @@ contract('Ether Ships', async (accounts) => {
         sig += elem.substring(2);
     });
 
-    const hash = keccak256(ELEMENT_POS, 0, elements2[0][0], elements2[0][2], 5, 5, path);
+    const hash = keccak256(ELEMENT_POS, 0, elements2[0][0], elements2[0][2], 5, 5);
 
-    console.log(hash);
+    console.log(hash, user2);
 
     const signature = wallet2.signMessage(ethers.utils.arrayify(hash));
 

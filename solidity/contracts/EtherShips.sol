@@ -54,13 +54,13 @@ contract EtherShips is ECTools {
     	require(channels[_channelId].p1 == msg.sender || channels[_channelId].p2 == msg.sender);
     	require(!channels[_channelId].finished);
     	
-    	address opponent = channels[_channelId].p1 == msg.sender ? signAddresses[channels[_channelId].p1] : signAddresses[channels[_channelId].p2];
+    	address opponent = channels[_channelId].p1 == msg.sender ? signAddresses[channels[_channelId].p2] : signAddresses[channels[_channelId].p1];
 
-    	bytes32 hash = keccak256(abi.encodePacked(_pos, _seq, _type, _nonce, _hp, _ap, _path));
+    	bytes32 hash = keccak256(abi.encodePacked(_pos, _seq, _type, _nonce, _hp, _ap));
 
 		Test(_recoverSig(hash, _sig), opponent, hash);
 
-    	//require(_recoverSig(hash, _sig) == opponent);
+    	require(_recoverSig(hash, _sig) == opponent);
     	require(_hp == 5 || _ap == 5);
 
     	channels[_channelId].finished = true;	
