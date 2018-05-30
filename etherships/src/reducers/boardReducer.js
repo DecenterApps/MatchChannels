@@ -1,4 +1,4 @@
-import { SET_FIELD } from '../constants/actionTypes';
+import { SET_FIELD, CREATE_TREE } from '../constants/actionTypes';
 
 const INITIAL_STATE = {
     board: [  
@@ -10,8 +10,9 @@ const INITIAL_STATE = {
         0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0],
-    hashedBoard: [],
+    tree: [],
     nonces: [],
+    hashedBoard: [],
     numPicked: 0,
     numGuesses: 0
 };
@@ -21,13 +22,22 @@ export default (state = INITIAL_STATE, action) => {
 
     switch (type) {
         case SET_FIELD:
-            const pos = payload.pos;
+            const pos = payload;
+            const board = state.board;
+
+            board[pos] = 1;
 
             return {
                 ...state,
-
+                numPicked: ++state.numPicked,
+                board
             }
-        break;
+
+        case CREATE_TREE:
+            return {
+                ...state,
+                ...payload
+            };
 
         default:
             return INITIAL_STATE;

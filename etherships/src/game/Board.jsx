@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import Field from './Field.jsx';
+import { generateBoard } from '../actions/boardActions';
 
 import { BOARD_LENGTH } from '../constants/config';
 
@@ -9,10 +10,14 @@ import './Board.css';
 
 class Board extends Component {
 
-    constructor(props) {
-        super(props);
+    generateBoard = () => {
+        const { numPicked, board } = this.props.board;
 
+        if (numPicked === 5) {
+            this.props.generateBoard(board);
+        }
     }
+
 
     render() {
 
@@ -22,6 +27,10 @@ class Board extends Component {
 
         return (
             <div className="container">
+              <div>
+                  <button className="submit_btn" onClick={this.generateBoard}> Submit Board</button>
+                  <span className="num_guess"> Num Guesses: { this.props.board.numPicked }/5 </span>
+              </div>
               <div className="board">
                 {
                     rows.map((_, index) => {
@@ -29,7 +38,7 @@ class Board extends Component {
                             <div className="row" key={index}>
                                 {
                                     board.slice(index * BOARD_LENGTH, ((index + 1) * BOARD_LENGTH)).map((type, i) => 
-                                        <Field key={i} id={i}/>
+                                        <Field key={i} id={(index*8) + i}/>
                                     )
                                 }
                             </div>
@@ -48,5 +57,9 @@ class Board extends Component {
 const mapStateToProps = (props) => ({
     ...props
 });
+
+const mapDispatchToProps = {
+    generateBoard,
+};
   
-export default connect(mapStateToProps)(Board);
+export default connect(mapStateToProps, mapDispatchToProps)(Board);
