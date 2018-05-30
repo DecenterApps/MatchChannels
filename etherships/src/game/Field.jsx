@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 import './Board.css';
 
@@ -36,4 +37,8 @@ class Field extends Component {
 
 }
 
-export default Field;
+const mapStateToProps = (props) => ({
+    ...props
+});
+  
+export default connect(mapStateToProps)(Field);
