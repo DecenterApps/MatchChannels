@@ -7,7 +7,7 @@ import getWeb3 from './util/web3/getWeb3'
 
 // Layouts
 import App from './App'
-import Home from './layouts/home/Home'
+import Home from './/Home'
 import Board from './game/Board';
 
 // Redux Store
