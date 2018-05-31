@@ -1,7 +1,13 @@
-import store from '../../store'
-import Web3 from 'web3'
+import store from '../../store';
+import Web3 from 'web3';
 
-export const WEB3_INITIALIZED = 'WEB3_INITIALIZED'
+import contract from 'truffle-contract';
+import Test from '../../../build/contracts/Test.json';
+
+import { CONTRACT_ADDRESS } from '../../constants/config';
+
+import { WEB3_INITIALIZED } from '../../constants/actionTypes';
+
 function web3Initialized(results) {
   return {
     type: WEB3_INITIALIZED,
@@ -24,9 +30,18 @@ let getWeb3 = new Promise(function(resolve, reject) {
         web3Instance: web3
       }
 
-      console.log('Injected web3 detected.');
+      web3.eth.getAccounts((err, accounts) => {
+        window.account = accounts[0];
 
-      resolve(store.dispatch(web3Initialized(results)))
+        const testContract = contract(Test);
+        testContract.setProvider(web3.currentProvider);
+        window.contractInstance = testContract.at(CONTRACT_ADDRESS);
+  
+        console.log('Injected web3 detected.');
+  
+        resolve(store.dispatch(web3Initialized(results)))
+      });
+
     } else {
 
       // Fallback to localhost if no web3 injection. We've configured this to

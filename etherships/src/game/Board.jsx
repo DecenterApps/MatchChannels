@@ -10,15 +10,6 @@ import './Board.css';
 
 class Board extends Component {
 
-    generateBoard = () => {
-        const { numPicked, board } = this.props.board;
-
-        if (numPicked === 5) {
-            this.props.generateBoard(board);
-        }
-    }
-
-
     render() {
 
         const { board } = this.props.board;
@@ -26,11 +17,6 @@ class Board extends Component {
         const rows = Array.from({length: BOARD_LENGTH}, (_, k) => k++); 
 
         return (
-            <div className="container">
-              <div>
-                  <button className="submit_btn" onClick={this.generateBoard}> Submit Board</button>
-                  <span className="num_guess"> Num Guesses: { this.props.board.numPicked }/5 </span>
-              </div>
               <div className="board">
                 {
                     rows.map((_, index) => {
@@ -47,7 +33,6 @@ class Board extends Component {
                     
                 }
               </div>
-            </div>
         );
 
     }

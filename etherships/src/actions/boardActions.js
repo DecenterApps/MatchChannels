@@ -6,7 +6,9 @@ export const setField = payload => (dispatch) => {
     dispatch({ type: SET_FIELD, payload });
 };
 
-export const generateBoard = board => (dispatch) => {
+export const generateBoard = board => (dispatch, getState) => {
+
+    const web3 = getState().web3;
 
     const payload = generateTree(board);
 
