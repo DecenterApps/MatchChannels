@@ -1,0 +1,62 @@
+
+.board {
+    padding-top: 40px;
+    text-align: center;
+}
+
+.submit_btn {
+  margin-top: 50px;
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
+
+.num_guess {
+  float: right;
+  padding-top: 30px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+    font-size: 1.1em;
+  }
+  
+  .container {
+    width: 100%;
+  }
+  
+  .row {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 5px;
+    justify-content: center;
+  }
+  
+  /* content */
+  .row div {
+    background-color: #EF5350;
+    border: 1px solid white;
+    border-radius: 5px;
+    text-align: right;
+    color: white;
+    transition: background-color 1s;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 70px;
+  }
+  
+  .row div:hover {
+    background-color: #42A5F5;
+    cursor: pointer;
+  }
