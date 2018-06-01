@@ -11,7 +11,7 @@ class BoardCreationLayout extends Component {
         const { numPicked, board } = this.props.board;
 
         if (numPicked === 5) {
-            this.props.generateBoard(board);
+            this.props.generateBoard(board, 'open');
         }
     }
 

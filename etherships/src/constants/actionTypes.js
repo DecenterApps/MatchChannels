@@ -4,6 +4,7 @@ export const WEB3_INITIALIZED = 'web3_initialized';
 // Board reducer
 export const SET_FIELD = 'set_field';
 export const CREATE_TREE = 'create_tree';
+export const ON_CONTRACT = 'on_contract';
 
 // User reducer
 export const EDIT_NAME = 'edit_name';

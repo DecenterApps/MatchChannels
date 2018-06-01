@@ -12,12 +12,24 @@ class Lobby extends Component {
         const { userNameEdit, usersList } = this.props.user;
         const { setName, editName } = this.props;
 
+        const { onContract } = this.props.board;
+
+        console.log(this.props.board);
+
         return (
             <div>
-              <div>
-                <button onClick={ setName }> Start Game </button>
-                <input type="text" onChange={editName} value={userNameEdit} />
-              </div>
+                {
+                    !onContract && 
+                    <div>
+                        <button onClick={ setName }> Start Game </button>
+                        <input type="text" onChange={editName} value={userNameEdit} />
+                    </div>
+                }
+
+                {
+                    onContract && 
+                    <h4>Waiting for your opponent...</h4>
+                }
 
               <div>
                 <h4>User list</h4>
@@ -33,7 +45,8 @@ class Lobby extends Component {
 }
 
 const mapStateToProps = (props) => ({
-    user: props.user
+    user: props.user,
+    board: props.board
 });
 
 const mapDispatchToProps = {
