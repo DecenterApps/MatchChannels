@@ -1,4 +1,4 @@
-import { SET_FIELD, CREATE_TREE } from '../constants/actionTypes';
+import { SET_FIELD, CREATE_TREE, ON_CONTRACT } from '../constants/actionTypes';
 
 const INITIAL_STATE = {
     board: [  
@@ -14,7 +14,8 @@ const INITIAL_STATE = {
     nonces: [],
     hashedBoard: [],
     numPicked: 0,
-    numGuesses: 0
+    numGuesses: 0,
+    onContract: false
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -39,8 +40,18 @@ export default (state = INITIAL_STATE, action) => {
                 ...payload
             };
 
+        case ON_CONTRACT:
+
+            console.log('On contrct');
+            return {
+                ...state,
+                onContract: true
+            }
+
         default:
-            return INITIAL_STATE;
+            return {
+                ...state
+            };
     }
 
 };

@@ -8,7 +8,7 @@ import getWeb3 from './util/web3/getWeb3'
 // Layouts
 import App from './App'
 import Home from './/Home'
-import Board from './game/Board';
+import BoardCreationLayout from './game/BoardCreationLayout';
 
 // Redux Store
 import store from './store'
@@ -30,7 +30,7 @@ ReactDOM.render((
       <Router history={history}>
         <Route path="/" component={App}>
           <IndexRoute component={Home} />
-          <Route path="game" component={Board} />
+          <Route path="game" component={BoardCreationLayout} />
         </Route>
       </Router>
     </Provider>

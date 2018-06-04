@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 
+import Lobby from './lobby/Lobby';
+
 class Home extends Component {
+
   render() {
     return(
       <main className="container">
@@ -8,14 +11,7 @@ class Home extends Component {
           <div className="pure-u-1-1">
             <h1>EtherShips</h1>
 
-            <div>
-              <button> Enter lobby </button>
-              <input type="text" />
-            </div>
-
-            <div>
-              <h4>User list</h4>
-            </div>
+            <Lobby />
           </div>
         </div>
       </main>
