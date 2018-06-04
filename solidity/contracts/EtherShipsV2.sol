@@ -17,7 +17,7 @@ contract EtherShipsV2 is ECTools {
 		address timeoutDisputer;
 	}
 
-	event Test(address first, address second, bytes32 _hash);
+	event Test(address first, address second);
 
 	Channel[] public channels;
 	mapping(address => address) signAddresses;
@@ -113,11 +113,11 @@ contract EtherShipsV2 is ECTools {
 		for (uint i=0; i<2; i++) {
 			if (_mType[i] == 0) {
 				/// its message type 0
-		    	require(_recoverSig(keccak256(abi.encodePacked(_pos[i], _seq[i], _hp[i], _ap[i])), (i == 1) ? _sig1 : _sig2) == opponent);
+		    	require(_recoverSig(keccak256(abi.encodePacked(_pos[i], _seq[i], _hp[i], _ap[i])), (i == 0) ? _sig1 : _sig2) == opponent);
 				
 			} else if (_mType[i] == 1) {
 				/// its message type 1
-				require(_recoverSig(keccak256(abi.encodePacked(_pos[i], _seq[i], _type[i], _nonce[i], _hp[i], _ap[i], _path[i])), (i == 1) ? _sig1 : _sig2) == opponent);
+				require(_recoverSig(keccak256(abi.encodePacked(_pos[i], _seq[i], _type[i], _nonce[i], _hp[i], _ap[i], _path[i])), (i == 0) ? _sig1 : _sig2) == opponent);
 				require(_getRoot(_path[i]) == channels[_channelId].p1root || _getRoot(_path[i]) == channels[_channelId].p2root); 
 				require(keccak256(abi.encodePacked(_pos[i], _type[i], _nonce[i])) == _path[i][0]);
 
