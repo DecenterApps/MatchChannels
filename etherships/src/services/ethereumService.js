@@ -1,4 +1,4 @@
-
+import { NUM_BLOCKS_FOR_CHANNEL } from '../constants/config';
 
 
 export const openChannel = async (markelRoot, webrtcId) => {
@@ -16,9 +16,18 @@ export const joinChannel = async (id, markelRoot, webrtcId) => {
     return res;
 }
 
-export const getOpenChannels = async () => {
-    window.contractInstance.OpenChannel().get((err, res) => {
-        console.log(res);
+export const getOpenChannels = async () => 
+    new Promise((resolve, reject) => {
+        window.web3.eth.getBlockNumber((err, blockNum) => {
+            if(!err) {
+                window.contractInstance.OpenChannel({}, { fromBlock: blockNum.valueOf() -  NUM_BLOCKS_FOR_CHANNEL, toBlock: 'latest' }).get((err, res) => {
+                    if(!err) {
+                        resolve(res);
+                    } else {
+                        reject(err);
+                    }
+                });
+            }
+        });
     });
-}
 

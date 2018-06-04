@@ -3,7 +3,7 @@ pragma solidity ^0.4.24;
 import "./ECTools.sol";
 
 // board is 8x8
-contract EtherShips is ECTools {
+contract EtherShipsV2 is ECTools {
 
 	struct Channel {
 		address p1;

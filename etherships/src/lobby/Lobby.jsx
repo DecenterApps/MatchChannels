@@ -4,8 +4,16 @@ import { connect } from 'react-redux';
 
 import { setName, editName } from '../actions/userActions';
 
+import './UserList';
+import UserList from './UserList';
 
 class Lobby extends Component {
+
+    constructor(props) {
+        super(props);
+
+
+    }
 
     render() {
 
@@ -32,11 +40,9 @@ class Lobby extends Component {
                 }
 
               <div>
-                <h4>User list</h4>
-                {
-                    usersList.map(user => 
-                        <li> {user.name} </li>
-                    )
+              {
+                    onContract && 
+                    <UserList />
                 }
               </div>
             </div>
