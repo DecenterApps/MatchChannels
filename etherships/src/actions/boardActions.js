@@ -25,7 +25,7 @@ export const generateBoard = (board, type) => async (dispatch, getState) => {
 
         dispatch({type : ON_CONTRACT, payload: null});
 
-        browserHistory.push('/');
+        browserHistory.push('/users');
     } else {
 
     }

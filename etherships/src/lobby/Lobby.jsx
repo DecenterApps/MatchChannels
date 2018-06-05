@@ -45,15 +45,8 @@ class Lobby extends Component {
 
                 {
                     onContract && 
-                    <h4>Waiting for your opponent...</h4>
+                    <h4>User List</h4>
                 }
-
-              <div>
-              {
-                    onContract && 
-                    <UserList />
-                }
-              </div>
             </div>
         );
     }x

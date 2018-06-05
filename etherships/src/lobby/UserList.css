@@ -31,6 +31,10 @@
     box-shadow: 0px 0px 1px 2px;
 }
 
+input { 
+    text-align: center; 
+}
+
 .stake-input {
     background: rgba(32, 29, 40, 0.23);
     border-radius: 6.11463px;
@@ -73,3 +77,82 @@
  :-ms-input-placeholder {  
     text-align: center; 
  }
+
+ .user-list {
+    background: #302E38;
+    border-radius: 10px;
+    margin-top: 50px;
+    padding: 0px 0px 10px 0px;
+    width: 350px;
+ }
+
+ .user-list-header {
+    font-family: Roboto;
+    font-weight: bold;
+    font-size: 15px;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: #C6C6C6;
+    background-color: #3c3a44;
+    border-radius: 10px;
+    padding: 10px 15px 10px 10px;
+    margin-bottom: 15px;
+    text-align: center;
+ }
+
+.user-list-body {
+    overflow: scroll;
+    height: 350px;
+}
+
+.user-list-item {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-evenly;
+    padding-bottom: 15px;
+}
+
+.user-list-name {
+    font-family: Roboto;
+    font-weight: bold;
+    font-size: 18px;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+
+    color: #C6C6C6;
+}
+
+.user-list-btn {
+    background: #FF3546;
+    border-radius: 7.28352px;
+  
+    font-family: Roboto;
+    font-weight: bold;
+    font-size: 16px;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: #FFFFFF;
+    border: none;
+    padding: 8px;
+    box-shadow: 0px 5px #BB2A36;
+    width: 80px;
+}
+
+::-webkit-scrollbar {
+    width: 12px;
+    height: 0px;
+}
+ 
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    background: #FF3546; 
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+}
+::-webkit-scrollbar-thumb:window-inactive {
+    border-radius: 10px;
+    background: #FF3546;
+}

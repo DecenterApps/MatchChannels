@@ -27,18 +27,104 @@ class UserList extends Component {
 
     render() {
         return (
-            <div>
-                <ul>
-                {
-                    this.state.users.map( u => 
-                        <li key={u.args._webrtcId} className='userItem'> 
-                            {u.args._webrtcId}
+            <div className='container'>
+                <div className='title'>
+                    battleship
+                </div>
 
-                            <button className='battleBtn'> Battle </button>
-                        </li>
-                    )
-                }
-                </ul>
+                <div className="user-list">
+                    <div className="user-list-header">
+                        choose opponent player
+                    </div>
+
+                    <div className="user-list-body">
+
+                        <div className="user-list-item">
+                            <span className='user-list-name'> Name sdfdsfds </span>
+                            <button className='user-list-btn'>Battle </button>
+                        </div>
+
+                        <div className="user-list-item">
+                            <span className='user-list-name'> Name sdfdsfds </span>
+                            <button className='user-list-btn'>Battle </button>
+                        </div>
+
+                        <div className="user-list-item">
+                            <span className='user-list-name'> Name sdfdsfds </span>
+                            <button className='user-list-btn'>Battle </button>
+                        </div>
+
+                        <div className="user-list-item">
+                            <span className='user-list-name'> Name sdfdsfds </span>
+                            <button className='user-list-btn'>Battle </button>
+                        </div>
+
+                        <div className="user-list-item">
+                            <span className='user-list-name'> Name sdfdsfds </span>
+                            <button className='user-list-btn'>Battle </button>
+                        </div>
+
+                        <div className="user-list-item">
+                            <span className='user-list-name'> Name sdfdsfds </span>
+                            <button className='user-list-btn'>Battle </button>
+                        </div>
+
+                        <div className="user-list-item">
+                            <span className='user-list-name'> Name sdfdsfds </span>
+                            <button className='user-list-btn'>Battle </button>
+                        </div>
+
+                        <div className="user-list-item">
+                            <span className='user-list-name'> Name sdfdsfds </span>
+                            <button className='user-list-btn'>Battle </button>
+                        </div>
+
+                        <div className="user-list-item">
+                            <span className='user-list-name'> Name sdfdsfds </span>
+                            <button className='user-list-btn'>Battle </button>
+                        </div>
+
+                        <div className="user-list-item">
+                            <span className='user-list-name'> Name sdfdsfds </span>
+                            <button className='user-list-btn'>Battle </button>
+                        </div>
+
+                        <div className="user-list-item">
+                            <span className='user-list-name'> Name sdfdsfds </span>
+                            <button className='user-list-btn'>Battle </button>
+                        </div>
+
+                        <div className="user-list-item">
+                            <span className='user-list-name'> Name sdfdsfds </span>
+                            <button className='user-list-btn'>Battle </button>
+                        </div>
+
+                        <div className="user-list-item">
+                            <span className='user-list-name'> Name sdfdsfds </span>
+                            <button className='user-list-btn'>Battle </button>
+                        </div>
+
+                        <div className="user-list-item">
+                            <span className='user-list-name'> Name sdfdsfds </span>
+                            <button className='user-list-btn'>Battle </button>
+                        </div>
+
+                    </div>
+                </div>
+
+                {/* <div>
+                    <ul>
+                    {
+                        this.state.users.map( u => 
+                            <li key={u.args._webrtcId} className='userItem'> 
+                                {u.args._webrtcId}
+
+                                <button className='battleBtn'> Battle </button>
+                            </li>
+                        )
+                    }
+                    </ul>
+                </div> */}
             </div>
         )
     }

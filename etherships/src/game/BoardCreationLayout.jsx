@@ -40,7 +40,7 @@ class BoardCreationLayout extends Component {
                   </div>
 
                   <div>
-                      <button className="next-btn">Next</button>
+                      <button className="next-btn" onClick={this.generateBoard}>Next</button>
                   </div>
                 </div>
         );
