@@ -29,8 +29,17 @@ class Lobby extends Component {
                 {
                     !onContract && 
                     <div>
-                        <button onClick={ setName }> Start Game </button>
-                        <input type="text" onChange={editName} value={userNameEdit} />
+
+                        <div className="title-front"> battleship</div>
+                        <div>
+                            <input type="text" className="name-input" placeholder="Name" onChange={editName} value={userNameEdit} />
+                        </div>
+
+                        <div>
+                            <input type="text" className="stake-input" placeholder="Stake: 0.01 eth" />
+                        </div>
+
+                        <button className="start-btn" onClick={setName}>Start</button>
                     </div>
                 }
 

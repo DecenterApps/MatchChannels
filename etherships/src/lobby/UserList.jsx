@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 
 import { getOpenChannels } from '../services/ethereumService';
 
+import './UserList.css';
+
 class UserList extends Component {
 
     constructor(props) {
@@ -29,8 +31,10 @@ class UserList extends Component {
                 <ul>
                 {
                     this.state.users.map( u => 
-                        <li key={u.args._webrtcId}> 
+                        <li key={u.args._webrtcId} className='userItem'> 
                             {u.args._webrtcId}
+
+                            <button className='battleBtn'> Battle </button>
                         </li>
                     )
                 }

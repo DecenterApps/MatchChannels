@@ -16,13 +16,31 @@ class BoardCreationLayout extends Component {
     }
 
     render() {
+        const fieldsLeft = Array.from({length: 5 - this.props.board.numPicked}, (_, k) => k++); 
+
+        console.log(fieldsLeft);
+
             return (
                 <div className="container">
-                  <div>
-                      <button className="submit_btn" onClick={this.generateBoard}> Submit Board</button>
-                      <span className="num_guess"> Num Guesses: { this.props.board.numPicked }/5 </span>
-
+                    <div className="title">
+                        battleship
+                    </div>
+                    <div className='instruction'>
+                        place your ships
+                    </div>
+                  <div className="board-area">
                       <Board />
+                      <div className="slots">
+                      {
+                          fieldsLeft.map( f => 
+                            <div key={f} className="slot-field"></div>
+                          )
+                      }
+                      </div>
+                  </div>
+
+                  <div>
+                      <button className="next-btn">Next</button>
                   </div>
                 </div>
         );
