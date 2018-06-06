@@ -279,7 +279,7 @@ contract StakeManager is Ownable, ECTools {
         assert(_winner < 3);
 	}
 
-	function recoverSig(bytes32 _hash, bytes _sig, bytes _state) private view returns (address) {
+	function recoverSig(bytes32 _hash, bytes _sig, bytes _state) private pure returns (address) {
 		assert(keccak256(_state) == _hash);
 
 		return prefixedRecover(_hash, _sig);
