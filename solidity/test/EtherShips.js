@@ -1,4 +1,5 @@
 const EtherShips = artifacts.require("./EtherShips.sol");
+const EtherShipsV2 = artifacts.require("./EtherShipsV2.sol");
 
 const util = require('ethereumjs-util');
 
@@ -48,6 +49,7 @@ contract('Ether Ships', async (accounts) => {
 
   before(async () => {
     etherShips = await EtherShips.new();
+    etherShipsV2 = await EtherShipsV2.new();
 
     user1 = accounts[0];
     user2 = accounts[1];
@@ -157,6 +159,20 @@ contract('Ether Ships', async (accounts) => {
 
   }
 
+  function joinPath(merkleTree, elementsHashed, pos) {
+    const path = findPath(merkleTree, util.bufferToHex(elementsHashed[pos]));
+
+    let sig = "";
+    path.forEach((elem) => {
+        sig += elem.substring(2);
+    });
+
+    return {
+      sig,
+      path
+    };
+  }
+
   it("Calls close channel, user1 challanges user2", async () => {
 
     await etherShips.openChannel(wallet1.address, getRoot(merkleTree1), {from: user1});
@@ -191,6 +207,40 @@ contract('Ether Ships', async (accounts) => {
     );
 
     console.log(res.logs[0]);
+  });
+
+  it('Should call wrong score', async () => {
+    await etherShipsV2.openChannel(wallet1.address, getRoot(merkleTree1), {from: user1});
+    await etherShipsV2.joinChannel(0, wallet2.address, getRoot(merkleTree2), {from: user2});
+
+    const ELEMENT_POS1 = 0;
+    const ELEMENT_POS2 = 0;
+
+    const treePath1 = joinPath(merkleTree1, elements1Hashed, ELEMENT_POS1);
+    const treePath2 = joinPath(merkleTree2, elements2Hashed, ELEMENT_POS2);
+
+    const hash1 = keccak256(ELEMENT_POS1, 1, 5, 5);
+    const hash2 = keccak256(ELEMENT_POS2, 1, elements2[0][0], elements2[0][2], 5, 5, '0x' + treePath2.sig);
+
+    const signature1 = wallet2.signMessage(ethers.utils.arrayify(hash1));
+    const signature2 = wallet2.signMessage(ethers.utils.arrayify(hash2));
+
+    const res = await etherShipsV2.wrongScore(
+      0, // channelId
+      [0, 1], // message type
+      signature1, // signature1
+      signature2, // signature2
+      [ELEMENT_POS1, ELEMENT_POS2], // _positions
+      [1, 1], // _sequences,
+      [elements1[0][0], elements2[0][0]], // _type
+      [elements1[0][2], elements2[0][2]], // _nonce
+      [5,5], // _hp
+      [5,5], // _ap
+      [treePath1.path, treePath2.path],
+      { from: user1}
+    );
+
+    console.log(res.logs);
   });
 
 });

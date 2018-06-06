@@ -1,7 +1,14 @@
 
+@import url('https://fonts.googleapis.com/css?family=Barlow+Condensed');
+
 .board {
-    padding-top: 40px;
-    text-align: center;
+  padding: 18px;
+  background: #302E38;
+  border-radius: 10px;
+  text-align: center;
+  margin-top: 30px;
+  box-shadow: 1px 10px #24202E;
+  margin-left: 40px;
 }
 
 .submit_btn {
@@ -16,9 +23,70 @@
   font-size: 16px;
 }
 
-.num_guess {
-  float: right;
-  padding-top: 30px;
+.board-area {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.slot-field {
+  height: 54px;
+    display: -ms-flexbox;
+    width: 54px;
+    background: #77C000;
+    border-radius: 10px;
+    box-shadow: 0px 3px #5D9314;
+    margin: 10px 0px 0px 25px;
+}
+
+.choosen {
+  height: 54px;
+  text-align: right;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+  align-items: center;
+  -ms-flex-pack: center;
+  width: 54px;
+  background: #77C000;
+  border-radius: 10px;
+  margin: 3px;
+  box-shadow: 0px 3px #5D9314;
+  justify-content: center;
+}
+
+.next-btn {
+  background: #FF3546;
+  border-radius: 7.28352px;
+
+  font-family: Roboto;
+  font-weight: bold;
+  font-size: 16px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: #FFFFFF;
+  border: none;
+  padding: 12px;
+  box-shadow: 0px 5px #BB2A36;
+  width: 140px;
+  margin: 18px 0px 0px 290px;
+}
+
+.title {
+  font-family: Barlow Condensed;
+  font-size: 52px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: #C6C6C6;
+  margin-top: 40px;
+}
+
+.instruction {
+  font-family: Roboto;
+  font-size: 15px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: #73B816;
 }
 
 * {
@@ -29,10 +97,7 @@
     font-size: 1.1em;
   }
   
-  .container {
-    width: 100%;
-  }
-  
+
   .row {
     width: 100%;
     display: flex;
@@ -42,21 +107,31 @@
   }
   
   /* content */
-  .row div {
-    background-color: #EF5350;
-    border: 1px solid white;
-    border-radius: 5px;
+  .field {
+    height: 54px;
     text-align: right;
-    color: white;
-    transition: background-color 1s;
-    height: 70px;
+    display: -ms-flexbox;
     display: flex;
+    -ms-flex-align: center;
     align-items: center;
+    -ms-flex-pack: center;
+    width: 54px;
+    background: rgba(32, 29, 40, 0.23);
+    border-radius: 10px;
+    margin: 3px;
+    box-shadow: 2px 5px;
     justify-content: center;
-    width: 70px;
   }
   
-  .row div:hover {
-    background-color: #42A5F5;
+  .field:hover {
+    background-color: #77C000;
     cursor: pointer;
+  }
+
+  .pin {
+    background: #201D28;
+    border-radius: 50%;
+    width: 12px;
+    height: 12px;
+    box-shadow: 0px 2px;
   }

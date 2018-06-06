@@ -1,8 +1,9 @@
 /* PAGE */
 
-body,
-.pure-g [class*=pure-u] {
-  font-family: 'Open Sans', sans-serif;
+
+html, body {
+  height: 100%;
+  background-color: #201D28;
 }
 
 h1, h2, h3 {
@@ -17,9 +18,11 @@ code {
 }
 
 .container {
-  box-sizing: border-box;
-  width: 100%;
-  padding: 45px 20px;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    align-items: center;
 }
 
 .pure-button-primary {

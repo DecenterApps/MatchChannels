@@ -21,13 +21,13 @@ class Field extends Component {
 
         return (
             <div 
-            className="pure-u-1-8"
+            className={(board[this.props.id] === 1 ? 'choosen' : 'field')}
             onClick={this.clicked}
-            style={{fontSize: '12px'}}
             >
-            {
-                board[this.props.id] === 1 && <span> 0.1 ETH</span>
-            }
+
+            <span className={board[this.props.id] === 1 ? "" : "pin"}>
+                
+            </span>
             </div>
         )
     }

@@ -4,8 +4,16 @@ import { connect } from 'react-redux';
 
 import { setName, editName } from '../actions/userActions';
 
+import './UserList';
+import UserList from './UserList';
 
 class Lobby extends Component {
+
+    constructor(props) {
+        super(props);
+
+
+    }
 
     render() {
 
@@ -21,24 +29,24 @@ class Lobby extends Component {
                 {
                     !onContract && 
                     <div>
-                        <button onClick={ setName }> Start Game </button>
-                        <input type="text" onChange={editName} value={userNameEdit} />
+
+                        <div className="title-front"> battleship</div>
+                        <div>
+                            <input type="text" className="name-input" placeholder="Name" onChange={editName} value={userNameEdit} />
+                        </div>
+
+                        <div>
+                            <input type="text" className="stake-input" placeholder="Stake: 0.01 eth" />
+                        </div>
+
+                        <button className="start-btn" onClick={setName}>Start</button>
                     </div>
                 }
 
                 {
                     onContract && 
-                    <h4>Waiting for your opponent...</h4>
+                    <h4>User List</h4>
                 }
-
-              <div>
-                <h4>User list</h4>
-                {
-                    usersList.map(user => 
-                        <li> {user.name} </li>
-                    )
-                }
-              </div>
             </div>
         );
     }x
