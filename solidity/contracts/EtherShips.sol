@@ -1,7 +1,7 @@
 pragma solidity ^0.4.24;
 
 import "./ECTools.sol";
-import "./Player.sol";
+import "./Players.sol";
 
 // board is 8x8
 contract EtherShips is Players, ECTools {

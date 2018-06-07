@@ -2,7 +2,7 @@ import store from '../../store';
 import Web3 from 'web3';
 
 import contract from 'truffle-contract';
-import Test from '../../../build/contracts/Test.json';
+import EtherShips from '../../../../solidity/build/contracts/EtherShips';
 
 import { CONTRACT_ADDRESS } from '../../constants/config';
 
@@ -33,7 +33,7 @@ let getWeb3 = new Promise(function(resolve, reject) {
       web3.eth.getAccounts((err, accounts) => {
         window.account = accounts[0];
 
-        const testContract = contract(Test);
+        const testContract = contract(EtherShips);
         testContract.setProvider(web3.currentProvider);
         window.contractInstance = testContract.at(CONTRACT_ADDRESS);
   

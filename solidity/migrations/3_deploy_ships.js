@@ -1,6 +1,6 @@
-const ETHShips = artifacts.require('ETHShips.sol');
+const EtherShips = artifacts.require('EtherShips.sol');
 
 module.exports = async (deployer, acc) => {
 
-  deployer.deploy(ETHShips);
+  deployer.deploy(EtherShips);
 }
