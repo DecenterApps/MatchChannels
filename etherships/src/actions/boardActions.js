@@ -19,7 +19,10 @@ export const generateBoard = (board, type) => async (dispatch, getState) => {
     const state = getState();
 
     if (type === 'open') {
-        await openChannel(getRoot(state.board.tree), state.user.peer.peerId);
+
+        const walletAddress = state.user.userWallet.address;
+
+        await openChannel(getRoot(state.board.tree), state.user.peer.peerId, walletAddress);
 
         console.log('channel opened');
 

@@ -9,7 +9,8 @@ import getWeb3 from './util/web3/getWeb3';
 import App from './App';
 import Home from './Home';
 import BoardCreationLayout from './game/BoardCreationLayout';
-import UserList from './lobby/UserList';
+import Lobby from './lobby/Lobby';
+import Profile from './profile/Profile';
 
 // Redux Store
 import store from './store';
@@ -21,21 +22,23 @@ const history = syncHistoryWithStore(browserHistory, store);
 getWeb3
 .then(results => {
   console.log('Web3 initialized!')
-})
-.catch(() => {
-  console.log('Error in web3 initialization.')
-})
 
-ReactDOM.render((
+  ReactDOM.render((
     <Provider store={store}>
       <Router history={history}>
         <Route path="/" component={App}>
           <IndexRoute component={Home} />
           <Route path="game" component={BoardCreationLayout} />
-          <Route path="users" component={UserList} />
+          <Route path="users" component={Lobby} />
+          <Route path="profile" component={Profile} />
         </Route>
       </Router>
     </Provider>
   ),
   document.getElementById('root')
 )
+})
+.catch(() => {
+  console.log('Error in web3 initialization.')
+})
+

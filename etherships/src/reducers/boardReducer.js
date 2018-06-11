@@ -15,7 +15,8 @@ const INITIAL_STATE = {
     hashedBoard: [],
     numPicked: 0,
     numGuesses: 0,
-    onContract: false
+    onContract: false,
+    opponentTree: []
 };
 
 export default (state = INITIAL_STATE, action) => {

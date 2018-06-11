@@ -39,7 +39,17 @@ class UserList extends Component {
 
                     <div className="user-list-body">
 
-                        <div className="user-list-item">
+                        {
+                            this.state.users.map( u => 
+                                <div className="user-list-item" key={u.args.webrtcId}>
+                                    <span className='user-list-id'>#{u.args.channelId.valueOf()}</span>
+                                    <span className='user-list-name'> {u.args.username} </span>
+                                    <button className='user-list-btn'>Battle ({window.web3.fromWei(u.args.amount.valueOf(), 'ether')} ETH)</button>
+                                </div>)
+                        }
+
+
+                        {/* <div className="user-list-item">
                             <span className='user-list-name'> Name sdfdsfds </span>
                             <button className='user-list-btn'>Battle </button>
                         </div>
@@ -102,29 +112,12 @@ class UserList extends Component {
                         <div className="user-list-item">
                             <span className='user-list-name'> Name sdfdsfds </span>
                             <button className='user-list-btn'>Battle </button>
-                        </div>
-
-                        <div className="user-list-item">
-                            <span className='user-list-name'> Name sdfdsfds </span>
-                            <button className='user-list-btn'>Battle </button>
-                        </div>
+                        </div> */}
 
                     </div>
                 </div>
 
-                {/* <div>
-                    <ul>
-                    {
-                        this.state.users.map( u => 
-                            <li key={u.args._webrtcId} className='userItem'> 
-                                {u.args._webrtcId}
-
-                                <button className='battleBtn'> Battle </button>
-                            </li>
-                        )
-                    }
-                    </ul>
-                </div> */}
+       
             </div>
         )
     }

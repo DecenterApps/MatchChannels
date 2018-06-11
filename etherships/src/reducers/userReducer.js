@@ -1,10 +1,17 @@
-import { SET_NAME, EDIT_NAME } from '../constants/actionTypes';
+import { SET_NAME, EDIT_NAME, EDIT_PRICE, REGISTERED, IS_REGISTERED } from '../constants/actionTypes';
 
 const INITIAL_STATE = {
     userNameEdit: "",
     userName: "",
+    priceEdit: "",
+    editPrice: "",
+    balance: 0,
+    gamesPlayed: 0,
+    finishedGames: 0,
     usersList: [],
-    peer: {}
+    peer: {},
+    userWallet: {},
+    registered: false
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -15,7 +22,8 @@ export default (state = INITIAL_STATE, action) => {
 
             return {
                 ...state,
-                peer: payload,
+                peer: payload.peer,
+                userWallet: payload.wallet,
                 userName: state.userNameEdit,
                 userNameEdit: '',
             }
@@ -26,6 +34,38 @@ export default (state = INITIAL_STATE, action) => {
                 ...state,
                 userNameEdit: payload
             }
+
+        case REGISTERED:
+
+            return {
+                ...state,
+                registered: true,
+                peer: payload.peer,
+                userWallet: payload.wallet,
+                userName: state.userNameEdit,
+                userNameEdit: '',
+            }
+
+        case IS_REGISTERED:
+
+            console.log(payload);
+
+            return {
+                ...state,
+                userName: payload.username,
+                userNameEdit: payload.username,
+                balance: payload.balance,
+                gamesPlayed: payload.gamesPlayed,
+                finishedGames: payload.finishedGames,
+                registered: true
+            };
+
+        case EDIT_PRICE:
+
+            return {
+                ...state,
+                priceEdit: payload,
+            };
 
         default:
             return {

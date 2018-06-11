@@ -3,10 +3,11 @@ import Web3 from 'web3';
 
 import contract from 'truffle-contract';
 import EtherShips from '../../../../solidity/build/contracts/EtherShips';
+import { getUser } from '../../services/ethereumService';
 
-import { CONTRACT_ADDRESS } from '../../constants/config';
+import { ETHERSHIP_ADDRESS } from '../../constants/config';
 
-import { WEB3_INITIALIZED } from '../../constants/actionTypes';
+import { WEB3_INITIALIZED, IS_REGISTERED } from '../../constants/actionTypes';
 
 function web3Initialized(results) {
   return {
@@ -15,9 +16,16 @@ function web3Initialized(results) {
   }
 }
 
-let getWeb3 = new Promise(function(resolve, reject) {
+function isRegistered(results) {
+  return {
+    type: IS_REGISTERED,
+    payload: results
+  }
+}
+
+let getWeb3 = new Promise(async (resolve, reject) => {
   // Wait for loading completion to avoid race conditions with web3 injection timing.
-  window.addEventListener('load', function(dispatch) {
+  window.addEventListener('load', async (dispatch)  =>{
     var results
     var web3 = window.web3
 
@@ -30,16 +38,30 @@ let getWeb3 = new Promise(function(resolve, reject) {
         web3Instance: web3
       }
 
-      web3.eth.getAccounts((err, accounts) => {
+      web3.eth.getAccounts(async (err, accounts) => {
         window.account = accounts[0];
 
-        const testContract = contract(EtherShips);
-        testContract.setProvider(web3.currentProvider);
-        window.contractInstance = testContract.at(CONTRACT_ADDRESS);
+        const ethershipContract = contract(EtherShips);
+        ethershipContract.setProvider(web3.currentProvider);
+        window.ethershipContract = ethershipContract.at(ETHERSHIP_ADDRESS);
+
+        const reg = await getUser(accounts[0]);
+
+        console.log('reg', reg);
+
+        const user = {
+          username: reg[0],
+          balance: reg[1].valueOf(),
+          gamesPlayed: reg[2].valueOf(),
+          finishedGames: reg[3].valueOf(),
+          exists: reg[4].valueOf()
+        };
+
+        if (user.exists) {
+          store.dispatch(isRegistered(user));
+        }
   
-        console.log('Injected web3 detected.');
-  
-        resolve(store.dispatch(web3Initialized(results)))
+        resolve(store.dispatch(web3Initialized(results)));
       });
 
     } else {
