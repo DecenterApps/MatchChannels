@@ -15,6 +15,8 @@ import Profile from './profile/Profile';
 // Redux Store
 import store from './store';
 
+import Modal from 'react-modal';
+
 // Initialize react-router-redux.
 const history = syncHistoryWithStore(browserHistory, store);
 
@@ -22,6 +24,8 @@ const history = syncHistoryWithStore(browserHistory, store);
 getWeb3
 .then(results => {
   console.log('Web3 initialized!')
+
+  Modal.setAppElement('#root');
 
   ReactDOM.render((
     <Provider store={store}>
@@ -38,7 +42,7 @@ getWeb3
   document.getElementById('root')
 )
 })
-.catch(() => {
-  console.log('Error in web3 initialization.')
+.catch((err) => {
+  console.log('Error in web3 initialization.', err)
 })
 

@@ -139,6 +139,11 @@ input {
     width: 180px
 }
 
+button:active {
+    outline: none;
+    border: none;
+}
+
 .user-list-id {
     font-family: Roboto;
     font-weight: bold;

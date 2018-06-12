@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 
 import { setName, editName, editPrice, register } from './actions/userActions';
 
+import Lobby from './lobby/Lobby';
+
 class Home extends Component {
 
   render() {
@@ -25,7 +27,7 @@ class Home extends Component {
                     </div>
 
                     <div>
-                        <input type="text" className="stake-input" onChange={editPrice} value={priceEdit} placeholder="Default 0.001 eth" />
+                        <input type="text" className="stake-input" onChange={editPrice} value={priceEdit} placeholder="Credits (ETH)" />
                     </div>
 
                     <button className="register-btn" onClick={register}>Register</button>
@@ -34,17 +36,7 @@ class Home extends Component {
 
             {
                 registered &&
-                <div>
-
-                    <a href='/profile'>Profile</a>
-
-                    <div className="title-front"> battleship</div>
-                    <div>
-                        <input type="text" className="name-input" placeholder="Name" onChange={editName} value={userNameEdit} disabled/>
-                    </div>
-
-                    <button className="register-btn" onClick={setName}>Start</button>
-                </div>
+                  <Lobby />
             }
         </div>
       </main>

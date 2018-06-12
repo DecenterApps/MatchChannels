@@ -27,11 +27,6 @@ class UserList extends Component {
 
     render() {
         return (
-            <div className='container'>
-                <div className='title'>
-                    battleship
-                </div>
-
                 <div className="user-list">
                     <div className="user-list-header">
                         choose opponent player
@@ -48,77 +43,8 @@ class UserList extends Component {
                                 </div>)
                         }
 
-
-                        {/* <div className="user-list-item">
-                            <span className='user-list-name'> Name sdfdsfds </span>
-                            <button className='user-list-btn'>Battle </button>
-                        </div>
-
-                        <div className="user-list-item">
-                            <span className='user-list-name'> Name sdfdsfds </span>
-                            <button className='user-list-btn'>Battle </button>
-                        </div>
-
-                        <div className="user-list-item">
-                            <span className='user-list-name'> Name sdfdsfds </span>
-                            <button className='user-list-btn'>Battle </button>
-                        </div>
-
-                        <div className="user-list-item">
-                            <span className='user-list-name'> Name sdfdsfds </span>
-                            <button className='user-list-btn'>Battle </button>
-                        </div>
-
-                        <div className="user-list-item">
-                            <span className='user-list-name'> Name sdfdsfds </span>
-                            <button className='user-list-btn'>Battle </button>
-                        </div>
-
-                        <div className="user-list-item">
-                            <span className='user-list-name'> Name sdfdsfds </span>
-                            <button className='user-list-btn'>Battle </button>
-                        </div>
-
-                        <div className="user-list-item">
-                            <span className='user-list-name'> Name sdfdsfds </span>
-                            <button className='user-list-btn'>Battle </button>
-                        </div>
-
-                        <div className="user-list-item">
-                            <span className='user-list-name'> Name sdfdsfds </span>
-                            <button className='user-list-btn'>Battle </button>
-                        </div>
-
-                        <div className="user-list-item">
-                            <span className='user-list-name'> Name sdfdsfds </span>
-                            <button className='user-list-btn'>Battle </button>
-                        </div>
-
-                        <div className="user-list-item">
-                            <span className='user-list-name'> Name sdfdsfds </span>
-                            <button className='user-list-btn'>Battle </button>
-                        </div>
-
-                        <div className="user-list-item">
-                            <span className='user-list-name'> Name sdfdsfds </span>
-                            <button className='user-list-btn'>Battle </button>
-                        </div>
-
-                        <div className="user-list-item">
-                            <span className='user-list-name'> Name sdfdsfds </span>
-                            <button className='user-list-btn'>Battle </button>
-                        </div>
-
-                        <div className="user-list-item">
-                            <span className='user-list-name'> Name sdfdsfds </span>
-                            <button className='user-list-btn'>Battle </button>
-                        </div> */}
-
                     </div>
                 </div>
-
-       
-            </div>
         )
     }
 

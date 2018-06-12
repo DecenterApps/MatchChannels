@@ -1,10 +1,11 @@
-import { SET_NAME, EDIT_NAME, EDIT_PRICE, REGISTERED, IS_REGISTERED } from '../constants/actionTypes';
+import { SET_NAME, EDIT_NAME, EDIT_PRICE, REGISTERED, IS_REGISTERED, NEW_GAME } from '../constants/actionTypes';
 
 const INITIAL_STATE = {
     userNameEdit: "",
     userName: "",
     priceEdit: "",
     editPrice: "",
+    gameBetAmount: 0,
     balance: 0,
     gamesPlayed: 0,
     finishedGames: 0,
@@ -65,6 +66,13 @@ export default (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 priceEdit: payload,
+            };
+
+        case NEW_GAME:
+
+            return {
+                ...state,
+                gameBetAmount: payload
             };
 
         default:

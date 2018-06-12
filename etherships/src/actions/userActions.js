@@ -1,4 +1,4 @@
-import { SET_NAME, EDIT_NAME, EDIT_PRICE, REGISTERED } from '../constants/actionTypes';
+import { SET_NAME, EDIT_NAME, EDIT_PRICE, REGISTERED, NEW_GAME } from '../constants/actionTypes';
 
 import { createPeer } from '../services/webrtcService';
 import { createUser, openChannel } from '../services/ethereumService';
@@ -6,6 +6,10 @@ import { createUser, openChannel } from '../services/ethereumService';
 import { browserHistory } from 'react-router';
 
 import ethers from 'ethers';
+
+export const newGame = (price) => (dispatch) => {
+    dispatch({ type: NEW_GAME, payload: price });
+};
 
 export const setName = ({ target }) => (dispatch) => {
 
