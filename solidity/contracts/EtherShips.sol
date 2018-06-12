@@ -14,7 +14,7 @@ contract EtherShips is Players, ECTools {
 		bytes32 p2root;
 		uint p1Score;
 		uint p2Score;
-		bool halfFinished;
+		address halfFinisher;
 		bool finished;
 	}
 
@@ -77,16 +77,14 @@ contract EtherShips is Players, ECTools {
     function closeChannel(uint _channelId, bytes _sig, uint _numberOfGuesses) public {
 		require(channels[_channelId].p1 == msg.sender || channels[_channelId].p2 == msg.sender);
     	require(!channels[_channelId].finished);
+    	require(msg.sender != channels[_channelId].halfFinisher);
     	
     	address opponent = channels[_channelId].p1 == msg.sender ? channels[_channelId].p2 : channels[_channelId].p1;
     	bytes32 hash = keccak256(abi.encodePacked(_channelId, msg.sender, _numberOfGuesses));
 
     	require(_recoverSig(hash, _sig) == signAddresses[opponent]);
 
-    	players[msg.sender].balance += channels[_channelId].stake * _numberOfGuesses / 5;
-    	players[opponent].balance += channels[_channelId].stake * (5-_numberOfGuesses) / 5;
-
-    	if (channels[_channelId].halfFinished) {
+    	if (channels[_channelId].halfFinisher != address(0)) {
     		// one player already submitted score
     		channels[_channelId].finished = true;
     		if (msg.sender == channels[_channelId].p1) {
@@ -95,26 +93,67 @@ contract EtherShips is Players, ECTools {
 				channels[_channelId].p2Score = _numberOfGuesses;
 			}
 
+			players[msg.sender].balance += channels[_channelId].stake * _numberOfGuesses / 5;
+
 			if (channels[_channelId].p1Score == 5 || channels[_channelId].p2Score == 5) {
 				players[channels[_channelId].p1].finishedGames += 1;
 				players[channels[_channelId].p2].finishedGames += 1;
+
+				// if game ended we send rest of stake to winner
+				if (channels[_channelId].p1Score == 5) {
+					players[channels[_channelId].p1].balance += channels[_channelId].stake * (5 - channels[_channelId].p2Score) / 5;
+				} else {
+					players[channels[_channelId].p2].balance += channels[_channelId].stake * (5 - channels[_channelId].p1Score) / 5;
+				}
 			}
     	} else {
     		// other player still didn't answer
-			channels[_channelId].halfFinished = true;
+			channels[_channelId].halfFinisher = msg.sender;
 			if (msg.sender == channels[_channelId].p1) {
 				channels[_channelId].p1Score = _numberOfGuesses;
 			} else {
 				channels[_channelId].p2Score = _numberOfGuesses;
 			}
+
+			players[msg.sender].balance += channels[_channelId].stake * _numberOfGuesses / 5;
     	}
 
     	emit CloseChannel(_channelId, msg.sender, channels[_channelId].finished);
+    }
+
+
+    function disputeAnswer(uint _channelId, bytes _sig, uint _pos, uint _seq, uint _type, uint _nonce, bytes32[7] _path) public {
+    	require(channels[_channelId].p1 == msg.sender || channels[_channelId].p2 == msg.sender);
+    	require(!channels[_channelId].finished);
+
+    	address opponent = channels[_channelId].p1 == msg.sender ? signAddresses[channels[_channelId].p2] : signAddresses[channels[_channelId].p1];
+    	bytes32 hash = keccak256(abi.encodePacked(_channelId, _pos, _seq, _type, _nonce, _path));
+    	require(_recoverSig(hash, _sig) == opponent);
+
+    	bytes32 opponentRoot = channels[_channelId].p1 == msg.sender ? channels[_channelId].p2root : channels[_channelId].p1root;
+    	if (keccak256(abi.encodePacked(_pos, _type, _nonce)) != _path[0] || _getRoot(_path) != opponentRoot) {
+    		// only player that didn't cheat get plus one on finished gamess
+    		players[msg.sender].finishedGames += 1;
+    		players[msg.sender].balance += channels[_channelId].stake;
+    		
+    		channels[_channelId].p1Score = channels[_channelId].p1 == msg.sender ? 5 : 0;
+    		channels[_channelId].p2Score = channels[_channelId].p2 == msg.sender ? 5 : 0;
+    		channels[_channelId].finished == true;
+
+    		emit CloseChannel(_channelId, msg.sender, true);
+    	}
     }
 
     function _recoverSig(bytes32 _hash, bytes _sig) private pure returns (address) {
 
 		return prefixedRecover(_hash, _sig);
 	}
-    
+
+	function _getRoot(bytes32[7] _path) private pure returns(bytes32 _root) {
+	    _root = _path[0];
+	    
+	    for (uint i=1; i<7; i++) {
+	        _root = keccak256(abi.encodePacked(_root, _path[i]));
+	    }
+    }
 }

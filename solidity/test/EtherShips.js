@@ -1,5 +1,4 @@
 const EtherShips = artifacts.require("./EtherShips.sol");
-const EtherShipsV2 = artifacts.require("./EtherShipsV2.sol");
 
 const util = require('ethereumjs-util');
 
@@ -49,7 +48,6 @@ contract('Ether Ships', async (accounts) => {
 
   before(async () => {
     etherShips = await EtherShips.new();
-    etherShipsV2 = await EtherShipsV2.new();
 
     user1 = accounts[0];
     user2 = accounts[1];
@@ -61,17 +59,26 @@ contract('Ether Ships', async (accounts) => {
 
     wallet2 = new ethers.Wallet(privateKeys[3]);
 
+    const ans1 = await etherShips.createAccount(
+      "player1",
+      {from: user1, value: 100}
+    );
+    const ans2 = await etherShips.createAccount(
+      "player2",
+      {from: user2, value: 100}
+    );
+
     const res1 = generateMerkel(board1);
     const res2 = generateMerkel(board2);
 
     merkleTree1 = res1.tree;
     merkleTree2 = res2.tree;
 
-    elements1 = res1.elements;
-    elements2 = res2.elements;
+    fields1 = res1.elements;
+    fields2 = res2.elements;
 
-    elements1Hashed = res1.elementsHashed;
-    elements2Hashed = res2.elementsHashed;
+    hashedFields1 = res1.elementsHashed;
+    hashedFields2 = res2.elementsHashed;
 
   });
 
@@ -173,74 +180,102 @@ contract('Ether Ships', async (accounts) => {
     };
   }
 
-  it("Calls close channel, user1 challanges user2", async () => {
 
-    await etherShips.openChannel(wallet1.address, getRoot(merkleTree1), {from: user1});
-    await etherShips.joinChannel(0, wallet2.address, getRoot(merkleTree2), {from: user2});
+  it('Should close channel if wrong merkleTree', async() => {
+      const channelId = 0;
+      await etherShips.openChannel(wallet1.address, "0", 10, getRoot(merkleTree1), wallet1.address, {from: user1});
+      await etherShips.joinChannel(channelId, wallet2.address, "0", 10, getRoot(merkleTree2), wallet2.address, {from: user2});
 
-    const ELEMENT_POS = 0;
+      const pos = 0;
+      const type = (fields2[0][0]+1) % 2; // different from what it should be
+      const path = joinPath(merkleTree2, hashedFields2, pos);
+      const hash = keccak256(channelId, pos, 0, type, fields2[0][2], "0x" + path.sig);
 
-    // get user 2 merkel path
+      const signature = wallet2.signMessage(ethers.utils.arrayify(hash));
 
-    const path = findPath(merkleTree2, util.bufferToHex(elements2Hashed[ELEMENT_POS]));
-
-    let sig = "";
-    path.forEach((elem) => {
-        sig += elem.substring(2);
-    });
-
-    const hash = keccak256(ELEMENT_POS, 0, elements2[0][0], elements2[0][2], 5, 5, '0x' + sig);
-
-    const signature = wallet2.signMessage(ethers.utils.arrayify(hash));
-
-    const res = await etherShips.closeChannel(
-        0, // channelId
+      const res = await etherShips.disputeAnswer(
+        channelId, // channelId
         signature, //signature
-        ELEMENT_POS, // _pos
+        pos, // _pos
         0, // _seq,
-        elements2[0][0], // _type
-        elements2[0][2], // _nonce
-        5, // _hp
-        5, // _ap
-        path,
+        type, // _type 
+        fields2[0][2], // _nonce
+        path.path,
         { from: user1}
-    );
+      );
 
-    console.log(res.logs[0]);
+      assert.equal(res.logs.length, 1, "There must be only one log and it should be CloseChannel");
+      console.log(res.logs); // should log event with close channel
   });
 
-  it('Should call wrong score', async () => {
-    await etherShipsV2.openChannel(wallet1.address, getRoot(merkleTree1), {from: user1});
-    await etherShipsV2.joinChannel(0, wallet2.address, getRoot(merkleTree2), {from: user2});
+  // it("Calls close channel, user1 challanges user2", async () => {
 
-    const ELEMENT_POS1 = 0;
-    const ELEMENT_POS2 = 0;
+  //   await etherShips.openChannel(wallet1.address, getRoot(merkleTree1), {from: user1});
+  //   await etherShips.joinChannel(0, wallet2.address, getRoot(merkleTree2), {from: user2});
 
-    const treePath1 = joinPath(merkleTree1, elements1Hashed, ELEMENT_POS1);
-    const treePath2 = joinPath(merkleTree2, elements2Hashed, ELEMENT_POS2);
+  //   const ELEMENT_POS = 0;
 
-    const hash1 = keccak256(ELEMENT_POS1, 1, 5, 5);
-    const hash2 = keccak256(ELEMENT_POS2, 1, elements2[0][0], elements2[0][2], 5, 5, '0x' + treePath2.sig);
+  //   // get user 2 merkel path
 
-    const signature1 = wallet2.signMessage(ethers.utils.arrayify(hash1));
-    const signature2 = wallet2.signMessage(ethers.utils.arrayify(hash2));
+  //   const path = findPath(merkleTree2, util.bufferToHex(elements2Hashed[ELEMENT_POS]));
 
-    const res = await etherShipsV2.wrongScore(
-      0, // channelId
-      [0, 1], // message type
-      signature1, // signature1
-      signature2, // signature2
-      [ELEMENT_POS1, ELEMENT_POS2], // _positions
-      [1, 1], // _sequences,
-      [elements1[0][0], elements2[0][0]], // _type
-      [elements1[0][2], elements2[0][2]], // _nonce
-      [5,5], // _hp
-      [5,5], // _ap
-      [treePath1.path, treePath2.path],
-      { from: user1}
-    );
+  //   let sig = "";
+  //   path.forEach((elem) => {
+  //       sig += elem.substring(2);
+  //   });
 
-    console.log(res.logs);
-  });
+  //   const hash = keccak256(ELEMENT_POS, 0, elements2[0][0], elements2[0][2], 5, 5, '0x' + sig);
+
+  //   const signature = wallet2.signMessage(ethers.utils.arrayify(hash));
+
+  //   const res = await etherShips.closeChannel(
+  //       0, // channelId
+  //       signature, //signature
+  //       ELEMENT_POS, // _pos
+  //       0, // _seq,
+  //       elements2[0][0], // _type
+  //       elements2[0][2], // _nonce
+  //       5, // _hp
+  //       5, // _ap
+  //       path,
+  //       { from: user1}
+  //   );
+
+  //   console.log(res.logs[0]);
+  // });
+
+  // it('Should call wrong score', async () => {
+  //   await etherShipsV2.openChannel(wallet1.address, getRoot(merkleTree1), {from: user1});
+  //   await etherShipsV2.joinChannel(0, wallet2.address, getRoot(merkleTree2), {from: user2});
+
+  //   const ELEMENT_POS1 = 0;
+  //   const ELEMENT_POS2 = 0;
+
+  //   const treePath1 = joinPath(merkleTree1, elements1Hashed, ELEMENT_POS1);
+  //   const treePath2 = joinPath(merkleTree2, elements2Hashed, ELEMENT_POS2);
+
+  //   const hash1 = keccak256(ELEMENT_POS1, 1, 5, 5);
+  //   const hash2 = keccak256(ELEMENT_POS2, 1, elements2[0][0], elements2[0][2], 5, 5, '0x' + treePath2.sig);
+
+  //   const signature1 = wallet2.signMessage(ethers.utils.arrayify(hash1));
+  //   const signature2 = wallet2.signMessage(ethers.utils.arrayify(hash2));
+
+  //   const res = await etherShipsV2.wrongScore(
+  //     0, // channelId
+  //     [0, 1], // message type
+  //     signature1, // signature1
+  //     signature2, // signature2
+  //     [ELEMENT_POS1, ELEMENT_POS2], // _positions
+  //     [1, 1], // _sequences,
+  //     [elements1[0][0], elements2[0][0]], // _type
+  //     [elements1[0][2], elements2[0][2]], // _nonce
+  //     [5,5], // _hp
+  //     [5,5], // _ap
+  //     [treePath1.path, treePath2.path],
+  //     { from: user1}
+  //   );
+
+  //   console.log(res.logs);
+  // });
 
 });
