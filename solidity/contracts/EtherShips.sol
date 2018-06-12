@@ -74,7 +74,6 @@ contract EtherShips is Players, ECTools {
         emit JoinChannel(_channelId, _merkleRoot, _webrtcId, _amount);
     }
 
-    event Log(bytes32 hash);
     function closeChannel(uint _channelId, bytes _sig, uint _numberOfGuesses) public {
 		require(channels[_channelId].p1 == msg.sender || channels[_channelId].p2 == msg.sender);
     	require(!channels[_channelId].finished);
@@ -83,8 +82,7 @@ contract EtherShips is Players, ECTools {
     	address opponent = channels[_channelId].p1 == msg.sender ? channels[_channelId].p2 : channels[_channelId].p1;
     	bytes32 hash = keccak256(abi.encodePacked(_channelId, msg.sender, _numberOfGuesses));
 
-    	Log(hash);
-    	// require(_recoverSig(hash, _sig) == signAddresses[opponent]);
+    	require(_recoverSig(hash, _sig) == signAddresses[opponent]);
 
     	if (channels[_channelId].halfFinisher != address(0)) {
     		// one player already submitted score
