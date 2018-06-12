@@ -48,7 +48,7 @@ input {
     box-shadow: 0px 0px 1px 2px;
 }
 
-.start-btn {
+.register-btn {
     background: #73B816;
     border-radius: 6.26484px;
     font-family: Roboto;
@@ -136,7 +136,17 @@ input {
     border: none;
     padding: 8px;
     box-shadow: 0px 5px #BB2A36;
-    width: 80px;
+    width: 180px
+}
+
+.user-list-id {
+    font-family: Roboto;
+    font-weight: bold;
+    font-size: 18px;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+
+    color: #C6C6C6;
 }
 
 ::-webkit-scrollbar {

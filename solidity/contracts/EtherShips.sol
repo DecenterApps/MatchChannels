@@ -18,14 +18,14 @@ contract EtherShips is Players, ECTools {
 		bool finished;
 	}
 
-	event OpenChannel(uint channelId, bytes32 root, string webrtcId, uint amount);
+	event OpenChannel(uint channelId, bytes32 root, string webrtcId, uint amount, string username);
 	event JoinChannel(uint channelId, bytes32 root, string webrtcId, uint amount);
 	event CloseChannel(uint channelId, address player, bool finished);
 
 	Channel[] public channels;
 	mapping(address => address) signAddresses;
 
-	function openChannel(bytes32 _root, string _webrtcId, uint _amount, bytes32 _merkleRoot, address _signAddress) payable public {
+	function openChannel(bytes32 _merkleRoot, string _webrtcId, uint _amount, address _signAddress) payable public {
 		require(players[msg.sender].exists);
 		require(_amount < players[msg.sender].balance + msg.value);
 
@@ -44,10 +44,10 @@ contract EtherShips is Players, ECTools {
 		c.stake = _amount;
 		c.p1root = _merkleRoot;
 
-        emit OpenChannel(_channelId, _root, _webrtcId, _amount);
+        emit OpenChannel(_channelId, _merkleRoot, _webrtcId, _amount, players[msg.sender].username);
     }
     
-    function joinChannel(uint _channelId, bytes32 _root, string _webrtcId, uint _amount, bytes32 _merkleRoot, address _signAddress) payable public {
+    function joinChannel(uint _channelId, bytes32 _merkleRoot, string _webrtcId, uint _amount, address _signAddress) payable public {
     	require(_channelId < channels.length);
 		require((channels[_channelId].p1 != 0x0) && (channels[_channelId].p2 == 0x0));
 		require(players[msg.sender].exists);
@@ -71,7 +71,7 @@ contract EtherShips is Players, ECTools {
 		players[c.p1].gamesPlayed += 1;
 		players[c.p2].gamesPlayed += 1;
 
-        emit JoinChannel(_channelId, _root, _webrtcId, _amount);
+        emit JoinChannel(_channelId, _merkleRoot, _webrtcId, _amount);
     }
 
     function closeChannel(uint _channelId, bytes _sig, uint _numberOfGuesses) public {

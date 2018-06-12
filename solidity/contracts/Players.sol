@@ -10,7 +10,7 @@ contract Players {
 		bool exists;
 	}
 
-	mapping(address => Player) players;
+	mapping(address => Player) public players;
 
 	event NewPlayer(address indexed player, string username, uint balance);
 	event AccountFunded(address indexed player, uint value);
@@ -46,6 +46,6 @@ contract Players {
 		msg.sender.transfer(_amount);
 
 		emit Withdraw(msg.sender, _amount);
-	}	
+	}
 	
 }
