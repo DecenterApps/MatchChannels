@@ -126,15 +126,15 @@ contract EtherShips is Players, ECTools {
     	require(channels[_channelId].p1 == msg.sender || channels[_channelId].p2 == msg.sender);
     	require(!channels[_channelId].finished);
 
-    	address opponent = channels[_channelId].p1 == msg.sender ? signAddresses[channels[_channelId].p2] : signAddresses[channels[_channelId].p1];
+    	address opponent = channels[_channelId].p1 == msg.sender ? channels[_channelId].p2 : channels[_channelId].p1;
     	bytes32 hash = keccak256(abi.encodePacked(_channelId, _pos, _seq, _type, _nonce, _path));
-    	require(_recoverSig(hash, _sig) == opponent);
+    	require(_recoverSig(hash, _sig) == signAddresses[opponent]);
 
     	bytes32 opponentRoot = channels[_channelId].p1 == msg.sender ? channels[_channelId].p2root : channels[_channelId].p1root;
     	if (keccak256(abi.encodePacked(_pos, _type, _nonce)) != _path[0] || _getRoot(_path) != opponentRoot) {
     		// only player that didn't cheat get plus one on finished gamess
     		players[msg.sender].finishedGames += 1;
-    		players[msg.sender].balance += channels[_channelId].stake;
+    		players[msg.sender].balance += channels[_channelId].stake * 2;
     		
     		channels[_channelId].p1Score = channels[_channelId].p1 == msg.sender ? 5 : 0;
     		channels[_channelId].p2Score = channels[_channelId].p2 == msg.sender ? 5 : 0;

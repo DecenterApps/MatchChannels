@@ -183,8 +183,8 @@ contract('Ether Ships', async (accounts) => {
 
   it('Should close channel if wrong merkleTree', async() => {
       const channelId = 0;
-      await etherShips.openChannel(wallet1.address, "0", 10, getRoot(merkleTree1), wallet1.address, {from: user1});
-      await etherShips.joinChannel(channelId, wallet2.address, "0", 10, getRoot(merkleTree2), wallet2.address, {from: user2});
+      await etherShips.openChannel(getRoot(merkleTree1), "0", 10, wallet1.address, {from: user1});
+      await etherShips.joinChannel(channelId, getRoot(merkleTree2), "0", 10,  wallet2.address, {from: user2});
 
       const pos = 0;
       const type = (fields2[0][0]+1) % 2; // different from what it should be
@@ -206,6 +206,49 @@ contract('Ether Ships', async (accounts) => {
 
       assert.equal(res.logs.length, 1, "There must be only one log and it should be CloseChannel");
       console.log(res.logs); // should log event with close channel
+  });
+
+  it('Should close channel', async() => {
+    const channelId = 1;
+    const stake = 10;
+
+    const p1curr = await etherShips.players(user1);
+    const p2curr = await etherShips.players(user2);
+
+    const opened = await etherShips.openChannel(getRoot(merkleTree1), "0", stake, wallet1.address, {from: user1});
+    const joined = await etherShips.joinChannel(channelId, getRoot(merkleTree2), "0", stake,  wallet2.address, {from: user2});
+
+    const hash1 = keccak256(channelId, user1, 3);
+    const hash2 = keccak256(channelId, user2, 5);
+
+    const res1 = await etherShips.closeChannel(
+      channelId,
+      wallet2.signMessage(ethers.utils.arrayify(hash1)),
+      3,
+      {from: user1}
+    );
+
+    const res2 = await etherShips.closeChannel(
+      channelId,
+      wallet1.signMessage(ethers.utils.arrayify(hash2)),
+      5,
+      {from: user2}
+    );
+
+    const channel = await etherShips.channels(channelId);
+    
+    console.log("before:");
+    console.log(p1curr[1] * 1, p2curr[1] * 1);
+
+    const p1curr1 = await etherShips.players(user1);
+    const p2curr1 = await etherShips.players(user2);
+    console.log("after:");
+    console.log(p1curr1[1] * 1, p2curr1[1] * 1);
+
+    // first player had 3 guesses so he has 3/10 of full stake
+    assert.equal(p1curr[1] - stake + 3 / 10 * (stake*2), p1curr1[1] * 1);
+    // second player had 5 guesses so he has 5/10 of full stake + all that first player didn't guess which is 2/10
+    assert.equal(p2curr[1] - stake + 7 / 10 * (stake*2), p2curr1[1] * 1);
   });
 
   // it("Calls close channel, user1 challanges user2", async () => {
