@@ -8,7 +8,9 @@ import { browserHistory } from 'react-router';
 import ethers from 'ethers';
 
 export const newGame = (price) => (dispatch) => {
-    dispatch({ type: NEW_GAME, payload: price });
+    dispatch({ type: NEW_GAME, payload: {price, session: createSession() } });
+
+    browserHistory.push('/game');
 };
 
 export const setName = ({ target }) => (dispatch) => {

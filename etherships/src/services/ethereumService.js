@@ -1,9 +1,11 @@
 import { NUM_BLOCKS_FOR_CHANNEL, DEFAULT_PRICE } from '../constants/config';
 
 
-export const openChannel = async (markelRoot, webrtcId, signAddress) => {
+export const openChannel = async (markelRoot, webrtcId, signAddress, amount) => {
+    const priceInWei = amount === '' ? DEFAULT_PRICE : window.web3.toWei(amount, 'ether');
+
     const res = await window.ethershipContract.openChannel(
-        markelRoot, webrtcId, DEFAULT_PRICE, signAddress, {from: window.account, value: DEFAULT_PRICE});
+        markelRoot, webrtcId, priceInWei, signAddress, {from: window.account, value: priceInWei});
 
     return res;
 };
@@ -17,7 +19,6 @@ export const joinChannel = async (id, markelRoot, webrtcId, signAddress) => {
 };
 
 export const createUser = async (username, price) => {
-    console.log('username: ', username, 'price: ', price);
 
     const priceInWei = price === '' ? DEFAULT_PRICE : window.web3.toWei(price, 'ether');
 

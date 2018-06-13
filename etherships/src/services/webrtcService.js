@@ -21,7 +21,7 @@ export const createPeer = () => {
 };
 
 export const connect = (peer, peerId) => {
-    const conn = peer.connect('abc');
+    const conn = peer.connect(peerId);
 
     return conn;
 };

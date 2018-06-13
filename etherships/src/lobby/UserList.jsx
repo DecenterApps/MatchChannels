@@ -25,6 +25,10 @@ class UserList extends Component {
         });
     }
 
+    challengeOpponent = (user) => {
+
+    }
+
     render() {
         return (
                 <div className="user-list">
@@ -39,7 +43,7 @@ class UserList extends Component {
                                 <div className="user-list-item" key={u.args.webrtcId}>
                                     <span className='user-list-id'>#{u.args.channelId.valueOf()}</span>
                                     <span className='user-list-name'> {u.args.username} </span>
-                                    <button className='user-list-btn'>Battle ({window.web3.fromWei(u.args.amount.valueOf(), 'ether')} ETH)</button>
+                                    <button className='user-list-btn' onClick={() => this.challengeOpponent(u)}>Battle ({window.web3.fromWei(u.args.amount.valueOf(), 'ether')} ETH)</button>
                                 </div>)
                         }
 

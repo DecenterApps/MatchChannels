@@ -72,7 +72,9 @@ export default (state = INITIAL_STATE, action) => {
 
             return {
                 ...state,
-                gameBetAmount: payload
+                gameBetAmount: payload.price,
+                peer: payload.session.peer,
+                userWallet: payload.session.wallet
             };
 
         default:
