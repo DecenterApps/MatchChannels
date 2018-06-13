@@ -22,22 +22,11 @@ const customStyles = {
     }
 };
 
-class CreateGameModal extends Component {
-
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            ethAmount: 0
-        };
-    }
-
-    handleChange = (event) => {
-        this.setState({ethAmount: event.target.value});
-    }
+class ChallengeModal extends Component {
 
     clicked = () => {
-        this.props.newGame(this.state.ethAmount);
+        console.log("Accepted");
+        this.props.closeModal();
     }
 
     render() {
@@ -46,20 +35,16 @@ class CreateGameModal extends Component {
             <Modal
                     isOpen={this.props.modalIsOpen}
                     onRequestClose={this.props.closeModal}
-                    contentLabel="Create Game"
+                    contentLabel="Challenge"
                     style={customStyles}
                 >
 
                     <div className="modal-content">
                         <div className="modal-title">
-                            create game
+                            You were challenged by NICKNAME
                         </div>
 
-                        <div>
-                            <input className="modal-input-eth" value={this.state.ethAmount} onChange={this.handleChange} type="text" placeholder="AMOUNT (ETH)" />
-                        </div>
-
-                        <button className="modal-create-btn" onClick={this.clicked}>create</button>
+                        <button className="modal-create-btn" onClick={this.clicked}>Accept</button>
 
                     </div>
                   
@@ -77,4 +62,4 @@ const mapDispatchToProps = {
     newGame
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(CreateGameModal);
+export default connect(mapStateToProps, mapDispatchToProps)(ChallengeModal);

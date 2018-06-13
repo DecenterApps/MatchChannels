@@ -13,3 +13,4 @@ export const EDIT_PRICE = 'edit_price';
 export const REGISTERED = 'registered';
 export const IS_REGISTERED = 'is_registered';
 export const NEW_GAME = 'new_game';
+export const CREATE_PEER = 'create_peer';
