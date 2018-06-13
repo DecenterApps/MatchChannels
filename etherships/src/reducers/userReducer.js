@@ -1,4 +1,13 @@
-import { SET_NAME, EDIT_NAME, EDIT_PRICE, REGISTERED, IS_REGISTERED, NEW_GAME, CREATE_PEER } from '../constants/actionTypes';
+import { SET_NAME, 
+        EDIT_NAME, 
+        EDIT_PRICE, 
+        REGISTERED, 
+        IS_REGISTERED, 
+        NEW_GAME, 
+        CREATE_PEER,
+        SET_CONNECTION,
+        PICK_FIELDS,
+        } from '../constants/actionTypes';
 
 const INITIAL_STATE = {
     userNameEdit: "",
@@ -11,9 +20,11 @@ const INITIAL_STATE = {
     finishedGames: 0,
     usersList: [],
     peer: {},
+    connection: {},
     peerId: "",
     userWallet: {},
-    registered: false
+    registered: false,
+    opponentChannel: -1
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -48,8 +59,6 @@ export default (state = INITIAL_STATE, action) => {
 
         case IS_REGISTERED:
 
-            console.log(state);
-
             return {
                 ...state,
                 userName: payload.username,
@@ -81,7 +90,22 @@ export default (state = INITIAL_STATE, action) => {
                 ...state,
                 peer: payload.peer,
                 peerId: payload.peerId
-            }
+            };
+
+        case SET_CONNECTION:
+
+            return {
+                ...state,
+                connection: payload.connection,
+                userWallet: payload.wallet
+            };
+
+        case PICK_FIELDS:
+
+            return {
+                ...state,
+                opponentChannel: payload,
+            };
 
         default:
             return {

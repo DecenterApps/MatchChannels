@@ -14,3 +14,5 @@ export const REGISTERED = 'registered';
 export const IS_REGISTERED = 'is_registered';
 export const NEW_GAME = 'new_game';
 export const CREATE_PEER = 'create_peer';
+export const SET_CONNECTION = 'set_connection';
+export const PICK_FIELDS = 'pick_fields';

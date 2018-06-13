@@ -51,7 +51,7 @@ contract EtherShips is Players, ECTools {
     	require(_channelId < channels.length);
 		require((channels[_channelId].p1 != 0x0) && (channels[_channelId].p2 == 0x0));
 		require(players[msg.sender].exists);
-		require(_amount < players[msg.sender].balance + msg.value);
+		require(_amount <= players[msg.sender].balance + msg.value);
 
 		if (msg.value > 0) {
 			players[msg.sender].balance += msg.value;

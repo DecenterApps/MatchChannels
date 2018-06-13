@@ -1,4 +1,13 @@
-import { SET_NAME, EDIT_NAME, EDIT_PRICE, REGISTERED, NEW_GAME, CREATE_PEER } from '../constants/actionTypes';
+import { 
+    SET_NAME, 
+    EDIT_NAME, 
+    EDIT_PRICE, 
+    REGISTERED, 
+    NEW_GAME, 
+    CREATE_PEER,
+    SET_CONNECTION,
+    PICK_FIELDS
+    } from '../constants/actionTypes';
 
 import { createPeer } from '../services/webrtcService';
 import { createUser, openChannel } from '../services/ethereumService';
@@ -54,6 +63,19 @@ export const initAccount = () => (dispatch) =>  {
     const peer = createPeer(peerId);
 
     dispatch({ type: CREATE_PEER, payload: {peer, peerId} });
+};
+
+export const setConnection = (connection) => (dispatch) => {
+
+    const wallet = ethers.Wallet.createRandom();
+
+    dispatch({ type: SET_CONNECTION, payload: {connection, wallet} });
+};
+
+export const pickFields = (channelId) => (dispatch) => {
+    dispatch({ type: PICK_FIELDS, payload: channelId });
+
+    browserHistory.push('/game');
 };
 
 function createSession() {

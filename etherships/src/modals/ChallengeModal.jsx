@@ -26,6 +26,11 @@ class ChallengeModal extends Component {
 
     clicked = () => {
         console.log("Accepted");
+
+        console.log(this.props.user.connection);
+
+        this.props.user.connection.send({type:'accepted', channelId: this.props.channelId});
+
         this.props.closeModal();
     }
 
@@ -41,7 +46,7 @@ class ChallengeModal extends Component {
 
                     <div className="modal-content">
                         <div className="modal-title">
-                            You were challenged by NICKNAME
+                            You were challenged by { this.props.username }
                         </div>
 
                         <button className="modal-create-btn" onClick={this.clicked}>Accept</button>

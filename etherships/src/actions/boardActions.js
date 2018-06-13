@@ -24,13 +24,22 @@ export const generateBoard = (board, type) => async (dispatch, getState) => {
 
         console.log(getRoot(state.board.tree), state.user.peerId, walletAddress, state.user.gameBetAmount);
 
-        await openChannel(getRoot(state.board.tree), state.user.peerId, walletAddress, state.user.gameBetAmount);
+        if(state.user.opponentChannel === -1) {
+            await openChannel(getRoot(state.board.tree), state.user.peerId, walletAddress, state.user.gameBetAmount);
 
-        console.log('channel opened');
+            console.log('channel opened');
 
-        dispatch({type : ON_CONTRACT, payload: null});
+            dispatch({type : ON_CONTRACT, payload: null});
 
-        browserHistory.push('/users');
+            browserHistory.push('/users');
+        } else {
+            console.log('join channel');
+
+            await joinChannel(state.user.opponentChannel, getRoot(state.board.tree), state.user.peerId, walletAddress, state.user.gameBetAmount);
+
+            browserHistory.push('/match');
+        }
+
     } else {
 
     }

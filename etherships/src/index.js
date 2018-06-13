@@ -11,6 +11,7 @@ import Home from './Home';
 import BoardCreationLayout from './game/BoardCreationLayout';
 import Lobby from './lobby/Lobby';
 import Profile from './profile/Profile';
+import Match from './game/Match';
 
 // Redux Store
 import store from './store';
@@ -35,6 +36,7 @@ getWeb3
           <Route path="game" component={BoardCreationLayout} />
           <Route path="users" component={Lobby} />
           <Route path="profile" component={Profile} />
+          <Route path="match" component={Match} />
         </Route>
       </Router>
     </Provider>

@@ -11,9 +11,11 @@ export const openChannel = async (markelRoot, webrtcId, signAddress, amount) => 
 };
 
 
-export const joinChannel = async (id, markelRoot, webrtcId, signAddress) => {
+export const joinChannel = async (id, markelRoot, webrtcId, signAddress, amount) => {
+    const priceInWei = amount === '' ? DEFAULT_PRICE : window.web3.toWei(amount, 'ether');
+
     const res = await window.ethershipContract.joinChannel(id, markelRoot,
-         webrtcId, DEFAULT_PRICE,  signAddress, {from: window.account, value: DEFAULT_PRICE});
+         webrtcId, priceInWei,  signAddress, {from: window.account, value: priceInWei});
 
     return res;
 };

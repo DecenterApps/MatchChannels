@@ -6,6 +6,8 @@ import { connectPlayer } from '../services/webrtcService';
 
 import ChallengeModal from '../modals/ChallengeModal';
 
+import { setConnection, pickFields } from '../actions/userActions';
+
 import './UserList.css';
 
 class UserList extends Component {
@@ -15,7 +17,9 @@ class UserList extends Component {
 
         this.state = {
             modalIsOpen: false,
-            users: []
+            users: [],
+            username: "",
+            channelId: -1
         };
 
         this.openModal = this.openModal.bind(this);
@@ -37,14 +41,19 @@ class UserList extends Component {
 
         if (this.props.user.peer) {
             this.props.user.peer.on('connection', (_conn) => {
-                console.log(_conn);
+                this.props.setConnection(_conn);
         
                 _conn.on('data', (res) => {
                     console.log(res);
+
                     if (res.type === 'challenge') {
+
+                        this.setState({
+                            username: res.username,
+                            channelId: res.channelId
+                        });
+
                         this.openModal();
-                    } else if (res.type === 'accepted') {
-                        console.log('accepted');
                     }
                 });
               });
@@ -63,14 +72,27 @@ class UserList extends Component {
         const connection = connectPlayer(this.props.user.peer, user.webrtcId);
 
         connection.on('open', () => {
-            connection.send({type: 'challenge'});
+            this.props.setConnection(connection);
+
+            connection.send({type: 'challenge', channelId: user.channelId.valueOf(), username: this.props.user.userName});
+
+            connection.on('data', (res) => {
+                if (res.type === 'accepted') {
+                    this.props.pickFields(res.channelId);
+                }
+            });
         });
     }
 
     render() {
         return (
                 <div>
-                    <ChallengeModal modalIsOpen={ this.state.modalIsOpen } closeModal={ this.closeModal }/>
+                    <ChallengeModal 
+                        modalIsOpen={ this.state.modalIsOpen } 
+                        username={this.state.username} 
+                        channelId={this.state.channelId} 
+                        closeModal={ this.closeModal }
+                    />
                     <div className="user-list">
                         <div className="user-list-header">
                             choose opponent player
@@ -80,7 +102,7 @@ class UserList extends Component {
 
                             {
                                 this.state.users.map( u => 
-                                    <div className="user-list-item" key={u.args.webrtcId}>
+                                    <div className="user-list-item" key={u.args.channelId.valueOf()}>
                                         <span className='user-list-id'>#{u.args.channelId.valueOf()}</span>
                                         <span className='user-list-name'> {u.args.username} </span>
                                         <button className='user-list-btn' onClick={() => this.challengeOpponent(u.args)}>Battle ({window.web3.fromWei(u.args.amount.valueOf(), 'ether')} ETH)</button>
@@ -100,6 +122,8 @@ const mapStateToProps = (props) => ({
 });
 
 const mapDispatchToProps = {
+    setConnection,
+    pickFields,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserList);
