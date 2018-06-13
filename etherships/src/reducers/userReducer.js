@@ -1,4 +1,4 @@
-import { SET_NAME, EDIT_NAME, EDIT_PRICE, REGISTERED, IS_REGISTERED, NEW_GAME } from '../constants/actionTypes';
+import { SET_NAME, EDIT_NAME, EDIT_PRICE, REGISTERED, IS_REGISTERED, NEW_GAME, CREATE_PEER } from '../constants/actionTypes';
 
 const INITIAL_STATE = {
     userNameEdit: "",
@@ -11,6 +11,7 @@ const INITIAL_STATE = {
     finishedGames: 0,
     usersList: [],
     peer: {},
+    peerId: "",
     userWallet: {},
     registered: false
 };
@@ -23,7 +24,6 @@ export default (state = INITIAL_STATE, action) => {
 
             return {
                 ...state,
-                peer: payload.peer,
                 userWallet: payload.wallet,
                 userName: state.userNameEdit,
                 userNameEdit: '',
@@ -41,7 +41,6 @@ export default (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 registered: true,
-                peer: payload.peer,
                 userWallet: payload.wallet,
                 userName: state.userNameEdit,
                 userNameEdit: '',
@@ -49,7 +48,7 @@ export default (state = INITIAL_STATE, action) => {
 
         case IS_REGISTERED:
 
-            console.log(payload);
+            console.log(state);
 
             return {
                 ...state,
@@ -73,9 +72,16 @@ export default (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 gameBetAmount: payload.price,
-                peer: payload.session.peer,
                 userWallet: payload.session.wallet
             };
+
+        case CREATE_PEER:
+
+            return {
+                ...state,
+                peer: payload.peer,
+                peerId: payload.peerId
+            }
 
         default:
             return {

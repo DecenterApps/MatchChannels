@@ -1,9 +1,10 @@
-import { SET_NAME, EDIT_NAME, EDIT_PRICE, REGISTERED, NEW_GAME } from '../constants/actionTypes';
+import { SET_NAME, EDIT_NAME, EDIT_PRICE, REGISTERED, NEW_GAME, CREATE_PEER } from '../constants/actionTypes';
 
 import { createPeer } from '../services/webrtcService';
 import { createUser, openChannel } from '../services/ethereumService';
 
 import { browserHistory } from 'react-router';
+import short from 'short-uuid';
 
 import ethers from 'ethers';
 
@@ -40,13 +41,26 @@ export const register = ({ target }) => async (dispatch, getState) => {
     browserHistory.push('/game');
 };
 
+export const initAccount = () => (dispatch) =>  {
+
+    let peerId = localStorage.getItem('peer');
+
+    if(!peerId) {
+      peerId = short.uuid();
+    
+      localStorage.setItem('peer', peerId);
+    }
+
+    const peer = createPeer(peerId);
+
+    dispatch({ type: CREATE_PEER, payload: {peer, peerId} });
+};
+
 function createSession() {
-    const peer = createPeer();
 
     const wallet = ethers.Wallet.createRandom();
 
     return {
-        peer,
         wallet
     };
 }

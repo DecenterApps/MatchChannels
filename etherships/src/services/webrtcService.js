@@ -2,11 +2,7 @@ import Peer from "peerjs";
 
 import { WEBRTC_SERVER, WEBRTC_API_KEY, WEBRTC_PORT } from '../constants/config';
 
-import short from 'short-uuid';
-
-export const createPeer = () => {
-    const peerId = short.uuid();
-
+export const createPeer = (peerId) => {
     const peer = new Peer(peerId, {
         key: WEBRTC_API_KEY,
         debug: 3,
@@ -14,13 +10,10 @@ export const createPeer = () => {
         port: WEBRTC_PORT,
       });
 
-    return {
-        peer,
-        peerId
-    };
+    return peer;
 };
 
-export const connect = (peer, peerId) => {
+export const connectPlayer = (peer, peerId) => {
     const conn = peer.connect(peerId);
 
     return conn;
