@@ -78,6 +78,28 @@
     display: flex;
 }
 
+.back-button {
+    width: 90px;
+    height: 32.61px;
+    left: 95px;
+    top: 78px;
+
+    background: #B7B7B7;
+    border-radius: 6.26484px;
+    position:absolute;
+
+    font-family: Boogaloo;
+    font-style: normal;
+    font-weight: normal;
+    line-height: normal;
+    font-size: 16px;
+    text-align: center;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+
+    color: #FFFFFF;
+}
+
 .input {
     background: rgba(32, 29, 40, 0.23);
     border-radius: 6.11463px;

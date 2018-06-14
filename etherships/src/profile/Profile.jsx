@@ -28,6 +28,7 @@ class Profile extends Component {
         return (
         	<div className='container'>
 	            <div>
+	            	<button className="back-button">back</button>
 	                <div className='title-front'>
 	                    battleship
 	                </div>
@@ -37,7 +38,7 @@ class Profile extends Component {
 	                <div className='big-label'>
 	                {
 						this.state.user.length > 0 && this.state.user[0].toString()
-					}username
+					}
 	                </div>
 	                <div className='small-titles'>
 	                	balance
