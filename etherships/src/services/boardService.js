@@ -21,10 +21,19 @@ export const pickMove = (pos) => {
 
 };
 
+// when you receive a guess from your opponent, check if it hit your ships
+// should return sig. of new state if you got hit
+// also should return signed path for dispute()
+export const checkGuess = (pos) => {
+
+};
+
 // get the result of your opponent, and check sig. and answer
+// if the result is wrong format data so we can call the dispute
 export const checkResult = (response) => {
 
 };
+
 
 function getRandomInt(max) {
     return Math.floor(Math.random() * Math.floor(max));

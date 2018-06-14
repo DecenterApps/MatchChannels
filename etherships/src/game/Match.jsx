@@ -7,10 +7,15 @@ import Board from './Board';
 
 class Match extends Component {
 
+    submitGuess = () => {
+        const index  = this.props.guessBoard.findIndex(b => b === 1);
 
+        if (index != -1) {
+            
+        }
+    }
 
     render() {
-
 
             return (
                 <div className="container">
@@ -18,15 +23,15 @@ class Match extends Component {
                         battleship
                     </div>
                     <div className='instruction'>
-                        The match has started
+                        choose location
                     </div>
                   <div className="board-area">
-                      <Board />
+                      <Board type="match"/>
                     
                   </div>
 
                   <div>
-                      <button className="next-btn">Submit</button>
+                      <button className="next-btn" onClick={this.submitGuess}>Submit</button>
                   </div>
                 </div>
         );

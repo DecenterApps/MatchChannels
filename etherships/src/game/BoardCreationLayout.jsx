@@ -29,7 +29,7 @@ class BoardCreationLayout extends Component {
                         place your ships
                     </div>
                   <div className="board-area">
-                      <Board />
+                      <Board type="setup" />
                       <div className="slots">
                       {
                           fieldsLeft.map( f => 

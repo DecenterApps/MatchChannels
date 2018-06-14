@@ -104,7 +104,8 @@ export default (state = INITIAL_STATE, action) => {
 
             return {
                 ...state,
-                opponentChannel: payload,
+                opponentChannel: payload.channelId,
+                gameBetAmount: payload.amount
             };
 
         default:

@@ -24,7 +24,7 @@ class Board extends Component {
                             <div className="row" key={index}>
                                 {
                                     board.slice(index * BOARD_LENGTH, ((index + 1) * BOARD_LENGTH)).map((type, i) => 
-                                        <Field key={i} id={(index*8) + i}/>
+                                        <Field key={i} id={(index*8) + i} type={this.props.type} />
                                     )
                                 }
                             </div>

@@ -29,7 +29,7 @@ class ChallengeModal extends Component {
 
         console.log(this.props.user.connection);
 
-        this.props.user.connection.send({type:'accepted', channelId: this.props.channelId});
+        this.props.user.connection.send({type:'accepted', channelId: this.props.channelId, amount: this.props.amount});
 
         this.props.closeModal();
     }

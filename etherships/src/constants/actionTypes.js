@@ -5,6 +5,8 @@ export const WEB3_INITIALIZED = 'web3_initialized';
 export const SET_FIELD = 'set_field';
 export const CREATE_TREE = 'create_tree';
 export const ON_CONTRACT = 'on_contract';
+export const GUESS_FIELD = 'guess_field';
+export const SET_PLAYER_MOVE = 'set_player_move';
 
 // User reducer
 export const EDIT_NAME = 'edit_name';

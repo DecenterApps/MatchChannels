@@ -1,0 +1,11 @@
+<svg width="54" height="54" viewBox="0 0 54 54" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="54" height="54" rx="10" fill="#BC0924"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M10 5C4.47717 5 0 9.47714 0 15V10C0 4.47714 4.47717 0 10 0H44C49.5228 0 54 4.47714 54 10V15C54 9.47714 49.5228 5 44 5H10Z" transform="translate(54 54) rotate(180)" fill="#201D28" fill-opacity="0.23"/>
+<circle cx="13.5" cy="13.5" r="12.8" transform="translate(14 12)" stroke="#8B0A1F" stroke-width="1.4"/>
+<circle cx="7.5" cy="7.5" r="6.8" transform="translate(20 18)" stroke="#8B0A1F" stroke-width="1.4"/>
+<circle cx="2.5" cy="2.5" r="1.8" transform="translate(25 23)" stroke="#8B0A1F" stroke-width="1.4"/>
+<line y1="-0.5" x2="8" y2="-0.5" transform="translate(28 17) rotate(-90)" stroke="#8B0A1F"/>
+<line y1="-0.5" x2="8" y2="-0.5" transform="translate(28 42) rotate(-90)" stroke="#8B0A1F"/>
+<line y1="-0.5" x2="8" y2="-0.5" transform="translate(36.5 25.5)" stroke="#8B0A1F"/>
+<line y1="-0.5" x2="8" y2="-0.5" transform="translate(11.5 25.5)" stroke="#8B0A1F"/>
+</svg>

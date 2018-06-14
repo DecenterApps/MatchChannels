@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { setField } from '../actions/boardActions';
+import { setField, guessField } from '../actions/boardActions';
 
 import './Board.css';
 
 class Field extends Component {
 
-    clicked = () => {
+    chooseYourFields = () => {
         const { numPicked, board } = this.props.board;
         const pos = this.props.id;
 
@@ -16,20 +16,36 @@ class Field extends Component {
         }
     }
 
+    guessOppponentField = () => {
+        const pos = this.props.id;
+
+        this.props.guessField(pos);
+    }
+
     render() {
-        const { board } = this.props.board;
+        const { board, boardGuesses } = this.props.board;
+        const { type } = this.props;
 
-        return (
-            <div 
-            className={(board[this.props.id] === 1 ? 'choosen' : 'field')}
-            onClick={this.clicked}
-            >
+        if (type === 'setup') {
+            return (
+                <div 
+                    className={(board[this.props.id] === 1 ? 'choosen' : 'field')}
+                    onClick={this.chooseYourFields}>
 
-            <span className={board[this.props.id] === 1 ? "" : "pin"}>
-                
-            </span>
-            </div>
-        )
+                    <span className={board[this.props.id] === 1 ? "" : "pin"}></span>
+                </div>
+            )
+        } else {
+            return (
+                <div 
+                    className={(boardGuesses[this.props.id] === 1 ? 'red-choosen' : 'red-field')}
+                    onClick={this.guessOppponentField}>
+
+
+                    <span className={boardGuesses[this.props.id] === 1 ? "" : "pin"}></span>
+                </div>
+            )
+        }
     }
 
 }
@@ -40,6 +56,7 @@ const mapStateToProps = (props) => ({
 
 const mapDispatchToProps = {
     setField,
+    guessField,
 };
   
 export default connect(mapStateToProps, mapDispatchToProps)(Field);

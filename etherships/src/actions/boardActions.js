@@ -1,4 +1,4 @@
-import { SET_FIELD, CREATE_TREE, ON_CONTRACT } from '../constants/actionTypes';
+import { SET_FIELD, CREATE_TREE, ON_CONTRACT, GUESS_FIELD, SET_PLAYER_MOVE } from '../constants/actionTypes';
 
 import { generateTree } from '../services/boardService';
 import { openChannel, joinChannel } from '../services/ethereumService';
@@ -8,6 +8,14 @@ import { browserHistory } from 'react-router'
 
 export const setField = payload => (dispatch) => {
     dispatch({ type: SET_FIELD, payload });
+};
+
+export const guessField = payload => (dispatch) => {
+    dispatch({ type: GUESS_FIELD, payload });
+};
+
+export const setPlayerMove = payload => (dispatch) => {
+    dispatch({ type: SET_PLAYER_MOVE, payload });
 };
 
 export const generateBoard = (board, type) => async (dispatch, getState) => {
@@ -36,6 +44,11 @@ export const generateBoard = (board, type) => async (dispatch, getState) => {
             console.log('join channel');
 
             await joinChannel(state.user.opponentChannel, getRoot(state.board.tree), state.user.peerId, walletAddress, state.user.gameBetAmount);
+
+            dispatch({ type: SET_PLAYER_MOVE, payload: true });
+
+            // notify other user
+            state.user.connection.send({type: 'start_game'});
 
             browserHistory.push('/match');
         }

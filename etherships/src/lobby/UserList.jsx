@@ -8,6 +8,8 @@ import ChallengeModal from '../modals/ChallengeModal';
 
 import { setConnection, pickFields } from '../actions/userActions';
 
+import { browserHistory } from 'react-router';
+
 import './UserList.css';
 
 class UserList extends Component {
@@ -19,6 +21,7 @@ class UserList extends Component {
             modalIsOpen: false,
             users: [],
             username: "",
+            amount: -1,
             channelId: -1
         };
 
@@ -50,10 +53,13 @@ class UserList extends Component {
 
                         this.setState({
                             username: res.username,
-                            channelId: res.channelId
+                            channelId: res.channelId,
+                            amount: res.amount
                         });
 
                         this.openModal();
+                    } else if(res.type === 'start_game') {
+                        browserHistory.push('/match');
                     }
                 });
               });
@@ -74,11 +80,16 @@ class UserList extends Component {
         connection.on('open', () => {
             this.props.setConnection(connection);
 
-            connection.send({type: 'challenge', channelId: user.channelId.valueOf(), username: this.props.user.userName});
+            connection.send({
+                type: 'challenge', 
+                channelId: user.channelId.valueOf(), 
+                username: this.props.user.userName,
+                amount: user.amount.valueOf()
+            });
 
             connection.on('data', (res) => {
                 if (res.type === 'accepted') {
-                    this.props.pickFields(res.channelId);
+                    this.props.pickFields(res.channelId, res.amount);
                 }
             });
         });
@@ -89,8 +100,9 @@ class UserList extends Component {
                 <div>
                     <ChallengeModal 
                         modalIsOpen={ this.state.modalIsOpen } 
-                        username={this.state.username} 
-                        channelId={this.state.channelId} 
+                        username={ this.state.username } 
+                        channelId={ this.state.channelId }
+                        amount={ this.state.amount }
                         closeModal={ this.closeModal }
                     />
                     <div className="user-list">

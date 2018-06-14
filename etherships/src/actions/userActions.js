@@ -72,8 +72,8 @@ export const setConnection = (connection) => (dispatch) => {
     dispatch({ type: SET_CONNECTION, payload: {connection, wallet} });
 };
 
-export const pickFields = (channelId) => (dispatch) => {
-    dispatch({ type: PICK_FIELDS, payload: channelId });
+export const pickFields = (channelId, amount) => (dispatch) => {
+    dispatch({ type: PICK_FIELDS, payload: {channelId, amount} });
 
     browserHistory.push('/game');
 };
