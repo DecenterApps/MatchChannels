@@ -47,7 +47,7 @@ export const register = ({ target }) => async (dispatch, getState) => {
 
     dispatch({ type: REGISTERED, payload: createSession() });
 
-    browserHistory.push('/game');
+    browserHistory.push('/users');
 };
 
 export const initAccount = () => (dispatch) =>  {

@@ -27,6 +27,7 @@ const INITIAL_STATE = {
     onContract: false,
     opponentTree: [],
     yourMove: false,
+    recentGuess: -1,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -64,7 +65,8 @@ export default (state = INITIAL_STATE, action) => {
 
             return {
                 ...state,
-                boardGuesses: newBoard
+                boardGuesses: newBoard,
+                recentGuess: payload
             }
 
         case SET_PLAYER_MOVE:

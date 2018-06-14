@@ -14,8 +14,18 @@ export const guessField = payload => (dispatch) => {
     dispatch({ type: GUESS_FIELD, payload });
 };
 
-export const setPlayerMove = payload => (dispatch) => {
-    dispatch({ type: SET_PLAYER_MOVE, payload });
+export const checkMove = payload => (dispatch) => {
+    console.log('check move');
+
+    dispatch({ type: SET_PLAYER_MOVE, payload: true });
+};
+
+export const submitGuess = payload => (dispatch, getState) => {
+    const state = getState().user;
+
+    state.connection.send({type: 'move', pos: payload});
+
+    dispatch({ type: SET_PLAYER_MOVE, payload: false });
 };
 
 export const generateBoard = (board, type) => async (dispatch, getState) => {

@@ -35,11 +35,20 @@ class Field extends Component {
                     <span className={board[this.props.id] === 1 ? "" : "pin"}></span>
                 </div>
             )
-        } else {
+        } else if (type === 'match') {
             return (
                 <div 
                     className={(boardGuesses[this.props.id] === 1 ? 'red-choosen' : 'red-field')}
                     onClick={this.guessOppponentField}>
+
+
+                    <span className={boardGuesses[this.props.id] === 1 ? "" : "pin"}></span>
+                </div>
+            )
+        } else {
+            return (
+                <div 
+                    className={(boardGuesses[this.props.id] === 1 ? 'red-question-choosen' : 'field')}>
 
 
                     <span className={boardGuesses[this.props.id] === 1 ? "" : "pin"}></span>

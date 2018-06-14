@@ -69,6 +69,21 @@
   background: url('../images/target.svg') center center no-repeat;
 }
 
+.red-question-choosen {
+  height: 54px;
+  text-align: right;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+  align-items: center;
+  -ms-flex-pack: center;
+  width: 54px;
+  border-radius: 10px;
+  margin: 3px;
+  justify-content: center;
+  background: url('../images/question_mark.svg') center center no-repeat;
+}
+
 .red-field {
   height: 54px;
     text-align: right;

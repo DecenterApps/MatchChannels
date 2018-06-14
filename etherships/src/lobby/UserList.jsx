@@ -8,6 +8,8 @@ import ChallengeModal from '../modals/ChallengeModal';
 
 import { setConnection, pickFields } from '../actions/userActions';
 
+import { checkMove } from '../actions/boardActions';
+
 import { browserHistory } from 'react-router';
 
 import './UserList.css';
@@ -60,6 +62,10 @@ class UserList extends Component {
                         this.openModal();
                     } else if(res.type === 'start_game') {
                         browserHistory.push('/match');
+                    } else if(res.type === 'move') {
+                        _conn.send({type: 'move-resp', result: true});
+
+                        this.props.checkMove();
                     }
                 });
               });
@@ -88,6 +94,7 @@ class UserList extends Component {
             });
 
             connection.on('data', (res) => {
+                console.log(res);
                 if (res.type === 'accepted') {
                     this.props.pickFields(res.channelId, res.amount);
                 }
@@ -136,6 +143,7 @@ const mapStateToProps = (props) => ({
 const mapDispatchToProps = {
     setConnection,
     pickFields,
+    checkMove,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserList);
