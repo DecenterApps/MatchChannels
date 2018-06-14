@@ -44,6 +44,8 @@ export const withdraw = async (amount) => {
 export const getUser = async (addr) => {
     const isReg = await window.ethershipContract.players(addr);
 
+    isReg[1] = window.web3.fromWei(isReg[1], 'ether');
+
     return isReg;
 }
 
