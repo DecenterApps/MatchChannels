@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { browserHistory } from 'react-router'
 
 import './Profile.css';
 
@@ -24,11 +25,15 @@ class Profile extends Component {
         });
     }
 
+    handleClick = () => {
+        browserHistory.push("users");
+    }
+
     render() {
         return (
         	<div className='container'>
 	            <div>
-	            	<button className="back-button">back</button>
+	            	<button className="back-button" onClick={this.handleClick}>back</button>
 	                <div className='title-front'>
 	                    battleship
 	                </div>
