@@ -9,3 +9,5 @@ export const ETHERSHIP_ADDRESS = '0x8869226a999f7f7b15fda46d172601f9c2841cee';
 export const NUM_BLOCKS_FOR_CHANNEL = 1000;
 
 export const DEFAULT_PRICE = 1000000000000000; // 0.001 eth
+
+export const REFRESH_LOBBY_TIME = 10000; //10s

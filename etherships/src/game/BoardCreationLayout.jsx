@@ -7,11 +7,23 @@ import Board from './Board';
 
 class BoardCreationLayout extends Component {
 
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            loading: false,
+        };
+    }
+
     generateBoard = () => {
         const { numPicked, board } = this.props.board;
 
         if (numPicked === 5) {
             this.props.generateBoard(board, 'open');
+
+            this.setState({
+                loading: true
+            });
         }
     }
 
@@ -39,9 +51,21 @@ class BoardCreationLayout extends Component {
                       </div>
                   </div>
 
-                  <div>
-                      <button className="next-btn" onClick={this.generateBoard}>Next</button>
-                  </div>
+                {
+                    !this.state.loading && 
+                        <div>
+                        <button className="next-btn" onClick={this.generateBoard}>Next</button>
+                        </div>
+                }
+
+                {
+                    this.state.loading && 
+                    <div>
+                        <button className="spinner-btn" onClick={this.generateBoard}>
+                        </button>
+                    </div>
+                }
+            
                 </div>
         );
     }

@@ -12,6 +12,8 @@ import { checkMove } from '../actions/boardActions';
 
 import { browserHistory } from 'react-router';
 
+import { REFRESH_LOBBY_TIME } from '../constants/config';
+
 import './UserList.css';
 
 class UserList extends Component {
@@ -24,7 +26,8 @@ class UserList extends Component {
             users: [],
             username: "",
             amount: -1,
-            channelId: -1
+            channelId: -1,
+            timer: null,
         };
 
         this.openModal = this.openModal.bind(this);
@@ -41,6 +44,8 @@ class UserList extends Component {
 
     async componentDidMount() {
         const users = await getOpenChannels();
+
+        console.log(users);
 
         console.log(this.props.user.peer);
 
@@ -66,6 +71,8 @@ class UserList extends Component {
                         _conn.send({type: 'move-resp', result: true});
 
                         this.props.checkMove();
+                    } else if(res.type === 'move-resp') {
+                        console.log('move resp');
                     }
                 });
               });
@@ -76,7 +83,27 @@ class UserList extends Component {
         this.setState({
             users
         });
+
+        //this.updateUserList();
+
     }
+
+    // componentWillUnmount() {
+    //     clearInterval(this.state.timer);
+    // }
+
+
+    // updateUserList = async () => {
+    //     const timer = setInterval(async () => {
+    //         const users = await getOpenChannels();
+    //         this.setState({users});
+
+    //     }, REFRESH_LOBBY_TIME);
+
+    //     this.setState({
+    //         timer,
+    //     });
+    // }
 
     challengeOpponent = (user) => {
         console.log(user);
@@ -97,6 +124,12 @@ class UserList extends Component {
                 console.log(res);
                 if (res.type === 'accepted') {
                     this.props.pickFields(res.channelId, res.amount);
+                } else if(res.type === 'move') {
+                    connection.send({type: 'move-resp', result: true});
+
+                    this.props.checkMove();
+                } else if(res.type === 'move-resp') {
+                    console.log('move resp');
                 }
             });
         });

@@ -48,10 +48,10 @@ class Field extends Component {
         } else {
             return (
                 <div 
-                    className={(boardGuesses[this.props.id] === 1 ? 'red-question-choosen' : 'field')}>
+                    className={(this.props.selectedField === this.props.id ? 'red-question-choosen' : 'no-hover-field')}>
 
 
-                    <span className={boardGuesses[this.props.id] === 1 ? "" : "pin"}></span>
+                    <span className={this.props.selectedField  === this.props.id ? "" : "pin"}></span>
                 </div>
             )
         }

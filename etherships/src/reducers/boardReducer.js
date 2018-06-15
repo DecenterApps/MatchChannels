@@ -24,6 +24,8 @@ const INITIAL_STATE = {
     hashedBoard: [],
     numPicked: 0,
     numGuesses: 0,
+    numHits: 3,
+    numOpponentHits: 2,
     onContract: false,
     opponentTree: [],
     yourMove: false,

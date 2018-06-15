@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { generateBoard, submitGuess } from '../actions/boardActions';
+import { submitGuess } from '../actions/boardActions';
 
 import Board from './Board';
+
+import Timer from './Timer';
 
 class Match extends Component {
 
@@ -26,47 +28,72 @@ class Match extends Component {
 
         const { yourMove } = this.props.board;
 
-        if (yourMove) {
-            return (
-                <div className="container">
-                    <div className="title">
-                        battleship
-                    </div>
-                    <div className='instruction'>
-                        choose location
-                    </div>
-                <div className="board-area">
-                    <Board type="match"/>
-                    
+        const yourHits = Array.from({length: this.props.board.numHits}, (_, k) => k++); 
+
+        const opponentHits = Array.from({length: this.props.board.numOpponentHits}, (_, k) => k++); 
+
+        return (
+            <div className="container">
+                <div className="title">
+                    battleship
                 </div>
 
-                <div>
-                    <button className="next-btn" onClick={this.guess}>Submit</button>
-                </div>
-                </div>
-            );
-        } else {
-            return (
-                <div className="container">
-                    <div className="title">
-                        battleship
-                    </div>
-
+                {
+                    !yourMove &&
                     <div className='instruction'>
                         Opponents turn
                     </div>
+                }
 
-                <div className="board-area">
-                    <Board type="waiting" />
-                    
+            <div className="board-area match-board">
+                <Board type={yourMove ? 'match' : 'waiting'} />
+                
+                <div className="score-area">
+                    <div style={{display: 'flex'}}>
+                        <div className="score-tiles">
+                            <div className="small-titles">User 1</div>
+                            <div className="slots">
+                                {
+                                    yourHits.map(h => 
+                                        <div key={h} className="my-fields"></div>
+                                    )
+                                }
+                            </div>
+                        </div>
+
+                        <div className="slots">
+                            <div className="score-tiles">
+                                <div className="small-titles">User 2</div>
+                                {
+                                    opponentHits.map(h => 
+                                        <div key={h} className="opponent-fields"></div>
+                                    )
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="timer-area">
+                        <div className="small-titles"> Turn: {yourMove ? 'Your turn!' : 'Opponents turn!'}</div>
+                        <Timer countdown={30} />
+                    </div>
                 </div>
+            </div>
 
+            { !yourMove &&
                 <div>
-                    <span>Fun fact: Vitalik created ethereum because he rage quit warcraft...noob</span>
+                    <div className="small-titles fun-fact">Fun fact: Vitalik created ethereum because he rage quit warcraft...noob</div>
                 </div>
+            }
+
+            {
+                yourMove &&
+                <div>
+                    <button className="next-btn" onClick={this.guess}>Submit</button>
                 </div>
-            );
-        }
+            }
+            </div>
+        );
 
     }
 

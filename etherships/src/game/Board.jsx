@@ -6,9 +6,29 @@ import { generateBoard } from '../actions/boardActions';
 
 import { BOARD_LENGTH } from '../constants/config';
 
+import { getRandomInt } from '../services/boardService';
+
 import './Board.css';
 
 class Board extends Component {
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            selectedField: -1
+        };
+    }
+
+    componentDidMount() {
+        setInterval(() => {
+            const selectedField  = getRandomInt(63);
+
+            this.setState({
+                selectedField
+            });
+        }, 500);
+    }
 
     render() {
 
@@ -24,7 +44,7 @@ class Board extends Component {
                             <div className="row" key={index}>
                                 {
                                     board.slice(index * BOARD_LENGTH, ((index + 1) * BOARD_LENGTH)).map((type, i) => 
-                                        <Field key={i} id={(index*8) + i} type={this.props.type} />
+                                        <Field key={i} id={(index*8) + i} type={this.props.type} selectedField={this.state.selectedField}/>
                                     )
                                 }
                             </div>
