@@ -25,7 +25,7 @@ const INITIAL_STATE = {
     peerId: "",
     userWallet: {},
     registered: false,
-    opponentChannel: -1
+    opponentChannel: -1,
 };
 
 export default (state = INITIAL_STATE, action) => {

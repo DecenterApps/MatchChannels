@@ -46,7 +46,7 @@ export const checkMove = pos => (dispatch, getState) => {
     }
 
     // reset your turn
-    dispatch({ type: CHECK_MOVE, payload: true });
+    dispatch({ type: CHECK_MOVE, payload: pos });
 
     state.user.connection.send({type: 'move-resp', result});
 
@@ -72,16 +72,17 @@ export const generateBoard = (board) => async (dispatch, getState) => {
 
     const walletAddress = state.user.userWallet.address;
 
+    console.log(getRoot(state.board.tree), state.user.peerId, walletAddress, state.user.gameBetAmount);
+
     if(state.user.opponentChannel === -1) {
-
-        console.log(getRoot(state.board.tree), state.user.peerId, walletAddress, state.user.gameBetAmount);
-
         await openChannel(getRoot(state.board.tree), state.user.peerId, walletAddress, state.user.gameBetAmount);
 
         dispatch({type : ON_CONTRACT, payload: null});
 
         browserHistory.push('/users');
     } else {
+        console.log('join channel');
+
         await joinChannel(state.user.opponentChannel, getRoot(state.board.tree), state.user.peerId, walletAddress, state.user.gameBetAmount);
 
         dispatch({ type: SET_PLAYER_MOVE, payload: true });

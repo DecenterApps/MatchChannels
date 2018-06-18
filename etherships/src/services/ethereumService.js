@@ -49,13 +49,37 @@ export const getUser = async (addr) => {
     return isReg;
 }
 
+export const getJoinedChannels = async (blockNum) => 
+    new Promise((resolve, reject) => {            
+        window.ethershipContract.JoinChannel({}, { fromBlock: blockNum.valueOf() -  NUM_BLOCKS_FOR_CHANNEL, toBlock: 'latest' }).get((err, res) => {
+            if(!err) {
+                resolve(res);
+            } else {
+                reject(err);
+            }
+        });
+    });
+
 export const getOpenChannels = async () => 
     new Promise((resolve, reject) => {
-        window.web3.eth.getBlockNumber((err, blockNum) => {
+        window.web3.eth.getBlockNumber(async (err, blockNum) => {
             if(!err) {                
-                window.ethershipContract.OpenChannel({}, { fromBlock: blockNum.valueOf() -  NUM_BLOCKS_FOR_CHANNEL, toBlock: 'latest' }).get((err, res) => {
+                window.ethershipContract.OpenChannel({}, { fromBlock: blockNum.valueOf() -  NUM_BLOCKS_FOR_CHANNEL, toBlock: 'latest' }).get(async (err, res) => {
+
+                    const joinedChannels = await getJoinedChannels(blockNum);
+
+                    const channelIds = joinedChannels.map(c => c.args.channelId.valueOf());
+
                     if(!err) {
-                        resolve(res);
+                        const matches = res.filter(r => { 
+                            if(channelIds.includes(r.args.channelId.valueOf())) {
+                                return false;
+                            } else {
+                                return true;
+                            }
+                        });
+
+                        resolve(matches);
                     } else {
                         reject(err);
                     }
@@ -63,4 +87,5 @@ export const getOpenChannels = async () =>
             }
         });
     });
+
 

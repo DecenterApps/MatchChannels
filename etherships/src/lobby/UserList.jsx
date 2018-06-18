@@ -45,9 +45,15 @@ class UserList extends Component {
     async componentDidMount() {
         const users = await getOpenChannels();
 
-        console.log(users);
+        // window.ethershipContract.JoinChannel({},{fromBlock: 0, toBlock: 'latest'}).watch((err, res) => {
+        //     if (!err) {
+        //         console.log(res);
 
-        console.log(this.props.user.peer);
+        //         this.setState({
+        //             users: [this.state.users, res]
+        //         });
+        //     }
+        // });
 
         if (Object.keys(this.props.user.peer).length !== 0) {
             this.props.user.peer.on('connection', (_conn) => {
@@ -106,7 +112,7 @@ class UserList extends Component {
                 } else if(res.type === 'move') {
                     connection.send({type: 'move-resp', result: true});
 
-                    this.props.checkMove();
+                    this.props.checkMove(res.pos);
                 } else if(res.type === 'move-resp') {
                     console.log('move resp', res.result);
                 }

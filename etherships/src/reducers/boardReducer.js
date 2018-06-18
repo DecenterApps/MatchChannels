@@ -33,8 +33,8 @@ const INITIAL_STATE = {
     hashedBoard: [],
     numPicked: 0,
     numGuesses: 0,
-    numHits: 3,
-    numOpponentHits: 2,
+    numHits: 0,
+    numOpponentHits: 0,
     onContract: false,
     opponentTree: [],
     yourMove: false,
@@ -70,7 +70,7 @@ export default (state = INITIAL_STATE, action) => {
             }
 
         case GUESS_FIELD:
-            let newBoard = state.board.fill(0);
+            let newBoard = state.boardGuesses.fill(0);
 
             newBoard[payload] = 1;
 
@@ -81,6 +81,7 @@ export default (state = INITIAL_STATE, action) => {
             }
 
         case SET_PLAYER_MOVE:
+
             return {
                 ...state,
                 yourMove: payload
@@ -94,6 +95,8 @@ export default (state = INITIAL_STATE, action) => {
             } else if(b[payload] === 0) {
                 b[payload] = 2;
             }
+
+            console.log('BOARD', b);
 
             return {
                 ...state,

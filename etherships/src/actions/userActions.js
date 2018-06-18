@@ -8,6 +8,7 @@ import {
     SET_CONNECTION,
     PICK_FIELDS,
     LOAD_USER,
+    RESET_CHANNEL,
     } from '../constants/actionTypes';
 
 import { createPeer } from '../services/webrtcService';
@@ -96,6 +97,10 @@ export const pickFields = (channelId, amount) => (dispatch) => {
     dispatch({ type: PICK_FIELDS, payload: {channelId, amount} });
 
     browserHistory.push('/game');
+};
+
+export const resetChannel = () => (dispatch) => {
+    dispatch({ type: RESET_CHANNEL});
 };
 
 function createSession() {

@@ -28,6 +28,8 @@ class Field extends Component {
 
         let fieldClass = 'no-hover-field';
 
+        console.log(type, board);
+        
         if (board[this.props.id] === 1) {
             fieldClass = 'choosen';
         } else if (board[this.props.id] === 2) {

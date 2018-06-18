@@ -22,3 +22,4 @@ export const CREATE_PEER = 'create_peer';
 export const SET_CONNECTION = 'set_connection';
 export const PICK_FIELDS = 'pick_fields';
 export const LOAD_USER = 'load_user';
+export const RESET_CHANNEL = 'reset_channel';
