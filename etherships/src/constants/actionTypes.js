@@ -7,6 +7,9 @@ export const CREATE_TREE = 'create_tree';
 export const ON_CONTRACT = 'on_contract';
 export const GUESS_FIELD = 'guess_field';
 export const SET_PLAYER_MOVE = 'set_player_move';
+export const CHECK_MOVE = 'check_move';
+export const LOAD_BOARD = 'load_board';
+export const RESET_BOARD = 'reset_board';
 
 // User reducer
 export const EDIT_NAME = 'edit_name';
@@ -18,3 +21,4 @@ export const NEW_GAME = 'new_game';
 export const CREATE_PEER = 'create_peer';
 export const SET_CONNECTION = 'set_connection';
 export const PICK_FIELDS = 'pick_fields';
+export const LOAD_USER = 'load_user';

@@ -6,6 +6,8 @@ import { connect } from 'react-redux';
 
 import { initAccount } from './actions/userActions';
 
+import { initBoard } from './actions/boardActions';
+
 // Styles
 import './css/oswald.css'
 import './css/open-sans.css'
@@ -16,6 +18,7 @@ class App extends Component {
 
   componentDidMount() {
     this.props.initAccount();
+    this.props.initBoard();
   }
 
   render() {
@@ -33,7 +36,8 @@ const mapStateToProps = (props) => ({
 });
 
 const mapDispatchToProps = {
-  initAccount
+  initAccount,
+  initBoard,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

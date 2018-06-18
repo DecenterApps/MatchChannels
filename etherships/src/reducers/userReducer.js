@@ -7,6 +7,7 @@ import { SET_NAME,
         CREATE_PEER,
         SET_CONNECTION,
         PICK_FIELDS,
+        LOAD_USER,
         } from '../constants/actionTypes';
 
 const INITIAL_STATE = {
@@ -106,6 +107,13 @@ export default (state = INITIAL_STATE, action) => {
                 ...state,
                 opponentChannel: payload.channelId,
                 gameBetAmount: payload.amount
+            };
+
+        case LOAD_USER:
+
+            return {
+                ...state,
+                ...payload,
             };
 
         default:

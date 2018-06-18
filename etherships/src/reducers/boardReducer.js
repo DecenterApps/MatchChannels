@@ -1,7 +1,16 @@
-import { SET_FIELD, CREATE_TREE, ON_CONTRACT, GUESS_FIELD, SET_PLAYER_MOVE } from '../constants/actionTypes';
+import { SET_FIELD, CREATE_TREE, ON_CONTRACT, GUESS_FIELD, SET_PLAYER_MOVE, CHECK_MOVE, LOAD_BOARD, RESET_BOARD } from '../constants/actionTypes';
 
 const INITIAL_STATE = {
     board: [  
+        0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 
+        0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0],
+    opponentBoard: [
         0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 
         0, 0, 0, 0, 0, 0, 0, 0,
@@ -76,6 +85,30 @@ export default (state = INITIAL_STATE, action) => {
                 ...state,
                 yourMove: payload
             }
+
+        case CHECK_MOVE:
+            const b = state.board;
+
+            if (b[payload] === 1) {
+                b[payload] = 3;
+            } else if(b[payload] === 0) {
+                b[payload] = 2;
+            }
+
+            return {
+                ...state,
+                board: b,
+            }
+
+        case LOAD_BOARD:
+
+            return {
+                ...state,
+                ...payload
+            }
+
+        case RESET_BOARD:
+            return INITIAL_STATE;
 
 
         default:

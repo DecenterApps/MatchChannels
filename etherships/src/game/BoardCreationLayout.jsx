@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { generateBoard } from '../actions/boardActions';
+import { generateBoard, resetBoard } from '../actions/boardActions';
 
 import Board from './Board';
 
@@ -19,12 +19,16 @@ class BoardCreationLayout extends Component {
         const { numPicked, board } = this.props.board;
 
         if (numPicked === 5) {
-            this.props.generateBoard(board, 'open');
+            this.props.generateBoard(board);
 
             this.setState({
                 loading: true
             });
         }
+    }
+
+    componentDidMount() {
+        this.props.resetBoard();
     }
 
     render() {
@@ -78,6 +82,7 @@ const mapStateToProps = (props) => ({
 
 const mapDispatchToProps = {
     generateBoard,
+    resetBoard,
 };
   
 export default connect(mapStateToProps, mapDispatchToProps)(BoardCreationLayout);

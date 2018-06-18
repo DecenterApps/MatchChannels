@@ -26,6 +26,16 @@ class Field extends Component {
         const { board, boardGuesses } = this.props.board;
         const { type } = this.props;
 
+        let fieldClass = 'no-hover-field';
+
+        if (board[this.props.id] === 1) {
+            fieldClass = 'choosen';
+        } else if (board[this.props.id] === 2) {
+            fieldClass = 'field-miss';
+        } else if(board[this.props.id] === 3) {
+            fieldClass = 'field-hit';
+        }
+
         if (type === 'setup') {
             return (
                 <div 
@@ -48,10 +58,9 @@ class Field extends Component {
         } else {
             return (
                 <div 
-                    className={(this.props.selectedField === this.props.id ? 'red-question-choosen' : 'no-hover-field')}>
+                    className={fieldClass}>
 
-
-                    <span className={this.props.selectedField  === this.props.id ? "" : "pin"}></span>
+                    <span className={board[this.props.id] !== 0 ? "" : "pin"}></span>
                 </div>
             )
         }
