@@ -1,4 +1,5 @@
 import util from 'ethereumjs-util';
+import ethers from 'ethers';
 
 import { createMerkel, keccak256 } from '../util/merkel';
 
@@ -15,6 +16,17 @@ export const generateTree = (board) => {
     };
 
 }
+
+export const signMove = (channelId, pos, type, merkleTree, hashedFields, nonce, sequence) => async (dispatch, getState) => {
+      const state = getState();
+
+      const path = joinPath(merkleTree, hashedFields, pos);
+      const hash = keccak256(channelId, pos, sequence, type, nonce, "0x" + path.sig);
+
+      const signature = state.user.userWallet.signMessage(ethers.utils.arrayify(hash));
+
+      return signature;
+};
 
 // sign what position you want to choose from your opponent
 export const pickMove = (pos) => {
@@ -37,4 +49,42 @@ export const checkResult = (response) => {
 
 export const getRandomInt = (max) => {
     return Math.floor(Math.random() * Math.floor(max));
+}
+
+function joinPath(merkleTree, elementsHashed, pos) {
+	const path = findPath(merkleTree, util.bufferToHex(elementsHashed[pos]));
+
+	let sig = "";
+	path.forEach((elem) => {
+		sig += elem.substring(2);
+	});
+
+	return {
+		sig,
+		path
+	};
+}
+
+
+function findPath(tree, elem) {
+	let index = tree[0].findIndex(e => e === elem);
+
+	if (index === -1) {
+		console.log('Unable to find the node in a tree');
+		return;
+	}
+
+	let path = [tree[0][index]];
+
+	for (let i = 0; i < tree.length-1; ++i) {          
+		if (index % 2 === 0) {
+			path.push(tree[i][index+1]);
+		} else {
+			path.push(tree[i][index-1]);
+		}
+
+		index = Math.floor(index / 2);
+	}
+
+	return path;
 }
