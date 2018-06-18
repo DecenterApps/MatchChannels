@@ -49,7 +49,7 @@ class UserList extends Component {
 
         console.log(this.props.user.peer);
 
-        if (this.props.user.peer) {
+        if (Object.keys(this.props.user.peer).length !== 0) {
             this.props.user.peer.on('connection', (_conn) => {
                 this.props.setConnection(_conn);
         
@@ -68,11 +68,9 @@ class UserList extends Component {
                     } else if(res.type === 'start_game') {
                         browserHistory.push('/match');
                     } else if(res.type === 'move') {
-                        _conn.send({type: 'move-resp', result: true});
-
-                        this.props.checkMove();
+                        this.props.checkMove(res.pos);
                     } else if(res.type === 'move-resp') {
-                        console.log('move resp');
+                        console.log('move resp', res.result);
                     }
                 });
               });
@@ -84,26 +82,7 @@ class UserList extends Component {
             users
         });
 
-        //this.updateUserList();
-
     }
-
-    // componentWillUnmount() {
-    //     clearInterval(this.state.timer);
-    // }
-
-
-    // updateUserList = async () => {
-    //     const timer = setInterval(async () => {
-    //         const users = await getOpenChannels();
-    //         this.setState({users});
-
-    //     }, REFRESH_LOBBY_TIME);
-
-    //     this.setState({
-    //         timer,
-    //     });
-    // }
 
     challengeOpponent = (user) => {
         console.log(user);
@@ -129,7 +108,7 @@ class UserList extends Component {
 
                     this.props.checkMove();
                 } else if(res.type === 'move-resp') {
-                    console.log('move resp');
+                    console.log('move resp', res.result);
                 }
             });
         });

@@ -57,6 +57,36 @@
   justify-content: center;
 }
 
+.field-miss {
+  height: 54px;
+  text-align: right;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+  align-items: center;
+  -ms-flex-pack: center;
+  width: 54px;
+  background: url('../images/red_miss.svg') center center no-repeat;
+  border-radius: 10px;
+  margin: 3px;
+  justify-content: center;
+}
+
+.field-hit {
+  height: 54px;
+  text-align: right;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+  align-items: center;
+  -ms-flex-pack: center;
+  width: 54px;
+  background: url('../images/green_skull.svg') center center no-repeat;
+  border-radius: 10px;
+  margin: 3px;
+  justify-content: center;
+}
+
 .red-choosen {
   height: 54px;
   text-align: right;

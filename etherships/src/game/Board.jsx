@@ -16,19 +16,28 @@ class Board extends Component {
         super(props);
 
         this.state = {
-            selectedField: -1
+            selectedField: -1,
+            interval: null,
         };
     }
 
-    componentDidMount() {
-        setInterval(() => {
-            const selectedField  = getRandomInt(63);
+    // componentDidMount() {
+    //     const interval = setInterval(() => {
+    //         const selectedField  = getRandomInt(63);
 
-            this.setState({
-                selectedField
-            });
-        }, 500);
-    }
+    //         this.setState({
+    //             selectedField
+    //         });
+    //     }, 500);
+
+    //     this.setState({
+    //         interval,
+    //     });
+    // }
+
+    // componentWillUnmount() {
+    //     clearInterval(this.state.interval);
+    // }
 
     render() {
 

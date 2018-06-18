@@ -1,4 +1,12 @@
-import { SET_FIELD, CREATE_TREE, ON_CONTRACT, GUESS_FIELD, SET_PLAYER_MOVE } from '../constants/actionTypes';
+import { SET_FIELD, 
+        CREATE_TREE, 
+        ON_CONTRACT, 
+        GUESS_FIELD, 
+        SET_PLAYER_MOVE, 
+        CHECK_MOVE,
+        LOAD_BOARD,
+        RESET_BOARD,
+        } from '../constants/actionTypes';
 
 import { generateTree } from '../services/boardService';
 import { openChannel, joinChannel } from '../services/ethereumService';
@@ -14,10 +22,37 @@ export const guessField = payload => (dispatch) => {
     dispatch({ type: GUESS_FIELD, payload });
 };
 
-export const checkMove = payload => (dispatch) => {
+export const initBoard = payload => (dispatch) => {
+
+    let board = localStorage.getItem('board');
+
+    if (board) {
+        board = JSON.parse(board);
+    }
+
+    dispatch({ type: LOAD_BOARD, payload: board || {} });
+};
+
+export const checkMove = pos => (dispatch, getState) => {
     console.log('check move');
 
-    dispatch({ type: SET_PLAYER_MOVE, payload: true });
+    const state = getState();
+
+    let result = false;
+
+    // check if user hit your ship
+    if (state.board.board[pos] === 1) {
+        result = true;
+    }
+
+    // reset your turn
+    dispatch({ type: CHECK_MOVE, payload: true });
+
+    state.user.connection.send({type: 'move-resp', result});
+
+    setTimeout(() => {
+        dispatch({ type: SET_PLAYER_MOVE, payload: true });
+    }, 2000);
 };
 
 export const submitGuess = payload => (dispatch, getState) => {
@@ -28,43 +63,56 @@ export const submitGuess = payload => (dispatch, getState) => {
     dispatch({ type: SET_PLAYER_MOVE, payload: false });
 };
 
-export const generateBoard = (board, type) => async (dispatch, getState) => {
-
+export const generateBoard = (board) => async (dispatch, getState) => {
     const payload = generateTree(board);
 
     dispatch({ type: CREATE_TREE, payload });
 
-    const state = getState();
+    let state = getState();
 
-    if (type === 'open') {
+    const walletAddress = state.user.userWallet.address;
 
-        const walletAddress = state.user.userWallet.address;
+    if(state.user.opponentChannel === -1) {
 
         console.log(getRoot(state.board.tree), state.user.peerId, walletAddress, state.user.gameBetAmount);
 
-        if(state.user.opponentChannel === -1) {
-            await openChannel(getRoot(state.board.tree), state.user.peerId, walletAddress, state.user.gameBetAmount);
+        await openChannel(getRoot(state.board.tree), state.user.peerId, walletAddress, state.user.gameBetAmount);
 
-            console.log('channel opened');
+        dispatch({type : ON_CONTRACT, payload: null});
 
-            dispatch({type : ON_CONTRACT, payload: null});
-
-            browserHistory.push('/users');
-        } else {
-            console.log('join channel');
-
-            await joinChannel(state.user.opponentChannel, getRoot(state.board.tree), state.user.peerId, walletAddress, state.user.gameBetAmount);
-
-            dispatch({ type: SET_PLAYER_MOVE, payload: true });
-
-            // notify other user
-            state.user.connection.send({type: 'start_game'});
-
-            browserHistory.push('/match');
-        }
-
+        browserHistory.push('/users');
     } else {
+        await joinChannel(state.user.opponentChannel, getRoot(state.board.tree), state.user.peerId, walletAddress, state.user.gameBetAmount);
 
+        dispatch({ type: SET_PLAYER_MOVE, payload: true });
+
+        // notify other user
+        state.user.connection.send({type: 'start_game'});
+
+        browserHistory.push('/match');
     }
-    
+
+    delete state.user.peer;
+
+    localStorage.setItem('user', JSON.stringify(state.user, getCircularReplacer()));
+    localStorage.setItem('board', JSON.stringify(state.board, getCircularReplacer()))
 };
+
+export const resetBoard = payload => (dispatch) => {
+    dispatch({type: RESET_BOARD});
+};
+
+// helper function to help stringify 
+const getCircularReplacer = () => {
+    const seen = new WeakSet;
+    return (key, value) => {
+      if (typeof value === "object" && value !== null) {
+        if (seen.has(value)) {
+          return;
+        }
+        seen.add(value);
+      }
+      return value;
+    };
+  };
+  

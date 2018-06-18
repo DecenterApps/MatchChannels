@@ -6,7 +6,8 @@ import {
     NEW_GAME, 
     CREATE_PEER,
     SET_CONNECTION,
-    PICK_FIELDS
+    PICK_FIELDS,
+    LOAD_USER,
     } from '../constants/actionTypes';
 
 import { createPeer } from '../services/webrtcService';
@@ -61,6 +62,25 @@ export const initAccount = () => (dispatch) =>  {
     }
 
     const peer = createPeer(peerId);
+
+    let user = localStorage.getItem("user");
+
+
+    const userWallet = ethers.Wallet.createRandom();
+    
+    if (user) {
+        user = JSON.parse(user);
+
+        if (!user.userWallet) {
+            user.userWallet = userWallet;
+        }
+    } else {
+        user = { userWallet };
+    }
+
+    console.log(user);
+
+    dispatch({ type: LOAD_USER, payload: user});
 
     dispatch({ type: CREATE_PEER, payload: {peer, peerId} });
 };
