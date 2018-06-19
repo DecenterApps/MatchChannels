@@ -17,7 +17,7 @@ export const generateTree = (board) => {
 
 }
 
-export const signMove = (channelId, pos, merkleTree, hashedFields, nonces, currSequence, numOfGuesses, opponentAddress) => async (dispatch, getState) => {
+export const checkGuess = (channelId, pos, merkleTree, hashedFields, nonces, currSequence, numOfGuesses, opponentAddress) => async (dispatch, getState) => {
       const state = getState();
 
       const type = (hashedFields[pos] == keccak256(pos, 1, nonces[pos])) ? 1 : 0;
@@ -37,22 +37,17 @@ export const signMove = (channelId, pos, merkleTree, hashedFields, nonces, currS
       };
 };
 
-// sign what position you want to choose from your opponent
-export const pickMove = (pos) => {
-
-};
-
-// when you receive a guess from your opponent, check if it hit your ships
-// should return sig. of new state if you got hit
-// also should return signed path for dispute()
-export const checkGuess = async (pos, hashedFields, nonces) => {
-
-};
-
 // get the result of your opponent, and check sig. and answer
 // if the result is wrong format data so we can call the dispute
-export const checkResult = (response) => {
+export const checkResult = (channelId, signedScore, opponentAddress, numOfGuesses) => {
+	const msg = keccak256(channelId, opponentAddress, numOfGuesses);
+	const {v, r, s} = util.fromRpcSig(signedScore);
 
+	const pubKey  = util.ecrecover(util.toBuffer(msg), v, r, s);
+	const addrBuf = util.pubToAddress(pubKey);
+	const addr    = util.bufferToHex(addrBuf);
+
+	return (addr == opponentAddress);
 };
 
 
