@@ -27,8 +27,6 @@ class Field extends Component {
         const { type } = this.props;
 
         let fieldClass = 'no-hover-field';
-
-        console.log(type, board);
         
         if (board[this.props.id] === 1) {
             fieldClass = 'choosen';
@@ -36,6 +34,16 @@ class Field extends Component {
             fieldClass = 'field-miss';
         } else if(board[this.props.id] === 3) {
             fieldClass = 'field-hit';
+        }
+
+        let guessFieldClass = 'red-field';
+
+        if (boardGuesses[this.props.id] === 1) {
+            guessFieldClass = 'red-choosen';
+        } else if (boardGuesses[this.props.id] === 2) {
+            guessFieldClass = 'field-miss';
+        } else if(boardGuesses[this.props.id] === 3) {
+            guessFieldClass = 'field-hit';
         }
 
         if (type === 'setup') {
@@ -50,11 +58,11 @@ class Field extends Component {
         } else if (type === 'match') {
             return (
                 <div 
-                    className={(boardGuesses[this.props.id] === 1 ? 'red-choosen' : 'red-field')}
+                    className={guessFieldClass}
                     onClick={this.guessOppponentField}>
 
 
-                    <span className={boardGuesses[this.props.id] === 1 ? "" : "pin"}></span>
+                    <span className={boardGuesses[this.props.id] !== 0 ? "" : "pin"}></span>
                 </div>
             )
         } else {

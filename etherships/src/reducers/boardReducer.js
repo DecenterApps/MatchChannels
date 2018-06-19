@@ -1,4 +1,14 @@
-import { SET_FIELD, CREATE_TREE, ON_CONTRACT, GUESS_FIELD, SET_PLAYER_MOVE, CHECK_MOVE, LOAD_BOARD, RESET_BOARD } from '../constants/actionTypes';
+import { 
+    SET_FIELD, 
+    CREATE_TREE, 
+    ON_CONTRACT, 
+    GUESS_FIELD, 
+    SET_PLAYER_MOVE, 
+    CHECK_MOVE, 
+    LOAD_BOARD, 
+    RESET_BOARD,
+    CHECK_MOVE_RESPONSE,
+  } from '../constants/actionTypes';
 
 const INITIAL_STATE = {
     board: [  
@@ -70,8 +80,7 @@ export default (state = INITIAL_STATE, action) => {
             }
 
         case GUESS_FIELD:
-            let newBoard = state.boardGuesses.fill(0);
-
+            let newBoard = state.boardGuesses;
             newBoard[payload] = 1;
 
             return {
@@ -81,17 +90,19 @@ export default (state = INITIAL_STATE, action) => {
             }
 
         case SET_PLAYER_MOVE:
-
             return {
                 ...state,
-                yourMove: payload
+                yourMove: payload,
+                boardGuesses: state.boardGuesses.map(b => b === 1 ? 2 : b),
             }
 
         case CHECK_MOVE:
             const b = state.board;
+            let numHits = state.numOpponentHits;
 
             if (b[payload] === 1) {
                 b[payload] = 3;
+                numHits++;
             } else if(b[payload] === 0) {
                 b[payload] = 2;
             }
@@ -101,6 +112,7 @@ export default (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 board: b,
+                numOpponentHits: numHits,
             }
 
         case LOAD_BOARD:
@@ -112,6 +124,23 @@ export default (state = INITIAL_STATE, action) => {
 
         case RESET_BOARD:
             return INITIAL_STATE;
+
+        case CHECK_MOVE_RESPONSE:
+
+            let hits = state.numHits;
+
+            let newBoardGuesses = state.boardGuesses;
+
+            if (payload.result) {
+                hits++;
+                newBoardGuesses[payload.pos] = 3;
+            }
+
+            return {
+                ...state,
+                // numHits: hits,
+                boardGuesses: newBoardGuesses,
+            }
 
 
         default:

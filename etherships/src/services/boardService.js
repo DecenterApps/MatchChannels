@@ -31,7 +31,7 @@ export const signMove = (channelId, pos, merkleTree, hashedFields, nonces, currS
       const signatureNumOfGuesses = state.user.userWallet.signMessage(ethers.utils.arrayify(hashNumOfGuesses));
 
       return {
-      	signatureResponse: signature,
+      	signatureResponse,
       	signatureNumOfGuesses: signatureNumOfGuesses,
       	numOfGuesses: numOfGuesses
       };

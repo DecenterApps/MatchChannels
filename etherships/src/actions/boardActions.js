@@ -6,6 +6,7 @@ import { SET_FIELD,
         CHECK_MOVE,
         LOAD_BOARD,
         RESET_BOARD,
+        CHECK_MOVE_RESPONSE,
         } from '../constants/actionTypes';
 
 import { generateTree } from '../services/boardService';
@@ -48,7 +49,7 @@ export const checkMove = pos => (dispatch, getState) => {
     // reset your turn
     dispatch({ type: CHECK_MOVE, payload: pos });
 
-    state.user.connection.send({type: 'move-resp', result});
+    state.user.connection.send({type: 'move-resp', result, pos });
 
     setTimeout(() => {
         dispatch({ type: SET_PLAYER_MOVE, payload: true });
@@ -101,6 +102,10 @@ export const generateBoard = (board) => async (dispatch, getState) => {
 
 export const resetBoard = payload => (dispatch) => {
     dispatch({type: RESET_BOARD});
+};
+
+export const checkMoveResponse = payload => dispatch => {
+    dispatch({type: CHECK_MOVE_RESPONSE, payload});
 };
 
 // helper function to help stringify 

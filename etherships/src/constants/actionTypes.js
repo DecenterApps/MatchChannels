@@ -10,6 +10,7 @@ export const SET_PLAYER_MOVE = 'set_player_move';
 export const CHECK_MOVE = 'check_move';
 export const LOAD_BOARD = 'load_board';
 export const RESET_BOARD = 'reset_board';
+export const CHECK_MOVE_RESPONSE = 'check_move_response';
 
 // User reducer
 export const EDIT_NAME = 'edit_name';

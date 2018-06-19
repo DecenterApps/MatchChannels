@@ -8,7 +8,7 @@ import ChallengeModal from '../modals/ChallengeModal';
 
 import { setConnection, pickFields } from '../actions/userActions';
 
-import { checkMove } from '../actions/boardActions';
+import { checkMove, checkMoveResponse } from '../actions/boardActions';
 
 import { browserHistory } from 'react-router';
 
@@ -76,7 +76,8 @@ class UserList extends Component {
                     } else if(res.type === 'move') {
                         this.props.checkMove(res.pos);
                     } else if(res.type === 'move-resp') {
-                        console.log('move resp', res.result);
+                        console.log('move resp', res);
+                        this.props.checkMoveResponse(res);
                     }
                 });
               });
@@ -162,6 +163,7 @@ const mapDispatchToProps = {
     setConnection,
     pickFields,
     checkMove,
+    checkMoveResponse,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserList);
