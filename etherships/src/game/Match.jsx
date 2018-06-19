@@ -29,9 +29,11 @@ class Match extends Component {
 
         const { yourMove, timer } = this.props.board;
 
-        const yourHits = Array.from({length: this.props.board.numHits}, (_, k) => k++); 
+        const numHits = this.props.board.board.filter(b => b === 3).length;
+        const numOpponentHits = this.props.board.boardGuesses.filter(b => b === 3).length;
 
-        const opponentHits = Array.from({length: this.props.board.numOpponentHits}, (_, k) => k++); 
+        const yourHits = Array.from({length: numHits}, (_, k) => k++); 
+        const opponentHits = Array.from({length: numOpponentHits}, (_, k) => k++); 
 
         return (
             <div className="container">

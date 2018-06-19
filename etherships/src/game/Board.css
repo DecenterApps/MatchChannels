@@ -42,6 +42,11 @@
     margin: 10px 0px 0px 25px;
 }
 
+.empty-slot-field {
+  margin: 10px 0px 0px 25px;
+  width: 54px;
+}
+
 .choosen {
   height: 54px;
   text-align: right;

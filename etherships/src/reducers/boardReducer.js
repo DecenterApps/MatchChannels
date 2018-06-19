@@ -44,8 +44,6 @@ const INITIAL_STATE = {
     hashedBoard: [],
     numPicked: 0,
     numGuesses: 0,
-    numHits: 0,
-    numOpponentHits: 0,
     onContract: false,
     opponentTree: [],
     yourMove: false,
@@ -94,8 +92,6 @@ export default (state = INITIAL_STATE, action) => {
 
         case SET_PLAYER_MOVE:
 
-            console.log('timer');
-
             return {
                 ...state,
                 yourMove: payload,
@@ -106,11 +102,9 @@ export default (state = INITIAL_STATE, action) => {
 
         case CHECK_MOVE:
             const b = state.board;
-            let numHits = state.numOpponentHits;
 
             if (b[payload] === 1) {
                 b[payload] = 3;
-                numHits++;
             } else if(b[payload] === 0) {
                 b[payload] = 2;
             }
@@ -120,7 +114,6 @@ export default (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 board: b,
-                numOpponentHits: numHits,
             }
 
         case LOAD_BOARD:
@@ -134,19 +127,15 @@ export default (state = INITIAL_STATE, action) => {
             return INITIAL_STATE;
 
         case CHECK_MOVE_RESPONSE:
-
-            let hits = state.numHits;
-
             let newBoardGuesses = state.boardGuesses;
 
             if (payload.result) {
-                hits++;
+                console.log('Setting newBoard', payload);
                 newBoardGuesses[payload.pos] = 3;
             }
 
             return {
                 ...state,
-                // numHits: hits,
                 boardGuesses: newBoardGuesses,
             }
 

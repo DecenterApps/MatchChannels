@@ -47,6 +47,7 @@ class BoardCreationLayout extends Component {
                   <div className="board-area">
                       <Board type="setup" />
                       <div className="slots">
+                        <div className="empty-slot-field"></div>
                       {
                           fieldsLeft.map( f => 
                             <div key={f} className="slot-field"></div>

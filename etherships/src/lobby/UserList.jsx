@@ -116,6 +116,7 @@ class UserList extends Component {
                     this.props.checkMove(res.pos);
                 } else if(res.type === 'move-resp') {
                     console.log('move resp', res.result);
+                    this.props.checkMoveResponse(res);
                 }
             });
         });

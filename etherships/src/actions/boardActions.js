@@ -104,7 +104,9 @@ export const resetBoard = payload => (dispatch) => {
 };
 
 export const checkMoveResponse = payload => dispatch => {
-    dispatch({type: CHECK_MOVE_RESPONSE, payload});
+    if (payload.pos) {
+        dispatch({type: CHECK_MOVE_RESPONSE, payload});
+    }
 };
 
 export const incrementSeconds = () => dispatch => {
