@@ -2,23 +2,24 @@ import React, { Component } from 'react';
 
 import { setInterval } from 'timers';
 
+import { connect } from 'react-redux';
+
+import { incrementSeconds } from '../actions/boardActions';
+
 class Timer extends Component {
 
     constructor(props) {
         super(props);
 
         this.state = {
-            seconds: 0,
             timer: null,
         };
     }
 
     componentDidMount() {
         const timer = setInterval(() => {
-            if (this.state.seconds < this.props.countdown) {
-                this.setState({
-                    seconds: this.state.seconds + 1
-                });
+            if (this.props.board.seconds < this.props.countdown) {
+                this.props.incrementSeconds();
             } else {
                 clearInterval(this.state.timer);
             }
@@ -37,17 +38,19 @@ class Timer extends Component {
     }
 
     formatTime = (countdown) => {
-        if (countdown - this.state.seconds > 60) {
-            const minutes = Math.floor((countdown - this.state.seconds) / 60);
-            const sec = (countdown - this.state.seconds) % 60;
+        if (countdown - this.props.board.seconds > 60) {
+            const minutes = Math.floor((countdown - this.props.board.seconds) / 60);
+            const sec = (countdown - this.props.board.seconds) % 60;
 
             return `${minutes} min ${sec} s left`;
         } else {
-            return `${countdown - this.state.seconds}s left`;
+            return `${countdown - this.props.board.seconds}s left`;
         }
     }
 
     render() {
+
+        console.log(this.props);
 
         const { countdown } = this.props;
 
@@ -59,5 +62,12 @@ class Timer extends Component {
     }
 }
 
+const mapStateToProps = (props) => ({
+    ...props
+});
 
-export default Timer;
+const mapDispatchToProps = {
+    incrementSeconds,
+};
+  
+export default connect(mapStateToProps, mapDispatchToProps)(Timer);

@@ -7,6 +7,7 @@ import { SET_FIELD,
         LOAD_BOARD,
         RESET_BOARD,
         CHECK_MOVE_RESPONSE,
+        INCREMENT_SECONDS,
         } from '../constants/actionTypes';
 
 import { generateTree } from '../services/boardService';
@@ -51,9 +52,7 @@ export const checkMove = pos => (dispatch, getState) => {
 
     state.user.connection.send({type: 'move-resp', result, pos });
 
-    setTimeout(() => {
-        dispatch({ type: SET_PLAYER_MOVE, payload: true });
-    }, 2000);
+    dispatch({ type: SET_PLAYER_MOVE, payload: true });
 };
 
 export const submitGuess = payload => (dispatch, getState) => {
@@ -108,6 +107,10 @@ export const checkMoveResponse = payload => dispatch => {
     dispatch({type: CHECK_MOVE_RESPONSE, payload});
 };
 
+export const incrementSeconds = () => dispatch => {
+    console.log('incrementSeconds action');
+    dispatch({type: INCREMENT_SECONDS });
+};
 // helper function to help stringify 
 const getCircularReplacer = () => {
     const seen = new WeakSet;

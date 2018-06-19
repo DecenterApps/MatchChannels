@@ -97,7 +97,7 @@ class UserList extends Component {
         const connection = connectPlayer(this.props.user.peer, user.webrtcId);
 
         connection.on('open', () => {
-            this.props.setConnection(connection);
+            this.props.setConnection(connection, user.webrtcId);
 
             connection.send({
                 type: 'challenge', 

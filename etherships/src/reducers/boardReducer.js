@@ -8,6 +8,7 @@ import {
     LOAD_BOARD, 
     RESET_BOARD,
     CHECK_MOVE_RESPONSE,
+    INCREMENT_SECONDS,
   } from '../constants/actionTypes';
 
 const INITIAL_STATE = {
@@ -49,6 +50,8 @@ const INITIAL_STATE = {
     opponentTree: [],
     yourMove: false,
     recentGuess: -1,
+    timer: 30,
+    seconds: 0,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -90,10 +93,15 @@ export default (state = INITIAL_STATE, action) => {
             }
 
         case SET_PLAYER_MOVE:
+
+            console.log('timer');
+
             return {
                 ...state,
                 yourMove: payload,
                 boardGuesses: state.boardGuesses.map(b => b === 1 ? 2 : b),
+                timer: 30,
+                seconds: 0,
             }
 
         case CHECK_MOVE:
@@ -141,6 +149,12 @@ export default (state = INITIAL_STATE, action) => {
                 // numHits: hits,
                 boardGuesses: newBoardGuesses,
             }
+
+        case INCREMENT_SECONDS:
+            return {
+                ...state,
+                seconds: ++state.seconds
+            };
 
 
         default:

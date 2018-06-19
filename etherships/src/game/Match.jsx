@@ -11,6 +11,7 @@ class Match extends Component {
 
     guess = () => {
         this.props.submitGuess(this.props.board.recentGuess);
+        console.log('submit guess');
     }
 
     componentDidMount() {
@@ -26,7 +27,7 @@ class Match extends Component {
 
     render() {
 
-        const { yourMove } = this.props.board;
+        const { yourMove, timer } = this.props.board;
 
         const yourHits = Array.from({length: this.props.board.numHits}, (_, k) => k++); 
 
@@ -75,7 +76,7 @@ class Match extends Component {
 
                     <div className="timer-area">
                         <div className="small-titles"> Turn: {yourMove ? 'Your turn!' : 'Opponents turn!'}</div>
-                        <Timer countdown={30} />
+                        <Timer countdown={timer} />
                     </div>
                 </div>
             </div>

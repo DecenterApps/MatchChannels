@@ -7,6 +7,14 @@ import './Board.css';
 
 class Field extends Component {
 
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            picked: false
+        };
+    }
+
     chooseYourFields = () => {
         const { numPicked, board } = this.props.board;
         const pos = this.props.id;
@@ -17,9 +25,14 @@ class Field extends Component {
     }
 
     guessOppponentField = () => {
-        const pos = this.props.id;
+        if (!this.state.picked) {
+            const pos = this.props.id;
+            this.props.guessField(pos);
 
-        this.props.guessField(pos);
+            this.setState({
+                picked: true,
+            });
+        }
     }
 
     render() {
@@ -43,7 +56,7 @@ class Field extends Component {
         } else if (boardGuesses[this.props.id] === 2) {
             guessFieldClass = 'field-miss';
         } else if(boardGuesses[this.props.id] === 3) {
-            guessFieldClass = 'field-hit';
+            guessFieldClass = 'field-hit-red';
         }
 
         if (type === 'setup') {
