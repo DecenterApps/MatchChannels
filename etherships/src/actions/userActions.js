@@ -12,7 +12,7 @@ import {
     } from '../constants/actionTypes';
 
 import { createPeer } from '../services/webrtcService';
-import { createUser, openChannel } from '../services/ethereumService';
+import { createUser } from '../services/ethereumService';
 
 import { browserHistory } from 'react-router';
 import short from 'short-uuid';
@@ -21,6 +21,9 @@ import ethers from 'ethers';
 
 export const newGame = (price) => (dispatch) => {
     dispatch({ type: NEW_GAME, payload: {price, session: createSession() } });
+
+    localStorage.removeItem('user');
+    localStorage.removeItem('board');
 
     browserHistory.push('/game');
 };

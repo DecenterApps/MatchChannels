@@ -198,7 +198,7 @@
 }
 
 .spinner-btn {
-  background: url(/static/media/spinner.435d79c1.svg) center center no-repeat;
+  background: url('../images/spinner.svg') center center no-repeat;
   border-radius: 7.28352px;
   font-family: Roboto;
   font-weight: bold;

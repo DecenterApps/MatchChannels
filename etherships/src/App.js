@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
 
-import { createPeer } from './services/webrtcService';
-
 import { connect } from 'react-redux';
 
 import { initAccount } from './actions/userActions';

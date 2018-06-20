@@ -8,6 +8,7 @@ import { SET_FIELD,
         RESET_BOARD,
         CHECK_MOVE_RESPONSE,
         INCREMENT_SECONDS,
+        TOGGLE_ENDGAME_MODAL,
         } from '../constants/actionTypes';
 
 import { generateTree } from '../services/boardService';
@@ -53,6 +54,14 @@ export const checkMove = pos => (dispatch, getState) => {
     state.user.connection.send({type: 'move-resp', result, pos });
 
     dispatch({ type: SET_PLAYER_MOVE, payload: true });
+
+    const numHits = getState().board.board.filter(b => b === 3).length;
+
+    console.log('numHits: ', numHits);
+
+    if (numHits >= 5) {
+        dispatch({type: TOGGLE_ENDGAME_MODAL});
+    }
 };
 
 export const submitGuess = payload => (dispatch, getState) => {
@@ -103,16 +112,39 @@ export const resetBoard = payload => (dispatch) => {
     dispatch({type: RESET_BOARD});
 };
 
-export const checkMoveResponse = payload => dispatch => {
+export const checkMoveResponse = payload => (dispatch, getState) => {
     if (payload.pos) {
+
         dispatch({type: CHECK_MOVE_RESPONSE, payload});
+
+        const numHits = getState().board.boardGuesses.filter(b => b === 3).length;
+
+        console.log('numHits: ', numHits);
+
+        if (numHits >= 5) {
+            dispatch({type: TOGGLE_ENDGAME_MODAL});
+        }
     }
 };
 
 export const incrementSeconds = () => dispatch => {
-    console.log('incrementSeconds action');
     dispatch({type: INCREMENT_SECONDS });
 };
+
+export const toggleEndGameModal = () => dispatch => {
+    dispatch({type: TOGGLE_ENDGAME_MODAL});
+};
+
+export const submitScore = () => dispatch => {
+
+    // call ethereum service 
+
+    localStorage.removeItem('user');
+    localStorage.removeItem('board');
+
+    browserHistory.push('/users');
+};
+
 // helper function to help stringify 
 const getCircularReplacer = () => {
     const seen = new WeakSet;

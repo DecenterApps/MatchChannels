@@ -5,22 +5,9 @@ import Modal from 'react-modal';
 
 import { newGame } from '../actions/userActions';
 
-import './Modal.css';
+import { customModalStyles } from '../constants/config';
 
-const customStyles = {
-    content : {
-      top                   : '50%',
-      left                  : '50%',
-      right                 : 'auto',
-      bottom                : 'auto',
-      marginRight           : '-50%',
-      transform             : 'translate(-50%, -50%)',
-      background: '#302E38'
-    },
-    overlay: {
-        backgroundColor: 'rgba(15, 13, 13, 0.8)',
-    }
-};
+import './Modal.css';
 
 class CreateGameModal extends Component {
 
@@ -47,7 +34,7 @@ class CreateGameModal extends Component {
                     isOpen={this.props.modalIsOpen}
                     onRequestClose={this.props.closeModal}
                     contentLabel="Create Game"
-                    style={customStyles}
+                    style={customModalStyles}
                 >
 
                     <div className="modal-content">

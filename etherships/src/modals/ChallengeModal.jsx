@@ -7,28 +7,12 @@ import { newGame } from '../actions/userActions';
 
 import './Modal.css';
 
-const customStyles = {
-    content : {
-      top                   : '50%',
-      left                  : '50%',
-      right                 : 'auto',
-      bottom                : 'auto',
-      marginRight           : '-50%',
-      transform             : 'translate(-50%, -50%)',
-      background: '#302E38'
-    },
-    overlay: {
-        backgroundColor: 'rgba(15, 13, 13, 0.8)',
-    }
-};
+import { customModalStyles } from '../constants/config';
+
 
 class ChallengeModal extends Component {
 
     clicked = () => {
-        console.log("Accepted");
-
-        console.log(this.props.user.connection);
-
         this.props.user.connection.send({type:'accepted', channelId: this.props.channelId, amount: this.props.amount});
 
         this.props.closeModal();
@@ -41,7 +25,7 @@ class ChallengeModal extends Component {
                     isOpen={this.props.modalIsOpen}
                     onRequestClose={this.props.closeModal}
                     contentLabel="Challenge"
-                    style={customStyles}
+                    style={customModalStyles}
                 >
 
                     <div className="modal-content">

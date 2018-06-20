@@ -82,7 +82,8 @@ export default (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 gameBetAmount: payload.price,
-                userWallet: payload.session.wallet
+                userWallet: payload.session.wallet,
+                opponentChannel: -1,
             };
 
         case CREATE_PEER:

@@ -58,6 +58,8 @@ class UserList extends Component {
         if (Object.keys(this.props.user.peer).length !== 0) {
             this.props.user.peer.on('connection', (_conn) => {
                 this.props.setConnection(_conn);
+
+                console.log('connection');
         
                 _conn.on('data', (res) => {
                     console.log(res);

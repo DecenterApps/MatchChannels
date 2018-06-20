@@ -9,6 +9,7 @@ import {
     RESET_BOARD,
     CHECK_MOVE_RESPONSE,
     INCREMENT_SECONDS,
+    TOGGLE_ENDGAME_MODAL,
   } from '../constants/actionTypes';
 
 const INITIAL_STATE = {
@@ -50,6 +51,9 @@ const INITIAL_STATE = {
     recentGuess: -1,
     timer: 30,
     seconds: 0,
+    endGameModal: false,
+    timeoutModal: false,
+    hitModal: false,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -109,8 +113,6 @@ export default (state = INITIAL_STATE, action) => {
                 b[payload] = 2;
             }
 
-            console.log('BOARD', b);
-
             return {
                 ...state,
                 board: b,
@@ -143,6 +145,12 @@ export default (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 seconds: ++state.seconds
+            };
+
+        case TOGGLE_ENDGAME_MODAL:
+            return {
+                ...state,
+                endGameModal: !state.endGameModal
             };
 
 
