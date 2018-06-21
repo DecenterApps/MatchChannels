@@ -8,6 +8,7 @@ import { SET_NAME,
         SET_CONNECTION,
         PICK_FIELDS,
         LOAD_USER,
+        SET_OPPONENT_ADDR,
         } from '../constants/actionTypes';
 
 const INITIAL_STATE = {
@@ -26,6 +27,7 @@ const INITIAL_STATE = {
     userWallet: {},
     registered: false,
     opponentChannel: -1,
+    opponentAddr: ""
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -33,6 +35,8 @@ export default (state = INITIAL_STATE, action) => {
 
     switch (type) {
         case SET_NAME:
+
+            console.log('wallet addr: ', payload.wallet.address);
 
             return {
                 ...state,
@@ -49,6 +53,8 @@ export default (state = INITIAL_STATE, action) => {
             }
 
         case REGISTERED:
+
+            console.log('wallet addr: ', payload.wallet.address);
 
             return {
                 ...state,
@@ -79,11 +85,12 @@ export default (state = INITIAL_STATE, action) => {
 
         case NEW_GAME:
 
+            console.log('wallet addr: ', payload.session.wallet.address);
+
             return {
                 ...state,
                 gameBetAmount: payload.price,
                 userWallet: payload.session.wallet,
-                opponentChannel: -1,
             };
 
         case CREATE_PEER:
@@ -99,15 +106,18 @@ export default (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 connection: payload.connection,
-                userWallet: payload.wallet
+                userWallet: payload.wallet || state.userWallet,
+                opponentChannel: payload.channelId || state.opponentChannel,
             };
 
         case PICK_FIELDS:
+            console.log('pick_fields: ', payload.channelId);
 
             return {
                 ...state,
                 opponentChannel: payload.channelId,
-                gameBetAmount: payload.amount
+                gameBetAmount: payload.amount,
+                opponentAddr: payload.addr,
             };
 
         case LOAD_USER:
@@ -116,6 +126,13 @@ export default (state = INITIAL_STATE, action) => {
                 ...state,
                 ...payload,
             };
+
+        case SET_OPPONENT_ADDR:
+            return {
+                ...state,
+                opponentAddr: payload.addr,
+                opponentChannel: payload.id,
+            }
 
         default:
             return {

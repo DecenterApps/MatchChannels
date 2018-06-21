@@ -7,11 +7,22 @@ import { customModalStyles } from '../constants/config';
 
 import { submitScore } from '../actions/boardActions';
 
+import { closeChannel } from '../services/ethereumService';
+
 import './Modal.css';
 
 class EndGameModal extends Component {
 
-    submit = () => {
+    submit = async () => {
+
+        console.log(this.props);
+
+        const res = await closeChannel(this.props.user.opponentChannel, 
+                                       this.props.board.signatureNumOfGuesses, 
+                                       this.props.board.numOfGuesses);
+
+        console.log(res);
+
         this.props.submitScore();
     }
 

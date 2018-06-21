@@ -6,13 +6,11 @@ import { connectPlayer } from '../services/webrtcService';
 
 import ChallengeModal from '../modals/ChallengeModal';
 
-import { setConnection, pickFields } from '../actions/userActions';
+import { setConnection, pickFields, setOpponentAddr } from '../actions/userActions';
 
 import { checkMove, checkMoveResponse } from '../actions/boardActions';
 
 import { browserHistory } from 'react-router';
-
-import { REFRESH_LOBBY_TIME } from '../constants/config';
 
 import './UserList.css';
 
@@ -28,6 +26,7 @@ class UserList extends Component {
             amount: -1,
             channelId: -1,
             timer: null,
+            addr: "",
         };
 
         this.openModal = this.openModal.bind(this);
@@ -69,10 +68,14 @@ class UserList extends Component {
                         this.setState({
                             username: res.username,
                             channelId: res.channelId,
-                            amount: res.amount
+                            amount: res.amount,
+                            addr: res.addr,
                         });
 
                         this.openModal();
+
+                        this.props.setOpponentAddr(res.addr, res.channelId);
+
                     } else if(res.type === 'start_game') {
                         browserHistory.push('/match');
                     } else if(res.type === 'move') {
@@ -99,19 +102,23 @@ class UserList extends Component {
         const connection = connectPlayer(this.props.user.peer, user.webrtcId);
 
         connection.on('open', () => {
-            this.props.setConnection(connection, user.webrtcId);
+            this.props.setConnection(connection, user.webrtcId, user.channelId.valueOf());
 
             connection.send({
                 type: 'challenge', 
                 channelId: user.channelId.valueOf(), 
                 username: this.props.user.userName,
-                amount: user.amount.valueOf()
+                amount: user.amount.valueOf(),
+                addr: window.account,
             });
 
             connection.on('data', (res) => {
                 console.log(res);
                 if (res.type === 'accepted') {
-                    this.props.pickFields(res.channelId, res.amount);
+
+                    console.log("Address: ", res.addr);
+
+                    this.props.pickFields(res.channelId, res.amount, res.addr);
                 } else if(res.type === 'move') {
                     connection.send({type: 'move-resp', result: true});
 
@@ -132,6 +139,7 @@ class UserList extends Component {
                         username={ this.state.username } 
                         channelId={ this.state.channelId }
                         amount={ this.state.amount }
+                        addr={ this.state.addr }
                         closeModal={ this.closeModal }
                     />
                     <div className="user-list">
@@ -167,6 +175,7 @@ const mapDispatchToProps = {
     pickFields,
     checkMove,
     checkMoveResponse,
+    setOpponentAddr,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserList);

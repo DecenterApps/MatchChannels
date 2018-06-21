@@ -13,7 +13,12 @@ import { customModalStyles } from '../constants/config';
 class ChallengeModal extends Component {
 
     clicked = () => {
-        this.props.user.connection.send({type:'accepted', channelId: this.props.channelId, amount: this.props.amount});
+        this.props.user.connection.send({
+            type:'accepted', 
+            channelId: this.props.channelId, 
+            amount: this.props.amount, 
+            addr: window.account,
+        });
 
         this.props.closeModal();
     }

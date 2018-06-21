@@ -9,7 +9,9 @@ import {
     RESET_BOARD,
     CHECK_MOVE_RESPONSE,
     INCREMENT_SECONDS,
-    TOGGLE_ENDGAME_MODAL,
+    OPEN_ENDGAME_MODAL,
+    CLOSE_ENDGAME_MODAL,
+    SET_GUESSES_SIG,
   } from '../constants/actionTypes';
 
 const INITIAL_STATE = {
@@ -44,7 +46,7 @@ const INITIAL_STATE = {
     nonces: [],
     hashedBoard: [],
     numPicked: 0,
-    numGuesses: 0,
+    sequence: 0,
     onContract: false,
     opponentTree: [],
     yourMove: false,
@@ -54,6 +56,8 @@ const INITIAL_STATE = {
     endGameModal: false,
     timeoutModal: false,
     hitModal: false,
+    numOfGuesses: 0,
+    signatureNumOfGuesses: "",
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -102,6 +106,7 @@ export default (state = INITIAL_STATE, action) => {
                 boardGuesses: state.boardGuesses.map(b => b === 1 ? 2 : b),
                 timer: 30,
                 seconds: 0,
+                sequence: ++state.sequence,
             }
 
         case CHECK_MOVE:
@@ -147,11 +152,27 @@ export default (state = INITIAL_STATE, action) => {
                 seconds: ++state.seconds
             };
 
-        case TOGGLE_ENDGAME_MODAL:
+        case CLOSE_ENDGAME_MODAL:
             return {
                 ...state,
-                endGameModal: !state.endGameModal
+                endGameModal: false,
             };
+
+        case OPEN_ENDGAME_MODAL:
+            return {
+                ...state,
+                endGameModal: true,
+            };
+
+        case SET_GUESSES_SIG:
+        
+            console.log('setting guess sig: ', payload);
+
+            return {
+                ...state,
+                numGuesses: payload.numOfGuesses,
+                numGuessesSignature: payload.signatureNumOfGuesses
+            }
 
 
         default:

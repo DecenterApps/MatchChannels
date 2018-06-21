@@ -18,8 +18,12 @@ export const createPeer = (peerId) => {
 
           peer.on('error', (err) => {
             console.log('error', err);
-    
-            localStorage.setItem('peer', short.uuid());
+
+            if (err.message.indexOf('Lost connection') !== -1) {
+                localStorage.setItem('peer', peerId);
+            } else {
+                localStorage.setItem('peer', short.uuid());
+            }
 
             browserHistory.push('/');
           });

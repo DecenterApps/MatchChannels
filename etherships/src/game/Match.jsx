@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { submitGuess, toggleModal } from '../actions/boardActions';
+import { submitGuess, openModal, closeEndGameModal } from '../actions/boardActions';
 
 import Board from './Board';
 import Timer from './Timer';
@@ -26,8 +26,8 @@ class Match extends Component {
         }
     }
 
-    toggleModal = () => {
-        this.props.toggleEndGameModal();
+    closeEndGameModal = () => {
+        this.props.closeEndGameModal();
     }
 
     render() {
@@ -46,7 +46,7 @@ class Match extends Component {
                     battleship
                 </div>
 
-                <EndGameModal modalIsOpen={ this.props.board.endGameModal } closeModal={ this.toggleModal }/>
+                <EndGameModal modalIsOpen={ this.props.board.endGameModal } closeModal={ this.closeEndGameModal }/>
 
 
                 {
@@ -116,7 +116,8 @@ const mapStateToProps = (props) => ({
 
 const mapDispatchToProps = {
     submitGuess,
-    toggleModal,
+    openModal,
+    closeEndGameModal,
 };
   
 export default connect(mapStateToProps, mapDispatchToProps)(Match);

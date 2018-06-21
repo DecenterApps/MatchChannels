@@ -47,13 +47,19 @@ export const withdraw = async (amount) => {
     return res;
 };
 
+export const getSignerAddress = async (addr) => {
+    const res = await window.ethershipContract.signAddresses(addr);
+
+    return res;
+}
+
 export const getUser = async (addr) => {
     const isReg = await window.ethershipContract.players(addr);
 
     isReg[1] = window.web3.fromWei(isReg[1], 'ether');
 
     return isReg;
-}
+};
 
 export const getJoinedChannels = async (blockNum) => 
     new Promise((resolve, reject) => {            

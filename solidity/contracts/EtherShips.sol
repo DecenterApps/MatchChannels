@@ -18,12 +18,14 @@ contract EtherShips is Players, ECTools {
 		bool finished;
 	}
 
-	event OpenChannel(uint channelId, bytes32 root, string webrtcId, uint amount, string username);
+	event OpenChannel(uint channelId, bytes32 root, string webrtcId, uint amount, string username, address addr);
 	event JoinChannel(uint channelId, bytes32 root, string webrtcId, uint amount);
 	event CloseChannel(uint channelId, address player, bool finished);
 
+	event Log(address addr1, address addr2, bytes32 hash);
+
 	Channel[] public channels;
-	mapping(address => address) signAddresses;
+	mapping(address => address) public signAddresses;
 
 	function openChannel(bytes32 _merkleRoot, string _webrtcId, uint _amount, address _signAddress) payable public {
 		require(players[msg.sender].exists);
@@ -44,7 +46,7 @@ contract EtherShips is Players, ECTools {
 		c.stake = _amount;
 		c.p1root = _merkleRoot;
 
-        emit OpenChannel(_channelId, _merkleRoot, _webrtcId, _amount, players[msg.sender].username);
+        emit OpenChannel(_channelId, _merkleRoot, _webrtcId, _amount, players[msg.sender].username, msg.sender);
     }
     
     function joinChannel(uint _channelId, bytes32 _merkleRoot, string _webrtcId, uint _amount, address _signAddress) payable public {
@@ -82,7 +84,9 @@ contract EtherShips is Players, ECTools {
     	address opponent = channels[_channelId].p1 == msg.sender ? channels[_channelId].p2 : channels[_channelId].p1;
     	bytes32 hash = keccak256(abi.encodePacked(_channelId, msg.sender, _numberOfGuesses));
 
-    	require(_recoverSig(hash, _sig) == signAddresses[opponent]);
+		emit Log(_recoverSig(hash, _sig), signAddresses[opponent], hash);
+
+       //require(_recoverSig(hash, _sig) == signAddresses[opponent]);
 
     	if (channels[_channelId].halfFinisher != address(0)) {
     		// one player already submitted score

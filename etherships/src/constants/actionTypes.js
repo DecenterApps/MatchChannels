@@ -12,7 +12,9 @@ export const LOAD_BOARD = 'load_board';
 export const RESET_BOARD = 'reset_board';
 export const CHECK_MOVE_RESPONSE = 'check_move_response';
 export const INCREMENT_SECONDS = 'increment_seconds';
-export const TOGGLE_ENDGAME_MODAL = 'toggle_endgame_modal';
+export const CLOSE_ENDGAME_MODAL = 'close_endgame_modal';
+export const OPEN_ENDGAME_MODAL = 'open_endgame_modal';
+export const SET_GUESSES_SIG = 'set_guesses_sig';
 
 // User reducer
 export const EDIT_NAME = 'edit_name';
@@ -26,3 +28,4 @@ export const SET_CONNECTION = 'set_connection';
 export const PICK_FIELDS = 'pick_fields';
 export const LOAD_USER = 'load_user';
 export const RESET_CHANNEL = 'reset_channel';
+export const SET_OPPONENT_ADDR = 'set_opponent_addr';

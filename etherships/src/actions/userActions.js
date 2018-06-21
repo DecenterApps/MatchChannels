@@ -9,6 +9,7 @@ import {
     PICK_FIELDS,
     LOAD_USER,
     RESET_CHANNEL,
+    SET_OPPONENT_ADDR,
     } from '../constants/actionTypes';
 
 import { createPeer } from '../services/webrtcService';
@@ -89,15 +90,17 @@ export const initAccount = () => (dispatch) =>  {
     dispatch({ type: CREATE_PEER, payload: {peer, peerId} });
 };
 
-export const setConnection = (connection) => (dispatch) => {
+export const setConnection = (connection, channelId) => (dispatch) => {
+
+    console.log('channel  ', channelId);
 
     const wallet = ethers.Wallet.createRandom();
 
-    dispatch({ type: SET_CONNECTION, payload: {connection, wallet} });
+    dispatch({ type: SET_CONNECTION, payload: {connection, wallet, channelId} });
 };
 
-export const pickFields = (channelId, amount) => (dispatch) => {
-    dispatch({ type: PICK_FIELDS, payload: {channelId, amount} });
+export const pickFields = (channelId, amount, addr) => (dispatch) => {
+    dispatch({ type: PICK_FIELDS, payload: {channelId, amount, addr} });
 
     browserHistory.push('/game');
 };
@@ -105,6 +108,10 @@ export const pickFields = (channelId, amount) => (dispatch) => {
 export const resetChannel = () => (dispatch) => {
     dispatch({ type: RESET_CHANNEL});
 };
+
+export const setOpponentAddr = (addr, id) => (dispatch) => {
+    dispatch({type: SET_OPPONENT_ADDR, payload: {addr, id} });
+}
 
 function createSession() {
 
