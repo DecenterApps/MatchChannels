@@ -90,12 +90,18 @@ export default (state = INITIAL_STATE, action) => {
 
         case GUESS_FIELD:
             let newBoard = state.boardGuesses;
+
+            // reset the previous selected field
+            if (state.recentGuess !== -1) {
+                newBoard[state.recentGuess] = 0;
+            }
+
             newBoard[payload] = 1;
 
             return {
                 ...state,
                 boardGuesses: newBoard,
-                recentGuess: payload
+                recentGuess: payload,
             }
 
         case SET_PLAYER_MOVE:
@@ -107,6 +113,7 @@ export default (state = INITIAL_STATE, action) => {
                 timer: 30,
                 seconds: 0,
                 sequence: ++state.sequence,
+                recentGuess: -1,
             }
 
         case CHECK_MOVE:
