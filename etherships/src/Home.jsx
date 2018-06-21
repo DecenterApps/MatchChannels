@@ -15,7 +15,7 @@ class Home extends Component {
     console.log(this.props.board);
 
     return(
-      <main className="container">
+      <main>
         <div>
             {
               !registered && 

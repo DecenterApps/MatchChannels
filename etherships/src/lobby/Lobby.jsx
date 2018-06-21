@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import './UserList';
 import UserList from './UserList';
 import CreateGameModal from '../modals/CreateGameModal';
+import { browserHistory } from 'react-router/lib';
 
 class Lobby extends Component {
 
@@ -26,23 +27,38 @@ class Lobby extends Component {
         this.setState({modalIsOpen: false});
     }
 
+    gotoProfile = () => {
+        browserHistory.push('/profile');
+    }
+
     render() {
 
         const { userName } = this.props.user;
 
         return (
-            <div className='container'>
-                <div className='title'>
-                    battleship
-                </div>
-                <div className="user-list-item">
-                    <span className='user-list-name'> { userName } </span>
-                    <button className='user-list-btn' onClick={this.openModal}>Create Game</button>
-                </div>
+            <div>
+                <div className="lobby-header">
+                        <span className='title'>
+                            battleship
+                        </span>
 
-                <CreateGameModal modalIsOpen={ this.state.modalIsOpen } closeModal={ this.closeModal }/>
+                            <button className='btn-profile' onClick={this.gotoProfile}>Profile</button>
 
-                <UserList />
+                    </div>
+
+                <div className='container'>
+
+                    <div>
+                        <div className="user-list-item">
+                            <span className='user-list-name'> { userName } </span>
+                            <button className='user-list-btn' onClick={this.openModal}>Create Game</button>
+                        </div>
+
+                        <CreateGameModal modalIsOpen={ this.state.modalIsOpen } closeModal={ this.closeModal }/>
+
+                        <UserList />
+                    </div>
+                </div>
             </div>
         );
     }

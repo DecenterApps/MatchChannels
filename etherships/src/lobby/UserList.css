@@ -1,4 +1,5 @@
-                                         @import url('https://fonts.googleapis.com/css?family=Boogaloo');
+ @import url('https://fonts.googleapis.com/css?family=Boogaloo');
+ @import url('https://fonts.googleapis.com/css?family=Roboto');
 
 .userItem {
     font-size: 10px;
@@ -78,6 +79,21 @@ input {
     text-align: center; 
  }
 
+ .lobby-header {
+     position: relative;
+     width: 80%;
+     display: flex;
+     margin: 0 auto;
+    align-items: center;
+    justify-content: center;
+ }
+
+ .lobby-header button {
+    position: absolute;
+    right: 0;
+    bottom: 5px;
+}
+
  .user-list {
     background: #302E38;
     border-radius: 10px;
@@ -103,6 +119,21 @@ input {
 .user-list-body {
     overflow: scroll;
     height: 350px;
+}
+
+.btn-profile {
+    background: #73B816;
+    border-radius: 6.26484px;
+    font-family: Roboto;
+    font-weight: bold;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: #FFFFFF;
+    border: none;
+    width: 120px;
+    padding: 8px;
+    box-shadow: 0px 5px #5D9314;
+    font-size: 14px;
 }
 
 .user-list-item {
