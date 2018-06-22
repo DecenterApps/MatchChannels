@@ -10,7 +10,6 @@ import { SET_FIELD,
         INCREMENT_SECONDS,
         OPEN_ENDGAME_MODAL,
         CLOSE_ENDGAME_MODAL,
-        SET_GUESSES_SIG,
         } from '../constants/actionTypes';
 
 import { generateTree, checkGuess } from '../services/boardService';
@@ -57,7 +56,9 @@ export const checkMove = pos => (dispatch, getState) => {
 
     const numHits = getState().board.board.filter(b => b === 3).length;
 
-    console.log('numHits: ', numHits);
+    console.log(getState().board.board);
+
+    console.log('CheckMove numHits: ', numHits);
 
     if (numHits >= 5) {
         dispatch({type: OPEN_ENDGAME_MODAL});
@@ -129,12 +130,11 @@ export const resetBoard = payload => (dispatch) => {
 
 export const checkMoveResponse = payload => async (dispatch, getState) => {
     if (payload.pos) {
-        dispatch({type: SET_GUESSES_SIG, payload: payload.data});
         dispatch({type: CHECK_MOVE_RESPONSE, payload});
 
         const numHits = getState().board.boardGuesses.filter(b => b === 3).length;
 
-        console.log('numHits: ', numHits);
+        console.log('Response numHits: ', numHits);
 
         if (numHits >= 5) {
             dispatch({type: OPEN_ENDGAME_MODAL});

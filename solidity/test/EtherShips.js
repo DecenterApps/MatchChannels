@@ -221,8 +221,6 @@ contract('Ether Ships', async (accounts) => {
     const hash1 = keccak256(channelId, user1, 3);
     const hash2 = keccak256(channelId, user2, 5);
 
-    console.log(keccak256(12, '0x93cdb0a93fc36f6a53ed21ecf6305ab80d06beca', 1));
-
     const res1 = await etherShips.closeChannel(
       channelId,
       wallet2.signMessage(ethers.utils.arrayify(hash1)),

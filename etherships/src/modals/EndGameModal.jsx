@@ -15,7 +15,9 @@ class EndGameModal extends Component {
 
     submit = async () => {
 
-        console.log(this.props);
+        console.log(this.props.user.opponentChannel, 
+            this.props.board.signatureNumOfGuesses, 
+            this.props.board.numOfGuesses);
 
         const res = await closeChannel(this.props.user.opponentChannel, 
                                        this.props.board.signatureNumOfGuesses, 

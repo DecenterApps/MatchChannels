@@ -11,20 +11,10 @@ import {
     INCREMENT_SECONDS,
     OPEN_ENDGAME_MODAL,
     CLOSE_ENDGAME_MODAL,
-    SET_GUESSES_SIG,
   } from '../constants/actionTypes';
 
 const INITIAL_STATE = {
     board: [  
-        0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 
-        0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0],
-    opponentBoard: [
         0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 
         0, 0, 0, 0, 0, 0, 0, 0,
@@ -120,6 +110,7 @@ export default (state = INITIAL_STATE, action) => {
             const b = state.board;
 
             if (b[payload] === 1) {
+                console.log('Setujemo pogodak: ', payload);
                 b[payload] = 3;
             } else if(b[payload] === 0) {
                 b[payload] = 2;
@@ -144,13 +135,14 @@ export default (state = INITIAL_STATE, action) => {
             let newBoardGuesses = state.boardGuesses;
 
             if (payload.result) {
-                console.log('Setting newBoard', payload);
                 newBoardGuesses[payload.pos] = 3;
             }
 
             return {
                 ...state,
                 boardGuesses: newBoardGuesses,
+                numOfGuesses: payload.data.numOfGuesses,
+                signatureNumOfGuesses: payload.data.signatureNumOfGuesses,
             }
 
         case INCREMENT_SECONDS:
@@ -170,17 +162,6 @@ export default (state = INITIAL_STATE, action) => {
                 ...state,
                 endGameModal: true,
             };
-
-        case SET_GUESSES_SIG:
-        
-            console.log('setting guess sig: ', payload);
-
-            return {
-                ...state,
-                numGuesses: payload.numOfGuesses,
-                numGuessesSignature: payload.signatureNumOfGuesses
-            }
-
 
         default:
             return {

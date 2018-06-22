@@ -12,15 +12,23 @@ import { customModalStyles } from '../constants/config';
 
 class ChallengeModal extends Component {
 
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            waiting: false,
+        };
+    }
+
     clicked = () => {
         this.props.user.connection.send({
-            type:'accepted', 
+            type:'accepted',
             channelId: this.props.channelId, 
             amount: this.props.amount, 
             addr: window.account,
         });
 
-        this.props.closeModal();
+        this.setState({ waiting: true });
     }
 
     render() {
@@ -33,14 +41,30 @@ class ChallengeModal extends Component {
                     style={customModalStyles}
                 >
 
-                    <div className="modal-content">
-                        <div className="modal-title">
-                            You were challenged by { this.props.username }
+                    {
+                        !this.state.waiting && 
+                        <div className="modal-content">
+                            <div className="modal-title">
+                                You were challenged by { this.props.username }
+                            </div>
+
+                            <button className="modal-create-btn" onClick={this.clicked}>Accept</button>
+
                         </div>
+                    }
 
-                        <button className="modal-create-btn" onClick={this.clicked}>Accept</button>
+                    {
+                        this.state.waiting && 
+                        <div className="modal-content">
+                            <div className="modal-title">
+                                Waiting for the user to start the match...
+                            </div>
 
-                    </div>
+                            <div className="spinner-btn">
+                            </div>
+
+                        </div>
+                    }
                   
                     </Modal>
         );

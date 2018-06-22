@@ -56,6 +56,8 @@ export const getSignerAddress = async (addr) => {
 export const getUser = async (addr) => {
     const isReg = await window.ethershipContract.players(addr);
 
+    console.log(isReg[1].valueOf());
+
     isReg[1] = window.web3.fromWei(isReg[1], 'ether');
 
     return isReg;
