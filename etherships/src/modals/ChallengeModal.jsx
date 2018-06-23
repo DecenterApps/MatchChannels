@@ -57,11 +57,10 @@ class ChallengeModal extends Component {
                         this.state.waiting && 
                         <div className="modal-content">
                             <div className="modal-title">
-                                Waiting for the user to start the match...
+                                Waiting for your opponent..
                             </div>
 
-                            <div className="spinner-btn">
-                            </div>
+                            <div className="lds-ring"><div></div><div></div><div></div><div></div></div>
 
                         </div>
                     }

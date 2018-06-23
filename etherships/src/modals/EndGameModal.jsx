@@ -40,12 +40,12 @@ class EndGameModal extends Component {
                 contentLabel="Game Finished"
                 style={customModalStyles}>
 
-                    <div className="modal-content">
-                        <div className="modal-title">
+                    <div className="modal-content end-game-content">
+                        <div className="modal-small-title">
                             game finished
                         </div>
 
-                        <div className="modal-title">
+                        <div className="modal-title end-game-title">
                             score
                         </div>
 
@@ -54,6 +54,10 @@ class EndGameModal extends Component {
                         </div>
 
                         <button className="modal-create-btn" onClick={this.submit}>submit</button>
+
+                        <div className="modal-warning-text">
+                            You must submit the score to close the channel!
+                        </div>
 
                     </div>
             </Modal>

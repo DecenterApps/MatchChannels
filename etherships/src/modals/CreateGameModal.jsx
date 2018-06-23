@@ -37,7 +37,7 @@ class CreateGameModal extends Component {
                     style={customModalStyles}
                 >
 
-                    <div className="modal-content">
+                    <div className="modal-content create-game-modal">
                         <div className="modal-title">
                             create game
                         </div>

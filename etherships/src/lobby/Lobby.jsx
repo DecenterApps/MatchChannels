@@ -38,15 +38,17 @@ class Lobby extends Component {
         return (
             <div>
                 <div className="lobby-header">
-                    <span className='title'>
-                        battleship
-                    </span>
+                    <div className='logo'>
+                        
+                    </div>
 
                     <button className='btn-profile' onClick={this.gotoProfile}>Profile</button>
                 </div>
 
-                <div className='container'>
-                    <div>
+                <div className='lobby-container'>
+                    <div className="left-ship"></div>
+
+                    <div className='lobby-list'>
                         <div className="user-list-item">
                             <span className='user-list-name'> { userName } </span>
                             <button className='user-list-btn' onClick={this.openModal}>Create Game</button>
@@ -55,7 +57,10 @@ class Lobby extends Component {
                         <CreateGameModal modalIsOpen={ this.state.modalIsOpen } closeModal={ this.closeModal }/>
 
                         <UserList />
+
                     </div>
+
+                    <div className="right-ship"> </div>
                 </div>
             </div>
         );

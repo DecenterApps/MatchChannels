@@ -20,9 +20,11 @@ export const customModalStyles = {
       bottom                : 'auto',
       marginRight           : '-50%',
       transform             : 'translate(-50%, -50%)',
-      background: '#302E38'
+      background: '#302E38',
+      border: 'none',
+      borderRadius: '10px',
     },
     overlay: {
-        backgroundColor: 'rgba(15, 13, 13, 0.8)',
+        backgroundColor: 'rgba(15, 13, 13, 0.9)',
     }
 };

@@ -17,7 +17,7 @@ class Home extends Component {
         <div>
             {
               !registered && 
-                <div>
+                <div className="home-content">
 
                     <div className="title-front"> battleship</div>
                     <div>
