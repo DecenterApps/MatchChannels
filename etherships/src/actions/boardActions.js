@@ -13,7 +13,7 @@ import { SET_FIELD,
         } from '../constants/actionTypes';
 
 import { generateTree, checkGuess } from '../services/boardService';
-import { openChannel, joinChannel, closeChannel } from '../services/ethereumService';
+import { openChannel, joinChannel } from '../services/ethereumService';
 import { getRoot } from '../util/merkel';
 
 import { browserHistory } from 'react-router'
@@ -26,8 +26,7 @@ export const guessField = payload => (dispatch) => {
     dispatch({ type: GUESS_FIELD, payload });
 };
 
-export const initBoard = payload => (dispatch) => {
-
+export const initBoard = () => (dispatch) => {
     let board = localStorage.getItem('board');
 
     if (board) {
@@ -35,49 +34,6 @@ export const initBoard = payload => (dispatch) => {
     }
 
     dispatch({ type: LOAD_BOARD, payload: board || {} });
-};
-
-export const checkMove = pos => (dispatch, getState) => {
-    console.log('check move');
-
-    const state = getState();
-
-    let result = false;
-
-    // check if user hit your ship
-    if (state.board.board[pos] === 1) {
-        result = true;
-    }
-
-    // reset your turn
-    dispatch({ type: CHECK_MOVE, payload: pos });
-
-    dispatch({ type: SET_PLAYER_MOVE, payload: true });
-
-    const numHits = getState().board.board.filter(b => b === 3).length;
-
-    console.log(getState().board.board);
-
-    console.log('CheckMove numHits: ', numHits);
-
-    if (numHits >= 5) {
-        dispatch({type: OPEN_ENDGAME_MODAL});
-    }
-
-    const channelId = state.user.opponentChannel;
-    const merkelTree = state.board.tree;
-    const hashedFields = state.board.hashedBoard;
-    const nonces = state.board.nonces;
-    const sequence = state.board.sequence;
-    const addr = state.user.opponentAddr;
-
-    console.log(channelId, pos, merkelTree, hashedFields, nonces, sequence, numHits, addr);
-
-    const data = checkGuess(state, channelId, pos, merkelTree, hashedFields, nonces, sequence, numHits, addr);
-
-    console.log(data);
-
-    state.user.connection.send({type: 'move-resp', result, pos, data });
 };
 
 export const submitGuess = payload => (dispatch, getState) => {
@@ -94,20 +50,15 @@ export const generateBoard = (board) => async (dispatch, getState) => {
     dispatch({ type: CREATE_TREE, payload });
 
     let state = getState();
-
     const walletAddress = state.user.userWallet.address;
-
-    console.log(getRoot(state.board.tree), state.user.peerId, walletAddress, state.user.gameBetAmount);
 
     if(state.user.opponentChannel === -1) {
         await openChannel(getRoot(state.board.tree), state.user.peerId, walletAddress, state.user.gameBetAmount);
 
-        dispatch({type : ON_CONTRACT, payload: null});
+        dispatch({type: ON_CONTRACT});
 
         browserHistory.push('/users');
     } else {
-        console.log('join channel');
-
         await joinChannel(state.user.opponentChannel, getRoot(state.board.tree), state.user.peerId, walletAddress, state.user.gameBetAmount);
 
         dispatch({ type: SET_PLAYER_MOVE, payload: true });
@@ -118,16 +69,53 @@ export const generateBoard = (board) => async (dispatch, getState) => {
         browserHistory.push('/match');
     }
 
-    delete state.user.peer;
+    // delete state.user.peer;
 
+    // save data to localStorage so we don't lose it on refresh
     localStorage.setItem('user', JSON.stringify(state.user, getCircularReplacer()));
     localStorage.setItem('board', JSON.stringify(state.board, getCircularReplacer()))
 };
 
-export const resetBoard = payload => (dispatch) => {
-    dispatch({type: RESET_BOARD});
+// this is called when we receive a guess from the opponent
+export const checkMove = pos => (dispatch, getState) => {
+    let state = getState();
+
+    let result = false;
+
+    // check if user hit your ship
+    if (state.board.board[pos] === 1) {
+        result = true;
+    }
+
+    // reset your turn
+    dispatch({ type: CHECK_MOVE, payload: pos });
+    dispatch({ type: SET_PLAYER_MOVE, payload: true });
+
+    // get the updated state
+    state = getState();
+
+    const numHits = state.board.boardGuesses.filter(b => b === 3).length;
+
+    console.log('board: ', state.board.board, " board guess: ", state.board.boardGuesses);
+
+    if (state.board.board.filter(b => b === 3).length >= 5) {
+        dispatch({type: OPEN_ENDGAME_MODAL});
+    }
+
+    const channelId = state.user.opponentChannel;
+    const merkelTree = state.board.tree;
+    const hashedFields = state.board.hashedBoard;
+    const nonces = state.board.nonces;
+    const sequence = state.board.sequence;
+    const addr = state.user.opponentAddr;
+
+    const data = checkGuess(state, channelId, pos, merkelTree, hashedFields, nonces, sequence, numHits, addr);
+
+    // send the result to the opponent
+    state.user.connection.send({type: 'move-resp', result, pos, data });
 };
 
+// this is called when the opponent responds to your guess
 export const checkMoveResponse = payload => async (dispatch, getState) => {
     if (payload.pos) {
         dispatch({type: CHECK_MOVE_RESPONSE, payload});
@@ -140,6 +128,10 @@ export const checkMoveResponse = payload => async (dispatch, getState) => {
             dispatch({type: OPEN_ENDGAME_MODAL});
         }
     }
+};
+
+export const resetBoard = () => (dispatch) => {
+    dispatch({type: RESET_BOARD});
 };
 
 export const incrementSeconds = () => dispatch => {
@@ -155,17 +147,14 @@ export const closeEndGameModal = () => dispatch => {
 };
 
 
-export const submitScore = () => dispatch => {
-
-    // call ethereum service 
-
+export const submitScore = () => () => {
     localStorage.removeItem('user');
     localStorage.removeItem('board');
 
     browserHistory.push('/users');
 };
 
-// helper function to help stringify 
+// helper function to help stringify deal with circual referencing in json
 const getCircularReplacer = () => {
     const seen = new WeakSet;
     return (key, value) => {

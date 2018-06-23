@@ -21,17 +21,17 @@ import short from 'short-uuid';
 import ethers from 'ethers';
 
 export const newGame = (price) => (dispatch) => {
-    dispatch({ type: NEW_GAME, payload: {price, session: createSession() } });
+    dispatch({ type: NEW_GAME, payload: {price, session: createWallet() } });
 
+    // remove data stored from the previous game
     localStorage.removeItem('user');
     localStorage.removeItem('board');
 
     browserHistory.push('/game');
 };
 
-export const setName = ({ target }) => (dispatch) => {
-
-    dispatch({ type: SET_NAME, payload: createSession() });
+export const setName = () => (dispatch) => {
+    dispatch({ type: SET_NAME, payload: createWallet() });
 
     browserHistory.push('/game');
 };
@@ -41,23 +41,21 @@ export const editName = ({ target }) => (dispatch) => {
 };
 
 export const editPrice = ({ target }) => (dispatch) => {
-    console.log(target.value);
-
     dispatch({ type: EDIT_PRICE, payload: target.value });
 };
 
-export const register = ({ target }) => async (dispatch, getState) => {
+export const register = () => async (dispatch, getState) => {
     const state = getState();
 
     await createUser(state.user.userNameEdit, state.user.priceEdit);
 
-    dispatch({ type: REGISTERED, payload: createSession() });
+    dispatch({ type: REGISTERED, payload: createWallet() });
 
     browserHistory.push('/users');
 };
 
+// gets called on each refresh recreate data from localstorage
 export const initAccount = () => (dispatch) =>  {
-
     let peerId = localStorage.getItem('peer');
 
     if(!peerId) {
@@ -69,7 +67,6 @@ export const initAccount = () => (dispatch) =>  {
     const peer = createPeer(peerId);
 
     let user = localStorage.getItem("user");
-
 
     const userWallet = ethers.Wallet.createRandom();
     
@@ -83,17 +80,12 @@ export const initAccount = () => (dispatch) =>  {
         user = { userWallet };
     }
 
-    console.log(user);
-
     dispatch({ type: LOAD_USER, payload: user});
-
     dispatch({ type: CREATE_PEER, payload: {peer, peerId} });
 };
 
+// sets the webrtc connection data to the reducer
 export const setConnection = (connection, channelId) => (dispatch) => {
-
-    console.log('channel  ', channelId);
-
     const wallet = ethers.Wallet.createRandom();
 
     dispatch({ type: SET_CONNECTION, payload: {connection, wallet, channelId} });
@@ -113,11 +105,8 @@ export const setOpponentAddr = (addr, id) => (dispatch) => {
     dispatch({type: SET_OPPONENT_ADDR, payload: {addr, id} });
 }
 
-function createSession() {
-
-    const wallet = ethers.Wallet.createRandom();
-
+function createWallet() {
     return {
-        wallet
+        wallet: ethers.Wallet.createRandom()
     };
 }
