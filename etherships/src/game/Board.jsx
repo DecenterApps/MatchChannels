@@ -21,6 +21,8 @@ class Board extends Component {
         };
     }
 
+    //TODO: this is an animation of the other user selecting your fields while you wait your turn
+    //Had an issue with unmounted component in setState
     // componentDidMount() {
     //     const interval = setInterval(() => {
     //         const selectedField  = getRandomInt(63);

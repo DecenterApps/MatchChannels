@@ -3,8 +3,6 @@ import ethers from 'ethers';
 
 import { createMerkel, keccak256 } from '../util/merkel';
 
-import { getSignerAddress } from './ethereumService';
-
 export const generateTree = (board) => {
     const elements = board.map(((type, i) => ([i, type, getRandomInt(Number.MAX_SAFE_INTEGER)])));
     const elementsHashed = elements.map(e => keccak256(...e));
@@ -22,7 +20,6 @@ export const generateTree = (board) => {
 
 export const checkGuess = (state, channelId, pos, merkleTree, hashedFields, nonces, currSequence, numOfGuesses, opponentAddress) => {
       const type = (hashedFields[pos] == keccak256(pos, 1, nonces[pos])) ? 1 : 0;
-      // numOfGuesses += (hashedFields[pos] == keccak256(pos, 1, nonces[pos])) ? 1 : 0;
 
 	  console.log("hashing sig: ", channelId, opponentAddress, numOfGuesses);
 
@@ -31,7 +28,7 @@ export const checkGuess = (state, channelId, pos, merkleTree, hashedFields, nonc
       const hash = keccak256(parseInt(channelId, 10), pos, currSequence, type, nonces[pos], "0x" + path.sig);
       const hashNumOfGuesses = keccak256(parseInt(channelId, 10), opponentAddress, numOfGuesses);
 
-	  console.log('hash: ', hashNumOfGuesses, " broj kanala: ", channelId);
+	  console.log('hash: ', hashNumOfGuesses);
 
       const signatureResponse = state.user.userWallet.signMessage(ethers.utils.arrayify(hash));
       const signatureNumOfGuesses = state.user.userWallet.signMessage(ethers.utils.arrayify(hashNumOfGuesses));

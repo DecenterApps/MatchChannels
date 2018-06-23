@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 import { connect } from 'react-redux';
 
-import { setName, editName, editPrice, register } from './actions/userActions';
+import { editName, editPrice, register } from './actions/userActions';
 
 import Lobby from './lobby/Lobby';
 
@@ -10,9 +10,7 @@ class Home extends Component {
 
   render() {
     const { userNameEdit, registered } = this.props.user;
-    const { setName, editName, priceEdit, editPrice, register } = this.props;
-
-    console.log(this.props.board);
+    const { editName, priceEdit, editPrice, register } = this.props;
 
     return(
       <main>
@@ -50,7 +48,6 @@ const mapStateToProps = (props) => ({
 });
 
 const mapDispatchToProps = {
-  setName,
   editName,
   editPrice,
   register,

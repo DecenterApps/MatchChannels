@@ -12,18 +12,6 @@ class Match extends Component {
 
     guess = () => {
         this.props.submitGuess(this.props.board.recentGuess);
-        console.log('submit guess');
-    }
-
-    componentDidMount() {
-        if (this.props.peer) {
-            this.props.peer.on('connection', (_conn) => {
-                _conn.on('data', (res) => {
-                    console.log('Move: ', res);
-                });
-
-            });
-        }
     }
 
     closeEndGameModal = () => {

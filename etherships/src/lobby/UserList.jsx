@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { getOpenChannels } from '../services/ethereumService';
+import { getActiveChannels } from '../services/ethereumService';
 import { connectPlayer } from '../services/webrtcService';
 
 import ChallengeModal from '../modals/ChallengeModal';
@@ -16,8 +16,8 @@ import './UserList.css';
 
 class UserList extends Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.state = {
             modalIsOpen: false,
@@ -42,8 +42,9 @@ class UserList extends Component {
     }
 
     async componentDidMount() {
-        const users = await getOpenChannels();
+        const users = await getActiveChannels();
 
+        // TODO: figure out while watching for new events isn't working
         // window.ethershipContract.JoinChannel({},{fromBlock: 0, toBlock: 'latest'}).watch((err, res) => {
         //     if (!err) {
         //         console.log(res);
@@ -57,33 +58,9 @@ class UserList extends Component {
         if (Object.keys(this.props.user.peer).length !== 0) {
             this.props.user.peer.on('connection', (_conn) => {
                 this.props.setConnection(_conn);
-
-                console.log('connection');
         
                 _conn.on('data', (res) => {
-                    console.log(res);
-
-                    if (res.type === 'challenge') {
-
-                        this.setState({
-                            username: res.username,
-                            channelId: res.channelId,
-                            amount: res.amount,
-                            addr: res.addr,
-                        });
-
-                        this.openModal();
-
-                        this.props.setOpponentAddr(res.addr, res.channelId);
-
-                    } else if(res.type === 'start_game') {
-                        browserHistory.push('/match');
-                    } else if(res.type === 'move') {
-                        this.props.checkMove(res.pos);
-                    } else if(res.type === 'move-resp') {
-                        console.log('move resp', res);
-                        this.props.checkMoveResponse(res);
-                    }
+                    this.msgReceived(_conn, res);
                 });
               });
 
@@ -97,13 +74,12 @@ class UserList extends Component {
     }
 
     challengeOpponent = (user) => {
-        console.log(user);
-
         const connection = connectPlayer(this.props.user.peer, user.webrtcId);
 
         connection.on('open', () => {
             this.props.setConnection(connection, user.webrtcId, user.channelId.valueOf());
 
+            // send the challenge to the opponent
             connection.send({
                 type: 'challenge', 
                 channelId: user.channelId.valueOf(), 
@@ -112,23 +88,51 @@ class UserList extends Component {
                 addr: window.account,
             });
 
-            connection.on('data', (res) => {
-                console.log(res);
-                if (res.type === 'accepted') {
-
-                    console.log("Address: ", res.addr);
-
-                    this.props.pickFields(res.channelId, res.amount, res.addr);
-                } else if(res.type === 'move') {
-                    connection.send({type: 'move-resp', result: true});
-
-                    this.props.checkMove(res.pos);
-                } else if(res.type === 'move-resp') {
-                    console.log('move resp', res.result);
-                    this.props.checkMoveResponse(res);
-                }
+            connection.on('data', (res) => {                
+                this.msgReceived(connection, res);
             });
         });
+    }
+
+    msgReceived = (connection, res) => {
+        switch(res.type) {
+            case 'accepted':
+                this.props.pickFields(res.channelId, res.amount, res.addr);
+            break;
+
+            case 'challenge':
+                this.setDataAndOpenModal(res);
+            break;
+
+            case 'start_game':
+                browserHistory.push('/match');
+            break;
+
+            case 'move':
+                connection.send({type: 'move-resp', result: true});
+                this.props.checkMove(res.pos);
+            break;
+
+            case 'move-resp':
+                this.props.checkMoveResponse(res);
+            break;
+
+            default:
+                console.log(res);
+        }
+    }
+
+    setDataAndOpenModal = (res) => {
+        this.setState({
+            username: res.username,
+            channelId: res.channelId,
+            amount: res.amount,
+            addr: res.addr,
+        });
+
+        this.openModal();
+
+        this.props.setOpponentAddr(res.addr, res.channelId);
     }
 
     render() {

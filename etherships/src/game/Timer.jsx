@@ -49,7 +49,6 @@ class Timer extends Component {
     }
 
     render() {
-
         const { countdown } = this.props;
 
         return (

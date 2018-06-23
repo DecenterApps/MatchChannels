@@ -21,7 +21,7 @@ import Modal from 'react-modal';
 // Initialize react-router-redux.
 const history = syncHistoryWithStore(browserHistory, store);
 
-// Initialize web3 and set in Redux.
+// Initialize web3
 getWeb3
 .then(results => {
   console.log('Web3 initialized!')

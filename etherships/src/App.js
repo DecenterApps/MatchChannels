@@ -6,8 +6,6 @@ import { initAccount } from './actions/userActions';
 
 import { initBoard } from './actions/boardActions';
 
-import { keccak256} from './util/merkel';
-
 // Styles
 import './css/oswald.css';
 import './css/open-sans.css';

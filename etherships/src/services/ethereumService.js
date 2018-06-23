@@ -54,13 +54,11 @@ export const getSignerAddress = async (addr) => {
 }
 
 export const getUser = async (addr) => {
-    const isReg = await window.ethershipContract.players(addr);
+    const user = await window.ethershipContract.players(addr);
 
-    console.log(isReg[1].valueOf());
+    user[1] = window.web3.fromWei(user[1], 'ether');
 
-    isReg[1] = window.web3.fromWei(isReg[1], 'ether');
-
-    return isReg;
+    return user;
 };
 
 export const getJoinedChannels = async (blockNum) => 
@@ -74,7 +72,8 @@ export const getJoinedChannels = async (blockNum) =>
         });
     });
 
-export const getOpenChannels = async () => 
+// list all the channels that are recent and that are open for users to join
+export const getActiveChannels = async () => 
     new Promise((resolve, reject) => {
         window.web3.eth.getBlockNumber(async (err, blockNum) => {
             if(!err) {                

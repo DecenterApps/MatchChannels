@@ -38,16 +38,14 @@ class Lobby extends Component {
         return (
             <div>
                 <div className="lobby-header">
-                        <span className='title'>
-                            battleship
-                        </span>
+                    <span className='title'>
+                        battleship
+                    </span>
 
-                            <button className='btn-profile' onClick={this.gotoProfile}>Profile</button>
-
-                    </div>
+                    <button className='btn-profile' onClick={this.gotoProfile}>Profile</button>
+                </div>
 
                 <div className='container'>
-
                     <div>
                         <div className="user-list-item">
                             <span className='user-list-name'> { userName } </span>

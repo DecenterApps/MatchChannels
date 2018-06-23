@@ -34,8 +34,6 @@ class BoardCreationLayout extends Component {
     render() {
         const fieldsLeft = Array.from({length: 5 - this.props.board.numPicked}, (_, k) => k++); 
 
-        console.log(fieldsLeft);
-
             return (
                 <div className="container">
                     <div className="title">
@@ -66,7 +64,7 @@ class BoardCreationLayout extends Component {
                 {
                     this.state.loading && 
                     <div>
-                        <button className="spinner-btn" onClick={this.generateBoard}>
+                        <button className="spinner-btn">
                         </button>
                     </div>
                 }
