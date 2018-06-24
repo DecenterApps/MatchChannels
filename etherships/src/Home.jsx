@@ -19,18 +19,27 @@ class Home extends Component {
               !registered && 
                 <div className="home-content">
 
-                    <div className="title-front"> battleship</div>
-                    <div>
-                        <input type="text" className="name-input" placeholder="Name" onChange={editName} value={userNameEdit} />
+                    <div className='logo'></div>
+
+                    <div className='register-label'>register</div>
+
+                    <div className="reg-inputs-group">
+                      <div>
+                          <input type="text" className="name-input" placeholder="Name" onChange={editName} value={userNameEdit} />
+                      </div>
+
+                      <div>
+                          <input type="text" className="stake-input" onChange={editPrice} value={priceEdit} placeholder="Credits (ETH)" />
+                      </div>
                     </div>
 
-                    <div>
-                        <input type="text" className="stake-input" onChange={editPrice} value={priceEdit} placeholder="Credits (ETH)" />
-                    </div>
-
-                    <button className="register-btn" onClick={register}>Register</button>
+                    <button className="register-btn" onClick={register}>start</button>
                 </div>
             }
+
+            <div className="left-ship"></div>
+
+            <div className="right-ship"></div>
 
             {
                 registered &&

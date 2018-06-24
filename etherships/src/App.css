@@ -76,3 +76,62 @@ code {
   flex-direction: column;
   align-items: center;
 }
+
+.reg-inputs-group {
+  flex-direction: row;
+  display: flex;
+}
+
+.register-label {
+  font-family: Boogaloo;
+  font-size: 46px;
+  text-align: center;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+
+  margin-top: 60px;
+  margin-bottom: 60px;
+  
+  color: #FFFFFF;
+}
+
+.register-btn {
+  background: #73B816;
+  border-radius: 6.26484px;
+  font-family: Roboto;
+  font-weight: bold;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: #FFFFFF;
+  border: none;
+  padding: 8px;
+  box-shadow: 0px 5px #5D9314;
+  width: 140px;
+  margin-top: 30px;
+  font-size: 18px;
+}
+
+.name-input {
+  background: rgba(32, 29, 40, 0.23);
+  border-radius: 6.11463px;
+  background-color: #2C2A34;
+  border: none;
+  margin-bottom: 20px;
+  height: 50px;
+  font-size: 32px;
+  color: gray;
+  font-family: Boogaloo;
+  margin-right: 30px;
+}
+
+.stake-input {
+  background: rgba(32, 29, 40, 0.23);
+  border-radius: 6.11463px;
+  background-color: #2C2A34;
+  border: none;
+  margin-bottom: 20px;
+  height: 50px;
+  font-size: 32px;
+  color: gray;
+  font-family: Boogaloo;
+}

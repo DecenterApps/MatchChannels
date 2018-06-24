@@ -3,28 +3,26 @@ import { connect } from 'react-redux';
 
 import './UserList';
 import UserList from './UserList';
-import CreateGameModal from '../modals/CreateGameModal';
 import { browserHistory } from 'react-router/lib';
+
+import { newGame } from '../actions/userActions';
 
 class Lobby extends Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.state = {
-            modalIsOpen: false
+            ethAmount: 0
         };
-
-        this.openModal = this.openModal.bind(this);
-        this.closeModal = this.closeModal.bind(this);
     }
 
-    openModal() {
-        this.setState({modalIsOpen: true});
+    handleChange = (event) => {
+        this.setState({ethAmount: event.target.value});
     }
 
-    closeModal() {
-        this.setState({modalIsOpen: false});
+    clicked = () => {
+        this.props.newGame(this.state.ethAmount);
     }
 
     gotoProfile = () => {
@@ -32,15 +30,10 @@ class Lobby extends Component {
     }
 
     render() {
-
-        const { userName } = this.props.user;
-
         return (
             <div>
                 <div className="lobby-header">
-                    <div className='logo'>
-                        
-                    </div>
+                    <div className='logo'></div>
 
                     <button className='btn-profile' onClick={this.gotoProfile}>Profile</button>
                 </div>
@@ -50,11 +43,9 @@ class Lobby extends Component {
 
                     <div className='lobby-list'>
                         <div className="user-list-item">
-                            <span className='user-list-name'> { userName } </span>
-                            <button className='user-list-btn' onClick={this.openModal}>Create Game</button>
+                            <input className='user-list-input' value={this.state.ethAmount} onChange={this.handleChange} type="text" placeholder="Amount"></input>
+                            <button className='user-list-btn' onClick={this.clicked}>Create Game</button>
                         </div>
-
-                        <CreateGameModal modalIsOpen={ this.state.modalIsOpen } closeModal={ this.closeModal }/>
 
                         <UserList />
 
@@ -73,6 +64,7 @@ const mapStateToProps = (props) => ({
 });
 
 const mapDispatchToProps = {
+    newGame,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Lobby);

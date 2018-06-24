@@ -148,7 +148,7 @@ class UserList extends Component {
                     />
                     <div className="user-list">
                         <div className="user-list-header">
-                            choose opponent player
+                            or choose opponent player
                         </div>
 
                         <div className="user-list-body">
@@ -158,7 +158,8 @@ class UserList extends Component {
                                     <div className="user-list-item" key={u.args.channelId.valueOf()}>
                                         <span className='user-list-id'>#{u.args.channelId.valueOf()}</span>
                                         <span className='user-list-name'> {u.args.username} </span>
-                                        <button className='user-list-btn' onClick={() => this.challengeOpponent(u.args)}>Battle ({window.web3.fromWei(u.args.amount.valueOf(), 'ether')} ETH)</button>
+                                        <span className='user-list-value'> ETH {window.web3.fromWei(u.args.amount.valueOf(), 'ether')} </span>
+                                        <button className='user-list-btn' onClick={() => this.challengeOpponent(u.args)}>Battle</button>
                                     </div>)
                             }
 
