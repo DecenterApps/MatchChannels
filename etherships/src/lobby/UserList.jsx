@@ -62,18 +62,15 @@ class UserList extends Component {
                 _conn.on('data', (res) => {
                     this.msgReceived(_conn, res);
                 });
-              });
-
-            
+            });
         }
 
         this.setState({
             users
         });
-
     }
 
-    challengeOpponent = (user) => {
+    challengeOpponent(user) {
         const connection = connectPlayer(this.props.user.peer, user.webrtcId);
 
         connection.on('open', () => {
@@ -88,20 +85,20 @@ class UserList extends Component {
                 addr: window.account,
             });
 
-            connection.on('data', (res) => {                
-                this.msgReceived(connection, res);
+            connection.on('data', (message) => {
+                this.msgReceived(connection, message);
             });
         });
     }
 
-    msgReceived = (connection, res) => {
-        switch(res.type) {
+    msgReceived(connection, message) { // TODO Move to userActions
+        switch(message.type) {
             case 'accepted':
-                this.props.pickFields(res.channelId, res.amount, res.addr);
+                this.props.pickFields(message.channelId, message.amount, message.addr);
             break;
 
             case 'challenge':
-                this.setDataAndOpenModal(res);
+                this.setDataAndOpenModal(message);
             break;
 
             case 'start_game':
@@ -110,19 +107,19 @@ class UserList extends Component {
 
             case 'move':
                 connection.send({type: 'move-resp', result: true});
-                this.props.checkMove(res.pos);
+                this.props.checkMove(message.pos);
             break;
 
             case 'move-resp':
-                this.props.checkMoveResponse(res);
+                this.props.checkMoveResponse(message);
             break;
 
             default:
-                console.log(res);
+                console.log(message);
         }
     }
 
-    setDataAndOpenModal = (res) => {
+    setDataAndOpenModal(res) {
         this.setState({
             username: res.username,
             channelId: res.channelId,
@@ -154,12 +151,12 @@ class UserList extends Component {
                         <div className="user-list-body">
 
                             {
-                                this.state.users.map( u => 
-                                    <div className="user-list-item" key={u.args.channelId.valueOf()}>
-                                        <span className='user-list-id'>#{u.args.channelId.valueOf()}</span>
-                                        <span className='user-list-name'> {u.args.username} </span>
-                                        <span className='user-list-value'> ETH {window.web3.fromWei(u.args.amount.valueOf(), 'ether')} </span>
-                                        <button className='user-list-btn' onClick={() => this.challengeOpponent(u.args)}>Battle</button>
+                                this.state.users.map(user =>
+                                    <div className="user-list-item" key={user.args.channelId.valueOf()}>
+                                        <span className='user-list-id'>#{user.args.channelId.valueOf()}</span>
+                                        <span className='user-list-name'> {user.args.username} </span>
+                                        <span className='user-list-value'> ETH {window.web3.fromWei(user.args.amount.valueOf(), 'ether')} </span>
+                                        <button className='user-list-btn' onClick={() => this.challengeOpponent(user.args)}>Battle</button>
                                     </div>)
                             }
 

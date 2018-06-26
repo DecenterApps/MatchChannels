@@ -1,53 +1,47 @@
-import React, { Component } from 'react'
-
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { browserHistory } from 'react-router'
 
 import { editName, editPrice, register } from './actions/userActions';
 
-import Lobby from './lobby/Lobby';
-
 class Home extends Component {
+  componentWillMount() {
+    if (this.props.user.registered) browserHistory.push('/users');
+  }
 
   render() {
     const { userNameEdit, registered } = this.props.user;
     const { editName, priceEdit, editPrice, register } = this.props;
 
-    return(
+    return (
       <main>
         <div>
-            {
-              !registered && 
-                <div className="home-content">
+          {
+            !registered &&
+            <div className="home-content">
+              <div className='logo' />
 
-                    <div className='logo'></div>
+              <div className='register-label'>register</div>
 
-                    <div className='register-label'>register</div>
-
-                    <div className="reg-inputs-group">
-                      <div>
-                          <input type="text" className="name-input" placeholder="Name" onChange={editName} value={userNameEdit} />
-                      </div>
-
-                      <div>
-                          <input type="text" className="stake-input" onChange={editPrice} value={priceEdit} placeholder="Credits (ETH)" />
-                      </div>
-                    </div>
-
-                    <button className="register-btn" onClick={register}>start</button>
+              <div className="reg-inputs-group">
+                <div>
+                  <input type="text" className="name-input" placeholder="Name" onChange={editName} value={userNameEdit} />
                 </div>
-            }
 
-            <div className="left-ship"></div>
+                <div>
+                  <input type="text" className="stake-input" onChange={editPrice} value={priceEdit} placeholder="Credits (ETH)" />
+                </div>
+              </div>
 
-            <div className="right-ship"></div>
+              <button className="register-btn" onClick={register}>start</button>
+            </div>
+          }
 
-            {
-                registered &&
-                  <Lobby />
-            }
+          <div className="left-ship" />
+          <div className="right-ship" />
         </div>
       </main>
-    )
+    );
   }
 }
 

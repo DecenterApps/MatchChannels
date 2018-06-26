@@ -60,7 +60,7 @@ let getWeb3 = new Promise(async (resolve, reject) => {
         if (user.exists) {
           store.dispatch(isRegistered(user));
         }
-  
+
         resolve(store.dispatch(web3Initialized(results)));
       });
 

@@ -20,6 +20,18 @@ import short from 'short-uuid';
 
 import ethers from 'ethers';
 
+const createWallet = () => ({ wallet: ethers.Wallet.createRandom() });
+
+export const register = () => async (dispatch, getState) => {
+  const state = getState();
+
+  await createUser(state.user.userNameEdit, state.user.priceEdit);
+
+  dispatch({ type: REGISTERED, payload: createWallet() });
+
+  browserHistory.push('/users');
+};
+
 export const newGame = (price) => (dispatch) => {
     dispatch({ type: NEW_GAME, payload: {price, session: createWallet() } });
 
@@ -42,16 +54,6 @@ export const editName = ({ target }) => (dispatch) => {
 
 export const editPrice = ({ target }) => (dispatch) => {
     dispatch({ type: EDIT_PRICE, payload: target.value });
-};
-
-export const register = () => async (dispatch, getState) => {
-    const state = getState();
-
-    await createUser(state.user.userNameEdit, state.user.priceEdit);
-
-    dispatch({ type: REGISTERED, payload: createWallet() });
-
-    browserHistory.push('/users');
 };
 
 // gets called on each refresh recreate data from localstorage
@@ -103,10 +105,4 @@ export const resetChannel = () => (dispatch) => {
 
 export const setOpponentAddr = (addr, id) => (dispatch) => {
     dispatch({type: SET_OPPONENT_ADDR, payload: {addr, id} });
-}
-
-function createWallet() {
-    return {
-        wallet: ethers.Wallet.createRandom()
-    };
 }

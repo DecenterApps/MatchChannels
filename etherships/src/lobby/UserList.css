@@ -184,6 +184,7 @@ button:active {
     height: 533px;
     position: absolute;
     bottom: 0;
+    pointer-events: none;
 }
 
 .lobby-list {
@@ -200,6 +201,7 @@ button:active {
     bottom: 0;
     right: 0;
     float: right;
+    pointer-events: none;
 }
 
 .lobby-container {

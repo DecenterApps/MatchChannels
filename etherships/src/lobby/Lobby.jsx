@@ -9,62 +9,64 @@ import { newGame } from '../actions/userActions';
 
 class Lobby extends Component {
 
-    constructor(props) {
-        super(props);
+  constructor(props) {
+    super(props);
 
-        this.state = {
-            ethAmount: 0
-        };
-    }
+    this.state = {
+      ethAmount: 0
+    };
+  }
 
-    handleChange = (event) => {
-        this.setState({ethAmount: event.target.value});
-    }
+  componentWillMount() {
+    if (!this.props.user.registered) browserHistory.push('/');
+  }
 
-    clicked = () => {
-        this.props.newGame(this.state.ethAmount);
-    }
+  handleChange = (event) => {
+    this.setState({ ethAmount: event.target.value });
+  };
 
-    gotoProfile = () => {
-        browserHistory.push('/profile');
-    }
+  createNewGame = () => {
+    this.props.newGame(this.state.ethAmount);
+  };
 
-    render() {
-        return (
-            <div>
-                <div className="lobby-header">
-                    <div className='logo'></div>
+  gotoProfile = () => {
+    browserHistory.push('/profile');
+  };
 
-                    <button className='btn-profile' onClick={this.gotoProfile}>Profile</button>
-                </div>
+  render() {
+    return (
+      <div>
+        <div className="lobby-header">
+          <div className='logo' />
+          <button className='btn-profile' onClick={this.gotoProfile}>Profile</button>
+        </div>
 
-                <div className='lobby-container'>
-                    <div className="left-ship"></div>
-
-                    <div className='lobby-list'>
-                        <div className="user-list-item">
-                            <input className='user-list-input' value={this.state.ethAmount} onChange={this.handleChange} type="text" placeholder="Amount"></input>
-                            <button className='user-list-btn' onClick={this.clicked}>Create Game</button>
-                        </div>
-
-                        <UserList />
-
-                    </div>
-
-                    <div className="right-ship"> </div>
-                </div>
+        <div className='lobby-container'>
+          <div className='lobby-list'>
+            <div className="user-list-item">
+              <input className='user-list-input' value={this.state.ethAmount} onChange={this.handleChange} type="text" placeholder="Amount" />
+              <button className='user-list-btn' onClick={this.createNewGame}>Create Game</button>
             </div>
-        );
-    }
+
+            <UserList />
+
+          </div>
+
+          <div className="left-ship" />
+          <div className="right-ship" />
+        </div>
+      </div>
+    );
+  }
 }
 
 const mapStateToProps = (props) => ({
-    user: props.user,
-    board: props.board
+  user: props.user,
+  board: props.board
 });
 
 const mapDispatchToProps = {
-    newGame,
+  newGame,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Lobby);
