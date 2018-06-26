@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 import { SET_NAME, 
         EDIT_NAME, 
         EDIT_PRICE, 
@@ -9,6 +11,8 @@ import { SET_NAME,
         PICK_FIELDS,
         LOAD_USER,
         SET_OPPONENT_ADDR,
+        SET_LOBBY_USERS,
+        ADD_NEW_USER_TO_LOBBY,
         } from '../constants/actionTypes';
 
 const INITIAL_STATE = {
@@ -132,7 +136,27 @@ export default (state = INITIAL_STATE, action) => {
                 ...state,
                 opponentAddr: payload.addr,
                 opponentChannel: payload.id,
+            };
+
+        case SET_LOBBY_USERS:
+            return {
+                ...state,
+                usersList: payload,
+            };
+        
+        case ADD_NEW_USER_TO_LOBBY:
+
+            let newUsersList = state.usersList;
+            const exists = state.usersList.find(u => u.args.channelId.valueOf() === payload.args.channelId.valueOf());
+
+            if(!exists) {
+                newUsersList.push(payload);
             }
+
+            return {
+                ...state,
+                usersList: newUsersList,
+            };
 
         default:
             return {
