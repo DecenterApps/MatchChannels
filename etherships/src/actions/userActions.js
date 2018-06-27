@@ -75,7 +75,7 @@ export const initAccount = () => (dispatch) =>  {
     let user = localStorage.getItem("user");
 
     const userWallet = ethers.Wallet.createRandom();
-    
+    console.log('sign address: ', userWallet.address);
     if (user) {
         user = JSON.parse(user);
 

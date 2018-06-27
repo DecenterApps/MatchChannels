@@ -4,7 +4,7 @@ export const WEBRTC_SERVER = '139.59.146.81';
 export const WEBRTC_API_KEY = 'asdf';
 export const WEBRTC_PORT = 9000;
 
-export const ETHERSHIP_ADDRESS = '0xd1027a60386cd9268e31b882e0fdb4d216c64f09';
+export const ETHERSHIP_ADDRESS = '0x343e0d92feeb8602813f5a85937bb8f9e6a3520f';
 
 export const NUM_BLOCKS_FOR_CHANNEL = 1000;
 

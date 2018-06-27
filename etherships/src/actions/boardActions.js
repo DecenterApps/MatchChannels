@@ -50,6 +50,7 @@ export const generateBoard = (board) => async (dispatch, getState) => {
     dispatch({ type: CREATE_TREE, payload });
 
     let state = getState();
+    console.log(state.user.userWallet.address);
     const walletAddress = state.user.userWallet.address;
 
     if(state.user.opponentChannel === -1) {

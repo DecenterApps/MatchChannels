@@ -46,7 +46,6 @@ export default (state = INITIAL_STATE, action) => {
 
             return {
                 ...state,
-                userWallet: payload.wallet,
                 userName: state.userNameEdit,
                 userNameEdit: '',
             }
@@ -73,7 +72,6 @@ export default (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 registered: true,
-                userWallet: payload.wallet,
                 userName: state.userNameEdit,
                 userNameEdit: '',
             }
@@ -104,7 +102,6 @@ export default (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 gameBetAmount: payload.price,
-                userWallet: payload.session.wallet,
             };
 
         case CREATE_PEER:
@@ -120,7 +117,6 @@ export default (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 connection: payload.connection,
-                userWallet: payload.wallet || state.userWallet,
                 opponentChannel: payload.channelId || state.opponentChannel,
             };
 

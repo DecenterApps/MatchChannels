@@ -84,9 +84,9 @@ contract EtherShips is Players, ECTools {
     	address opponent = channels[_channelId].p1 == msg.sender ? channels[_channelId].p2 : channels[_channelId].p1;
     	bytes32 hash = keccak256(abi.encodePacked(_channelId, msg.sender, _numberOfGuesses));
 
-		emit Log(_recoverSig(hash, _sig), signAddresses[opponent], hash);
+//		emit Log(_recoverSig(hash, _sig), signAddresses[opponent], hash);
 
-       //require(_recoverSig(hash, _sig) == signAddresses[opponent]);
+       	require(_recoverSig(hash, _sig) == signAddresses[opponent]);
 
     	if (channels[_channelId].halfFinisher != address(0)) {
     		// one player already submitted score

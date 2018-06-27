@@ -28,8 +28,9 @@ export const checkGuess = (state, channelId, pos, merkleTree, hashedFields, nonc
       const hash = keccak256(parseInt(channelId, 10), pos, currSequence, type, nonces[pos], "0x" + path.sig);
       const hashNumOfGuesses = keccak256(parseInt(channelId, 10), opponentAddress, numOfGuesses);
 
+      console.log('to hash: ', parseInt(channelId, 10), opponentAddress, numOfGuesses);
 	  console.log('hash: ', hashNumOfGuesses);
-
+	  console.log('sign address: ', state.user.userWallet.address);
       const signatureResponse = state.user.userWallet.signMessage(ethers.utils.arrayify(hash));
       const signatureNumOfGuesses = state.user.userWallet.signMessage(ethers.utils.arrayify(hashNumOfGuesses));
 
