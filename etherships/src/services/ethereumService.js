@@ -5,6 +5,8 @@ import contract from "truffle-contract";
 import Web3 from 'web3';
 import EtherShips from '../../../solidity/build/contracts/EtherShips';
 
+import store from '../store';
+import { ADD_USERS_TO_LOBBY } from '../constants/actionTypes';
 
 export const openChannel = async (markelRoot, webrtcId, signAddress, amount) => {
     const priceInWei = amount === '' ? DEFAULT_PRICE : window.web3.toWei(amount, 'ether');
@@ -78,6 +80,31 @@ export const getJoinedChannels = async (blockNum) =>
         }).get((err, res) => {
             if (!err) {
                 resolve(res);
+            } else {
+                reject(err);
+            }
+        });
+    });
+
+export const watchCreateGameEvents = async (blockNum, callback) => {
+    window.web3.eth.getBlockNumber(async (err, blockNum) => {
+        if(!err) { 
+            window.ethershipContract.OpenChannel({},{fromBlock: blockNum.valueOf() -  NUM_BLOCKS_FOR_CHANNEL, toBlock: 'latest' }).watch((err, user) => {
+                    if (!err) {
+                        console.log('Found new user: ', user);
+
+                        callback(user);
+                    }
+                });
+        }
+    });
+};
+
+export const getCurrentBlockNumber = () =>
+    new Promise((resolve, reject) => {
+        window.web3.eth.getBlockNumber(async (err, blockNum) => {
+            if(!err) {   
+                resolve(blockNum.valueOf());
             } else {
                 reject(err);
             }

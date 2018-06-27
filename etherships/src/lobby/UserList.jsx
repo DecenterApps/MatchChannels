@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { getActiveChannels } from '../services/ethereumService';
 import { connectPlayer } from '../services/webrtcService';
 
 import ChallengeModal from '../modals/ChallengeModal';
 
-import { setConnection, pickFields, setOpponentAddr } from '../actions/userActions';
+import { setConnection, pickFields, setOpponentAddr, addUsersToLobby } from '../actions/userActions';
 
 import { checkMove, checkMoveResponse } from '../actions/boardActions';
 
@@ -21,9 +20,8 @@ class UserList extends Component {
 
         this.state = {
             modalIsOpen: false,
-            users: [],
             username: "",
-            amount: -1,
+            amount: -1, 
             channelId: -1,
             timer: null,
             addr: "",
@@ -42,18 +40,7 @@ class UserList extends Component {
     }
 
     async componentDidMount() {
-        const users = await getActiveChannels();
-
-        // TODO: figure out while watching for new events isn't working
-        // window.ethershipContract.JoinChannel({},{fromBlock: 0, toBlock: 'latest'}).watch((err, res) => {
-        //     if (!err) {
-        //         console.log(res);
-
-        //         this.setState({
-        //             users: [this.state.users, res]
-        //         });
-        //     }
-        // });
+        this.props.addUsersToLobby();
 
         if (Object.keys(this.props.user.peer).length !== 0) {
             this.props.user.peer.on('connection', (_conn) => {
@@ -65,9 +52,6 @@ class UserList extends Component {
             });
         }
 
-        this.setState({
-            users
-        });
     }
 
     challengeOpponent(user) {
@@ -133,6 +117,9 @@ class UserList extends Component {
     }
 
     render() {
+
+        const { usersList } = this.props.user;
+
         return (
                 <div>
                     <ChallengeModal 
@@ -151,7 +138,7 @@ class UserList extends Component {
                         <div className="user-list-body">
 
                             {
-                                this.state.users.map(user =>
+                                usersList.map(user =>
                                     <div className="user-list-item" key={user.args.channelId.valueOf()}>
                                         <span className='user-list-id'>#{user.args.channelId.valueOf()}</span>
                                         <span className='user-list-name'> {user.args.username} </span>
@@ -178,6 +165,7 @@ const mapDispatchToProps = {
     checkMove,
     checkMoveResponse,
     setOpponentAddr,
+    addUsersToLobby,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserList);

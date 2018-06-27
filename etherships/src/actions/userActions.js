@@ -10,10 +10,14 @@ import {
     LOAD_USER,
     RESET_CHANNEL,
     SET_OPPONENT_ADDR,
+    SET_LOBBY_USERS,
+    ADD_NEW_USER_TO_LOBBY,
     } from '../constants/actionTypes';
 
 import { createPeer } from '../services/webrtcService';
-import { createUser } from '../services/ethereumService';
+import { createUser, getActiveChannels, getCurrentBlockNumber } from '../services/ethereumService';
+
+import { NUM_BLOCKS_FOR_CHANNEL } from '../constants/config';
 
 import { browserHistory } from 'react-router';
 import short from 'short-uuid';
@@ -105,4 +109,19 @@ export const resetChannel = () => (dispatch) => {
 
 export const setOpponentAddr = (addr, id) => (dispatch) => {
     dispatch({type: SET_OPPONENT_ADDR, payload: {addr, id} });
-}
+};
+
+
+export const addUsersToLobby = () => async (dispatch) => {
+    const users = await getActiveChannels();
+    dispatch({type: SET_LOBBY_USERS, payload: users });
+
+    const blockNum = await getCurrentBlockNumber();
+
+    window.ethershipContract.OpenChannel({},{fromBlock: blockNum -  NUM_BLOCKS_FOR_CHANNEL, toBlock: 'latest' })
+        .watch((err, user) => {
+            if (!err) {
+                dispatch({type: ADD_NEW_USER_TO_LOBBY, payload: user });
+            }
+        });
+};
