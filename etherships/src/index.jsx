@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 import { Provider } from 'react-redux';
 import { syncHistoryWithStore } from 'react-router-redux';
-import getWeb3 from './util/web3/getWeb3';
+import { getWeb3 } from './services/ethereumService';
 
 // Layouts
 import App from './App';

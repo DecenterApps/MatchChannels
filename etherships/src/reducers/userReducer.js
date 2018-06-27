@@ -1,4 +1,5 @@
-import { SET_NAME, 
+import { SET_NAME,
+        SET_ADDR,
         EDIT_NAME, 
         EDIT_PRICE, 
         REGISTERED, 
@@ -12,6 +13,7 @@ import { SET_NAME,
         } from '../constants/actionTypes';
 
 const INITIAL_STATE = {
+    userAddr: "",
     userNameEdit: "",
     userName: "",
     priceEdit: "",
@@ -43,6 +45,14 @@ export default (state = INITIAL_STATE, action) => {
                 userWallet: payload.wallet,
                 userName: state.userNameEdit,
                 userNameEdit: '',
+            }
+
+        case SET_ADDR:
+            console.log('payload', payload.addr);
+
+            return {
+                ...state,
+                userAddr: payload.addr
             }
 
         case EDIT_NAME: 

@@ -16,7 +16,7 @@ class Profile extends Component {
     }
 
     async componentDidMount() {
-        const user = await getUser(window.account);
+        const user = await getUser(this.props.user.userAddr);
 
         console.log(user[1].valueOf());
 

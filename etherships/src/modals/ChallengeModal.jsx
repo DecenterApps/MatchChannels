@@ -25,7 +25,7 @@ class ChallengeModal extends Component {
             type:'accepted',
             channelId: this.props.channelId, 
             amount: this.props.amount, 
-            addr: window.account,
+            addr: this.props.user.userAddr,
         });
 
         this.setState({ waiting: true });

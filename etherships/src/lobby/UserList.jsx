@@ -78,11 +78,11 @@ class UserList extends Component {
 
             // send the challenge to the opponent
             connection.send({
-                type: 'challenge', 
-                channelId: user.channelId.valueOf(), 
+                type: 'challenge',
+                channelId: user.channelId.valueOf(),
                 username: this.props.user.userName,
                 amount: user.amount.valueOf(),
-                addr: window.account,
+                addr: this.props.user.userAddr,
             });
 
             connection.on('data', (message) => {

@@ -18,6 +18,7 @@ export const OPEN_ENDGAME_MODAL = 'open_endgame_modal';
 // User reducer
 export const EDIT_NAME = 'edit_name';
 export const SET_NAME = 'set_name';
+export const SET_ADDR = 'set_address';
 export const EDIT_PRICE = 'edit_price';
 export const REGISTERED = 'registered';
 export const IS_REGISTERED = 'is_registered';
