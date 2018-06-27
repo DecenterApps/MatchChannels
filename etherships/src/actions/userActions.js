@@ -1,9 +1,9 @@
-import { 
-    SET_NAME, 
-    EDIT_NAME, 
-    EDIT_PRICE, 
-    REGISTERED, 
-    NEW_GAME, 
+import {
+    SET_NAME,
+    EDIT_NAME,
+    EDIT_PRICE,
+    REGISTERED,
+    NEW_GAME,
     CREATE_PEER,
     SET_CONNECTION,
     PICK_FIELDS,
@@ -14,7 +14,7 @@ import {
     ADD_NEW_USER_TO_LOBBY,
     } from '../constants/actionTypes';
 
-import { createPeer } from '../services/webrtcService';
+import * as webrtc from '../services/webrtcService';
 import { createUser, getActiveChannels, getCurrentBlockNumber } from '../services/ethereumService';
 
 import { NUM_BLOCKS_FOR_CHANNEL } from '../constants/config';
@@ -23,6 +23,8 @@ import { browserHistory } from 'react-router';
 import short from 'short-uuid';
 
 import ethers from 'ethers';
+import { closeModal, openModal } from './modalActions';
+import { checkMove, checkMoveResponse } from './boardActions';
 
 const createWallet = () => ({ wallet: ethers.Wallet.createRandom() });
 
@@ -61,16 +63,27 @@ export const editPrice = ({ target }) => (dispatch) => {
 };
 
 // gets called on each refresh recreate data from localstorage
-export const initAccount = () => (dispatch) =>  {
+export const initAccount = () => (dispatch, getState) =>  {
     let peerId = localStorage.getItem('peer');
 
     if(!peerId) {
       peerId = short.uuid();
-    
+
       localStorage.setItem('peer', peerId);
     }
 
-    const peer = createPeer(peerId);
+    const peer = webrtc.createPeer(peerId);
+    peer.on('connection', (_conn) => {
+      _conn.on('open', () => {
+        console.log('Conn open - receiver side');
+        // setConnection(_conn)(dispatch);
+        // webrtc.setConnection(_conn);
+      });
+      _conn.on('data', (message) => {
+        console.log("Message received (1): ", message);
+        msgReceived(message)(dispatch, getState);
+      });
+    });
 
     let user = localStorage.getItem("user");
 
@@ -78,10 +91,7 @@ export const initAccount = () => (dispatch) =>  {
     console.log('sign address: ', userWallet.address);
     if (user) {
         user = JSON.parse(user);
-
-        if (!user.userWallet) {
-            user.userWallet = userWallet;
-        }
+        user.userWallet = userWallet;
     } else {
         user = { userWallet };
     }
@@ -111,17 +121,80 @@ export const setOpponentAddr = (addr, id) => (dispatch) => {
     dispatch({type: SET_OPPONENT_ADDR, payload: {addr, id} });
 };
 
+export const connectToPlayer = (user) => (dispatch, getState) => {
+  const conn = webrtc.connectToPlayer(user.webrtcId);
+
+  conn.on('open', () => {
+    console.log('Conn open - challenger side');
+    setConnection(conn, user.webrtcId, user.channelId.valueOf())(dispatch);
+
+    // send the challenge to the opponent
+    webrtc.send({
+      type: 'challenge',
+      channelId: user.channelId.valueOf(),
+      username: getState().user.userName,
+      amount: user.amount.valueOf(),
+      addr: getState().user.userAddr,
+    });
+    console.log('challenge sent');
+
+  });
+  conn.on('data', (message) => {
+    console.log("Message received (2): ", message);
+    msgReceived(message)(dispatch, getState);
+  });
+};
+
+export const acceptChallenge = () => (dispatch, getState) => {
+  webrtc.send({
+    type: 'accepted',
+    channelId: getState().modal.modalData.channelId, // should perhaps be moved
+    amount: getState().modal.modalData.amount,
+    addr: getState().user.userAddr,
+  })
+};
+
+export const msgReceived = (message) => (dispatch, getState) => {
+  console.log("Message received: ", message);
+  switch(message.type) {
+    case 'accepted':
+      pickFields(message.channelId, message.amount, message.addr)(dispatch);
+      break;
+
+    case 'challenge':
+      setOpponentAddr(message.addr, message.channelId)(dispatch);
+      openModal('challenge', message)(dispatch);
+      break;
+
+    case 'start_game':
+      closeModal()(dispatch);
+      browserHistory.push('/match');
+      break;
+
+    case 'move':
+      // webrtc.send({type: 'move-resp', result: true});
+      checkMove(message.pos)(dispatch, getState);
+      break;
+
+    case 'move-resp':
+      checkMoveResponse(message)(dispatch, getState);
+      break;
+
+    default:
+      console.log("Unknown message type", message);
+  }
+};
 
 export const addUsersToLobby = () => async (dispatch) => {
-    const users = await getActiveChannels();
-    dispatch({type: SET_LOBBY_USERS, payload: users });
+  const users = await getActiveChannels();
+  dispatch({type: SET_LOBBY_USERS, payload: users });
 
-    const blockNum = await getCurrentBlockNumber();
+  const blockNum = await getCurrentBlockNumber();
 
-    window.ethershipContract.OpenChannel({},{fromBlock: blockNum -  NUM_BLOCKS_FOR_CHANNEL, toBlock: 'latest' })
-        .watch((err, user) => {
-            if (!err) {
-                dispatch({type: ADD_NEW_USER_TO_LOBBY, payload: user });
-            }
-        });
+  window.ethershipContract.OpenChannel({},{fromBlock: blockNum -  NUM_BLOCKS_FOR_CHANNEL, toBlock: 'latest' })
+    .watch((err, user) => {
+      if (!err) {
+        dispatch({type: ADD_NEW_USER_TO_LOBBY, payload: user });
+      }
+    });
 };

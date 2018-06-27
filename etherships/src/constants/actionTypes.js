@@ -31,3 +31,5 @@ export const RESET_CHANNEL = 'reset_channel';
 export const SET_OPPONENT_ADDR = 'set_opponent_addr';
 export const SET_LOBBY_USERS = 'set_lobby_users';
 export const ADD_NEW_USER_TO_LOBBY = 'add_new_user_to_lobby';
+export const OPEN_MODAL = 'open_modal';
+export const CLOSE_MODAL = 'close_modal';

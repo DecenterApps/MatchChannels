@@ -3,80 +3,80 @@ import { connect } from 'react-redux';
 
 import Modal from 'react-modal';
 
-import { newGame } from '../actions/userActions';
-
+import { acceptChallenge } from '../actions/userActions';
+import { closeModal } from '../actions/modalActions';
 import './Modal.css';
 
 import { customModalStyles } from '../constants/config';
 
-
 class ChallengeModal extends Component {
 
-    constructor(props) {
-        super(props);
+  constructor(props) {
+    super(props);
 
-        this.state = {
-            waiting: false,
-        };
-    }
+    this.state = {
+      waiting: false,
+    };
+  }
 
-    clicked = () => {
-        this.props.user.connection.send({
-            type:'accepted',
-            channelId: this.props.channelId, 
-            amount: this.props.amount, 
-            addr: this.props.user.userAddr,
-        });
+  clicked = () => {
+    this.props.acceptChallenge();
+    this.setState({ waiting: true });
+  };
 
-        this.setState({ waiting: true });
-    }
+  render() {
 
-    render() {
+    return (
+      <Modal
+        isOpen
+        onRequestClose={this.props.closeModal}
+        contentLabel="Challenge"
+        style={customModalStyles}
+      >
 
-        return (
-            <Modal
-                    isOpen={this.props.modalIsOpen}
-                    onRequestClose={this.props.closeModal}
-                    contentLabel="Challenge"
-                    style={customModalStyles}
-                >
+        {
+          !this.state.waiting &&
+          <div className="modal-content">
+            <div className="modal-title">
+              You were challenged by {this.props.modalData && this.props.modalData.username}
+            </div>
 
-                    {
-                        !this.state.waiting && 
-                        <div className="modal-content">
-                            <div className="modal-title">
-                                You were challenged by { this.props.username }
-                            </div>
+            <button className="modal-create-btn" onClick={this.clicked}>Accept</button>
 
-                            <button className="modal-create-btn" onClick={this.clicked}>Accept</button>
+          </div>
+        }
 
-                        </div>
-                    }
+        {
+          this.state.waiting &&
+          <div className="modal-content">
+            <div className="modal-title">
+              Waiting for your opponent..
+            </div>
 
-                    {
-                        this.state.waiting && 
-                        <div className="modal-content">
-                            <div className="modal-title">
-                                Waiting for your opponent..
-                            </div>
+            <div className="lds-ring">
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
 
-                            <div className="lds-ring"><div></div><div></div><div></div><div></div></div>
+          </div>
+        }
 
-                        </div>
-                    }
-                  
-                    </Modal>
-        );
-    }
+      </Modal>
+    );
+  }
 
 }
 
-const mapStateToProps = (props) => ({
-    user: props.user,
+const mapStateToProps = (state) => ({
+  user: state.user,
+  modalData: state.modal.modalData
 });
 
 const mapDispatchToProps = {
-    newGame
+  acceptChallenge,
+  closeModal,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChallengeModal);

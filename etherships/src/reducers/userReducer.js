@@ -131,7 +131,7 @@ export default (state = INITIAL_STATE, action) => {
             };
 
         case LOAD_USER:
-
+            console.log("LOAD_USER payload", payload)
             return {
                 ...state,
                 ...payload,
@@ -154,7 +154,6 @@ export default (state = INITIAL_STATE, action) => {
 
             let newUsersList = state.usersList;
             const exists = state.usersList.find(u => u.args.channelId.valueOf() === payload.args.channelId.valueOf());
-
             if(!exists) {
                 newUsersList.push(payload);
             }

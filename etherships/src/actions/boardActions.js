@@ -15,6 +15,7 @@ import { SET_FIELD,
 import { generateTree, checkGuess } from '../services/boardService';
 import { openChannel, joinChannel } from '../services/ethereumService';
 import { getRoot } from '../util/merkel';
+import * as webrtc from '../services/webrtcService';
 
 import { browserHistory } from 'react-router'
 
@@ -36,11 +37,8 @@ export const initBoard = () => (dispatch) => {
     dispatch({ type: LOAD_BOARD, payload: board || {} });
 };
 
-export const submitGuess = payload => (dispatch, getState) => {
-    const state = getState().user;
-
-    state.connection.send({type: 'move', pos: payload});
-
+export const submitGuess = payload => (dispatch) => {
+    webrtc.send({type: 'move', pos: payload});
     dispatch({ type: SET_PLAYER_MOVE, payload: false });
 };
 
@@ -53,7 +51,7 @@ export const generateBoard = (board) => async (dispatch, getState) => {
     console.log(state.user.userWallet.address);
     const walletAddress = state.user.userWallet.address;
 
-    if(state.user.opponentChannel === -1) {
+    if (state.user.opponentChannel === -1) {
         await openChannel(getRoot(state.board.tree), state.user.peerId, walletAddress, state.user.gameBetAmount);
 
         dispatch({type: ON_CONTRACT});
@@ -65,7 +63,7 @@ export const generateBoard = (board) => async (dispatch, getState) => {
         dispatch({ type: SET_PLAYER_MOVE, payload: true });
 
         // notify other user
-        state.user.connection.send({type: 'start_game'});
+        webrtc.send({type: 'start_game'});
 
         browserHistory.push('/match');
     }
@@ -95,7 +93,7 @@ export const checkMove = pos => (dispatch, getState) => {
     // get the updated state
     state = getState();
 
-    const numHits = state.board.boardGuesses.filter(b => b === 3).length;
+    const numHits = state.board.board.filter(b => b === 3).length;
 
     console.log('board: ', state.board.board, " board guess: ", state.board.boardGuesses);
 
@@ -113,7 +111,7 @@ export const checkMove = pos => (dispatch, getState) => {
     const data = checkGuess(state, channelId, pos, merkelTree, hashedFields, nonces, sequence, numHits, addr);
 
     // send the result to the opponent
-    state.user.connection.send({type: 'move-resp', result, pos, data });
+    webrtc.send({type: 'move-resp', result, pos, data });
 };
 
 // this is called when the opponent responds to your guess
