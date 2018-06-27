@@ -5,7 +5,6 @@ import contract from "truffle-contract";
 import Web3 from 'web3';
 import EtherShips from '../../../solidity/build/contracts/EtherShips';
 
-import store from '../store';
 import { ADD_USERS_TO_LOBBY } from '../constants/actionTypes';
 
 export const openChannel = async (markelRoot, webrtcId, signAddress, amount) => {
