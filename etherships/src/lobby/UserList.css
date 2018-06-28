@@ -102,7 +102,7 @@ input {
  }
 
 .user-list-body {
-    overflow: scroll;
+    overflow: auto;
     height: 350px;
 }
 

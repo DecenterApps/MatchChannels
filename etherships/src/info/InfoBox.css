@@ -1,0 +1,20 @@
+.infobox-wrapper {
+    font-size: 10px;
+    width: 500px;
+    border: 1px solid #ccc;
+    padding: 5px 10px;
+    z-index: 1000;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background-color: #262330;
+    color: #ccc;
+    line-height: 1.6em;
+}
+.infobox-inner {
+    padding: 5px 0;
+}
+.infobox-wrapper span {
+    float: right;
+    cursor: pointer;
+}
