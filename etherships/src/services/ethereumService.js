@@ -1,6 +1,4 @@
 import {NUM_BLOCKS_FOR_CHANNEL, DEFAULT_PRICE, ETHERSHIP_ADDRESS} from '../constants/config';
-import {WEB3_INITIALIZED, SET_ADDR, IS_REGISTERED} from "../constants/actionTypes";
-import store from "../store";
 import contract from "truffle-contract";
 import Web3 from 'web3';
 import EtherShips from '../../../solidity/build/contracts/EtherShips';
@@ -160,13 +158,8 @@ export const getWeb3 = new Promise(async (resolve, reject) => {
             // Use Mist/MetaMask's provider.
             web3 = new Web3(web3.currentProvider);
 
-            results = {
-                web3Instance: web3
-            };
-
             web3.eth.getAccounts(async (err, accounts) => {
                 let addr = accounts[0];
-                store.dispatch({ type: SET_ADDR, payload: {addr} });
 
                 const ethershipContract = contract(EtherShips);
                 ethershipContract.setProvider(web3.currentProvider);
@@ -174,53 +167,33 @@ export const getWeb3 = new Promise(async (resolve, reject) => {
 
                 const reg = await getUser(accounts[0]);
 
-                console.log('reg', reg);
-
                 const user = {
+                    userAddr: addr,
                     username: reg[0],
                     balance: reg[1].valueOf(),
                     gamesPlayed: reg[2].valueOf(),
                     finishedGames: reg[3].valueOf(),
-                    exists: reg[4].valueOf()
+                    registered: reg[4].valueOf()
                 };
 
-                if (user.exists) {
-                    store.dispatch(isRegistered(user));
-                }
-
-                resolve(store.dispatch(web3Initialized(results)));
+                resolve(user);
             });
 
         } else {
-
-            // Fallback to localhost if no web3 injection. We've configured this to
-            // use the development console's port by default.
-            var provider = new Web3.providers.HttpProvider('http://127.0.0.1:9545');
-
-            web3 = new Web3(provider)
-
-            results = {
-                web3Instance: web3
-            }
-
-            console.log('No web3 instance injected, using Local web3.');
-
-            resolve(store.dispatch(web3Initialized(results)))
+            console.log('No MetaMask - should be handled');
+            // // Fallback to localhost if no web3 injection. We've configured this to
+            // // use the development console's port by default.
+            // var provider = new Web3.providers.HttpProvider('http://127.0.0.1:9545');
+            //
+            // web3 = new Web3(provider)
+            //
+            // results = {
+            //     web3Instance: web3
+            // }
+            //
+            // console.log('No web3 instance injected, using Local web3.');
+            //
+            // resolve(store.dispatch(web3Initialized(results)))
         }
     })
 })
-
-function web3Initialized(results) {
-    return {
-        type: WEB3_INITIALIZED,
-        payload: results
-    }
-}
-
-function isRegistered(results) {
-    return {
-        type: IS_REGISTERED,
-        payload: results
-    }
-}
-

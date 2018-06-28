@@ -1,6 +1,3 @@
-// Web3 reducer
-export const WEB3_INITIALIZED = 'web3_initialized';
-
 // Board reducer
 export const SET_FIELD = 'set_field';
 export const CREATE_TREE = 'create_tree';

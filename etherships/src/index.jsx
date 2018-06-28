@@ -17,34 +17,39 @@ import Match from './game/Match';
 import store from './store';
 
 import Modal from 'react-modal';
+import { LOAD_USER } from './constants/actionTypes';
 
 // Initialize react-router-redux.
 const history = syncHistoryWithStore(browserHistory, store);
 
 // Initialize web3
-getWeb3
-.then(results => {
-  console.log('Web3 initialized!')
+getWeb3.then(async (user) => {
+  store.dispatch({
+      type: LOAD_USER,
+      payload: user
+    }
+  );
+  console.log('Web3 initialized!');
+  console.log('User data: ', user);
 
   Modal.setAppElement('#root');
 
   ReactDOM.render((
-    <Provider store={store}>
-      <Router history={history}>
-        <Route path="/" component={App}>
-          <IndexRoute component={Home} />
-          <Route path="game" component={BoardCreationLayout} />
-          <Route path="users" component={Lobby} />
-          <Route path="profile" component={Profile} />
-          <Route path="match" component={Match} />
-        </Route>
-      </Router>
-    </Provider>
-  ),
-  document.getElementById('root')
-)
-})
-.catch((err) => {
-  console.log('Error in web3 initialization.', err)
-})
+      <Provider store={store}>
+        <Router history={history}>
+          <Route path="/" component={App}>
+            <IndexRoute component={Home} />
+            <Route path="game" component={BoardCreationLayout} />
+            <Route path="users" component={Lobby} />
+            <Route path="profile" component={Profile} />
+            <Route path="match" component={Match} />
+          </Route>
+        </Router>
+      </Provider>
+    ),
+    document.getElementById('root')
+  );
+}).catch((err) => {
+  console.log('Error in web3 initialization.', err);
+});
 
