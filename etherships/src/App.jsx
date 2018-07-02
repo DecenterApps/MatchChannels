@@ -4,6 +4,7 @@ import { initAccount } from './actions/userActions';
 import { initBoard } from './actions/boardActions';
 import ChallengeModal from './modals/ChallengeModal';
 import InfoBox from './info/InfoBox';
+import EndGameModal from './modals/EndGameModal';
 
 // Styles
 import './css/oswald.css';
@@ -25,6 +26,11 @@ class App extends Component {
         {
           this.props.modalShown === 'challenge' &&
           <ChallengeModal />
+        }
+
+        {
+          this.props.modalShown === 'endgame' &&
+          <EndGameModal />
         }
         <InfoBox />
       </div>

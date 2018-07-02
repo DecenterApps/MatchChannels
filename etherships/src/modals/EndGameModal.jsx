@@ -35,7 +35,7 @@ class EndGameModal extends Component {
 
         return (
             <Modal
-                isOpen={this.props.modalIsOpen}
+                isOpen
                 onRequestClose={this.props.closeModal}
                 contentLabel="Game Finished"
                 style={customModalStyles}>

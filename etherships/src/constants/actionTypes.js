@@ -9,8 +9,6 @@ export const LOAD_BOARD = 'load_board';
 export const RESET_BOARD = 'reset_board';
 export const CHECK_MOVE_RESPONSE = 'check_move_response';
 export const INCREMENT_SECONDS = 'increment_seconds';
-export const CLOSE_ENDGAME_MODAL = 'close_endgame_modal';
-export const OPEN_ENDGAME_MODAL = 'open_endgame_modal';
 
 // User reducer
 export const EDIT_NAME = 'edit_name';

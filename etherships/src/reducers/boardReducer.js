@@ -43,7 +43,6 @@ const INITIAL_STATE = {
     recentGuess: -1,
     timer: 30,
     seconds: 0,
-    endGameModal: false,
     timeoutModal: false,
     hitModal: false,
     numOfGuesses: 0,
@@ -149,18 +148,6 @@ export default (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 seconds: ++state.seconds
-            };
-
-        case CLOSE_ENDGAME_MODAL:
-            return {
-                ...state,
-                endGameModal: false,
-            };
-
-        case OPEN_ENDGAME_MODAL:
-            return {
-                ...state,
-                endGameModal: true,
             };
 
         default:

@@ -6,20 +6,13 @@ import { submitGuess, openModal, closeEndGameModal } from '../actions/boardActio
 import Board from './Board';
 import Timer from './Timer';
 
-import EndGameModal from '../modals/EndGameModal';
-
 class Match extends Component {
 
     guess = () => {
         this.props.submitGuess(this.props.board.recentGuess);
     }
 
-    closeEndGameModal = () => {
-        this.props.closeEndGameModal();
-    }
-
     render() {
-
         const { yourMove, timer } = this.props.board;
 
         const numHits = this.props.board.board.filter(b => b === 3).length;
@@ -33,9 +26,6 @@ class Match extends Component {
                 <div className="title">
                     battleship
                 </div>
-
-                <EndGameModal modalIsOpen={ this.props.board.endGameModal } closeModal={ this.closeEndGameModal }/>
-
 
                 {
                     !yourMove &&

@@ -8,14 +8,14 @@ import { SET_FIELD,
         RESET_BOARD,
         CHECK_MOVE_RESPONSE,
         INCREMENT_SECONDS,
-        OPEN_ENDGAME_MODAL,
-        CLOSE_ENDGAME_MODAL,
         } from '../constants/actionTypes';
 
 import { generateTree, checkGuess } from '../services/boardService';
 import { openChannel, joinChannel } from '../services/ethereumService';
 import { getRoot } from '../util/merkel';
 import * as webrtc from '../services/webrtcService';
+
+import { openModal } from './modalActions';
 
 import { browserHistory } from 'react-router'
 
@@ -99,7 +99,7 @@ export const checkMove = pos => (dispatch, getState) => {
     console.log('board: ', state.board.board, " board guess: ", state.board.boardGuesses);
 
     if (state.board.board.filter(b => b === 3).length >= 5) {
-        dispatch({type: OPEN_ENDGAME_MODAL});
+        openModal('endgame', {})(dispatch);
     }
 
     const channelId = state.user.opponentChannel;
@@ -125,7 +125,7 @@ export const checkMoveResponse = payload => async (dispatch, getState) => {
         console.log('Response numHits: ', numHits);
 
         if (numHits >= 5) {
-            dispatch({type: OPEN_ENDGAME_MODAL});
+            openModal('endgame', {})(dispatch);
         }
     }
 };
@@ -137,15 +137,6 @@ export const resetBoard = () => (dispatch) => {
 export const incrementSeconds = () => dispatch => {
     dispatch({type: INCREMENT_SECONDS });
 };
-
-export const openEndGameModal = () => dispatch => {
-    dispatch({type: OPEN_ENDGAME_MODAL});
-};
-
-export const closeEndGameModal = () => dispatch => {
-    dispatch({type: CLOSE_ENDGAME_MODAL});
-};
-
 
 export const submitScore = () => () => {
     localStorage.removeItem('user');
