@@ -18,6 +18,7 @@ import { SET_NAME,
 
 const INITIAL_STATE = {
     userAddr: "",
+    userError: "",
     userNameEdit: "",
     userName: "",
     priceEdit: "",
