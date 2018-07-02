@@ -18,6 +18,7 @@ import { SET_NAME,
 
 const INITIAL_STATE = {
     userAddr: "",
+    userError: "",
     userNameEdit: "",
     userName: "",
     priceEdit: "",
@@ -131,7 +132,6 @@ export default (state = INITIAL_STATE, action) => {
             };
 
         case LOAD_USER:
-            console.log("LOAD_USER payload", payload)
             return {
                 ...state,
                 ...payload,

@@ -15,7 +15,12 @@ import {
     } from '../constants/actionTypes';
 
 import * as webrtc from '../services/webrtcService';
-import { createUser, getActiveChannels, getCurrentBlockNumber } from '../services/ethereumService';
+import {
+  createUser,
+  getActiveChannels,
+  getCurrentBlockNumber,
+  getWeb3
+} from '../services/ethereumService';
 
 import { NUM_BLOCKS_FOR_CHANNEL } from '../constants/config';
 
@@ -27,6 +32,31 @@ import { closeModal, openModal } from './modalActions';
 import { checkMove, checkMoveResponse } from './boardActions';
 
 const createWallet = () => ({ wallet: ethers.Wallet.createRandom() });
+
+export const setUpWeb3 = () => (dispatch) => {
+  getWeb3().then((user) => {
+    dispatch({
+        type: LOAD_USER,
+        payload: {
+          ...user,
+          userError: '',
+        }
+      }
+    );
+    console.log('Web3 initialized!');
+    console.log('User data: ', user);
+  }).catch((err) => {
+    console.log('Error in web3 initialization.', err);
+    dispatch({
+        type: LOAD_USER,
+        payload: {
+          userError: err
+        }
+      }
+    );
+    setTimeout(() => setUpWeb3()(dispatch), 1000)
+  })
+};
 
 export const register = () => async (dispatch, getState) => {
   const state = getState();

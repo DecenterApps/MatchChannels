@@ -135,3 +135,14 @@ code {
   color: gray;
   font-family: Boogaloo;
 }
+
+.user-error {
+  color: white;
+  font-family: Boogaloo;
+  font-size: 32px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100vh;
+}

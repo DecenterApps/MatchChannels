@@ -15,14 +15,30 @@ import './App.css';
 class App extends Component {
 
   componentDidMount() {
-    this.props.initAccount();
-    this.props.initBoard();
+    if (this.props.user.userAddr) {
+      this.props.initAccount();
+      this.props.initBoard();
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (!prevProps.user.userAddr && this.props.user.userAddr) {
+      this.props.initAccount();
+      this.props.initBoard();
+    }
   }
 
   render() {
     return (
       <div className="App">
-        {this.props.children}
+        {
+          this.props.user.userAddr &&
+          this.props.children
+        }
+        {
+          this.props.user.userError &&
+          <div className="user-error">{ this.props.user.userError }</div>
+        }
         {
           this.props.modalShown === 'challenge' &&
           <ChallengeModal />
