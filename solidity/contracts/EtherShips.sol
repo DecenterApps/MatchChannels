@@ -29,7 +29,7 @@ contract EtherShips is Players, ECTools {
 
 	function openChannel(bytes32 _merkleRoot, string _webrtcId, uint _amount, address _signAddress) payable public {
 		require(players[msg.sender].exists);
-		require(_amount < players[msg.sender].balance + msg.value);
+		require(_amount <= players[msg.sender].balance + msg.value);
 
 		if (msg.value > 0) {
 			players[msg.sender].balance += msg.value;

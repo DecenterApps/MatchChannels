@@ -151,8 +151,8 @@ export default (state = INITIAL_STATE, action) => {
             };
         
         case ADD_NEW_USER_TO_LOBBY:
-
             let newUsersList = state.usersList;
+
             const exists = state.usersList.find(u => u.args.channelId.valueOf() === payload.args.channelId.valueOf());
             if(!exists) {
                 newUsersList.push(payload);

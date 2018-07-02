@@ -21,7 +21,6 @@ class UserList extends Component {
     super(props);
 
     this.state = {
-      users: [],
       username: '',
       amount: -1,
       channelId: -1,
@@ -31,15 +30,13 @@ class UserList extends Component {
   }
 
   async componentDidMount() {
-    const users = await getActiveChannels();
     this.props.addUsersToLobby();
-
-    this.setState({
-      users
-    });
   }
 
   render() {
+
+    const { usersList } = this.props.user;
+
     return (
       <div>
         <div className="user-list">
@@ -50,7 +47,7 @@ class UserList extends Component {
           <div className="user-list-body">
 
             {
-              this.state.users.map(user =>
+              usersList.map(user =>
                 <div className="user-list-item" key={user.args.channelId.valueOf()}>
                   <span className='user-list-id'>#{user.args.channelId.valueOf()}</span>
                   <span className='user-list-name'> {user.args.username} </span>

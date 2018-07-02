@@ -191,8 +191,12 @@ export const addUsersToLobby = () => async (dispatch) => {
 
   const blockNum = await getCurrentBlockNumber();
 
+  console.log('block num: ', blockNum);
+
   window.ethershipContract.OpenChannel({},{fromBlock: blockNum -  NUM_BLOCKS_FOR_CHANNEL, toBlock: 'latest' })
     .watch((err, user) => {
+      console.log('On event watch', user);
+
       if (!err) {
         dispatch({type: ADD_NEW_USER_TO_LOBBY, payload: user });
       }

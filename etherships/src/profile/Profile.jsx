@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { browserHistory } from 'react-router'
+import { browserHistory } from 'react-router';
+
+import { connect } from 'react-redux';
 
 import './Profile.css';
 
@@ -86,6 +88,13 @@ class Profile extends Component {
 
 }
 
+const mapStateToProps = (props) => ({
+	user: props.user,
+});
+  
+const mapDispatchToProps = {
+};
+  
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);
 
-export default Profile;
 

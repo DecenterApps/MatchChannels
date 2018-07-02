@@ -52,6 +52,7 @@ export const generateBoard = (board) => async (dispatch, getState) => {
     const walletAddress = state.user.userWallet.address;
 
     if (state.user.opponentChannel === -1) {
+
         await openChannel(getRoot(state.board.tree), state.user.peerId, walletAddress, state.user.gameBetAmount);
 
         dispatch({type: ON_CONTRACT});
