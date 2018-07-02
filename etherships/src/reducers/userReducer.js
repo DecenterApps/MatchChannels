@@ -11,7 +11,7 @@ import { SET_NAME,
         SET_CONNECTION,
         PICK_FIELDS,
         LOAD_USER,
-        SET_OPPONENT_ADDR,
+        SET_OPPONENT_DATA,
         SET_LOBBY_USERS,
         ADD_NEW_USER_TO_LOBBY,
         } from '../constants/actionTypes';
@@ -41,9 +41,6 @@ export default (state = INITIAL_STATE, action) => {
 
     switch (type) {
         case SET_NAME:
-
-            console.log('wallet addr: ', payload.wallet.address);
-
             return {
                 ...state,
                 userName: state.userNameEdit,
@@ -51,8 +48,6 @@ export default (state = INITIAL_STATE, action) => {
             }
 
         case SET_ADDR:
-            console.log('payload', payload.addr);
-
             return {
                 ...state,
                 userAddr: payload.addr
@@ -66,9 +61,6 @@ export default (state = INITIAL_STATE, action) => {
             }
 
         case REGISTERED:
-
-            console.log('wallet addr: ', payload.wallet.address);
-
             return {
                 ...state,
                 registered: true,
@@ -96,9 +88,6 @@ export default (state = INITIAL_STATE, action) => {
             };
 
         case NEW_GAME:
-
-            console.log('wallet addr: ', payload.session.wallet.address);
-
             return {
                 ...state,
                 gameBetAmount: payload.price,
@@ -121,8 +110,6 @@ export default (state = INITIAL_STATE, action) => {
             };
 
         case PICK_FIELDS:
-            console.log('pick_fields: ', payload.channelId);
-
             return {
                 ...state,
                 opponentChannel: payload.channelId,
@@ -131,13 +118,12 @@ export default (state = INITIAL_STATE, action) => {
             };
 
         case LOAD_USER:
-            console.log("LOAD_USER payload", payload)
             return {
                 ...state,
                 ...payload,
             };
 
-        case SET_OPPONENT_ADDR:
+        case SET_OPPONENT_DATA:
             return {
                 ...state,
                 opponentAddr: payload.addr,

@@ -18,19 +18,16 @@ export const generateTree = (board) => {
 }
 
 
-export const checkGuess = (state, channelId, pos, merkleTree, hashedFields, nonces, currSequence, numOfGuesses, opponentAddress) => {
-      const type = (hashedFields[pos] == keccak256(pos, 1, nonces[pos])) ? 1 : 0;
+export const checkGuess = (state, pos, numOfGuesses) => {
+	  const { opponentChannel, opponentAddr } = state.user;
+	  const { tree, hashedBoard, nonces, sequence } = state.board;
 
-	  console.log("hashing sig: ", channelId, opponentAddress, numOfGuesses);
+	  const type = (hashedBoard[pos] == keccak256(pos, 1, nonces[pos])) ? 1 : 0;
+	  
+      const path = joinPath(tree, hashedBoard, pos);
+      const hash = keccak256(parseInt(opponentChannel, 10), pos, sequence, type, nonces[pos], "0x" + path.sig);
+      const hashNumOfGuesses = keccak256(parseInt(opponentChannel, 10), opponentAddr, numOfGuesses);
 
-
-      const path = joinPath(merkleTree, hashedFields, pos);
-      const hash = keccak256(parseInt(channelId, 10), pos, currSequence, type, nonces[pos], "0x" + path.sig);
-      const hashNumOfGuesses = keccak256(parseInt(channelId, 10), opponentAddress, numOfGuesses);
-
-      console.log('to hash: ', parseInt(channelId, 10), opponentAddress, numOfGuesses);
-	  console.log('hash: ', hashNumOfGuesses);
-	  console.log('sign address: ', state.user.userWallet.address);
       const signatureResponse = state.user.userWallet.signMessage(ethers.utils.arrayify(hash));
       const signatureNumOfGuesses = state.user.userWallet.signMessage(ethers.utils.arrayify(hashNumOfGuesses));
 

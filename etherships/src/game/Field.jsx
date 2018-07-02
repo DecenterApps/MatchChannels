@@ -22,7 +22,7 @@ class Field extends Component {
     }
 
     render() {
-        const { board, boardGuesses } = this.props.board;
+        const { board, opponentsBoard } = this.props.board;
         const { type } = this.props;
 
         let fieldClass = 'no-hover-field';
@@ -37,11 +37,11 @@ class Field extends Component {
 
         let guessFieldClass = 'red-field';
 
-        if (boardGuesses[this.props.id] === 1) {
+        if (opponentsBoard[this.props.id] === 1) {
             guessFieldClass = 'red-choosen';
-        } else if (boardGuesses[this.props.id] === 2) {
+        } else if (opponentsBoard[this.props.id] === 2) {
             guessFieldClass = 'field-miss';
-        } else if(boardGuesses[this.props.id] === 3) {
+        } else if(opponentsBoard[this.props.id] === 3) {
             guessFieldClass = 'field-hit-red';
         }
 
@@ -61,7 +61,7 @@ class Field extends Component {
                     onClick={this.guessOppponentField}>
 
 
-                    <span className={boardGuesses[this.props.id] !== 0 ? "" : "pin"}></span>
+                    <span className={opponentsBoard[this.props.id] !== 0 ? "" : "pin"}></span>
                 </div>
             )
         } else {

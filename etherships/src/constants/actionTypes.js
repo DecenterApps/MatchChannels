@@ -1,13 +1,12 @@
 // Board reducer
 export const SET_FIELD = 'set_field';
 export const CREATE_TREE = 'create_tree';
-export const ON_CONTRACT = 'on_contract';
 export const GUESS_FIELD = 'guess_field';
-export const SET_PLAYER_MOVE = 'set_player_move';
-export const CHECK_MOVE = 'check_move';
+export const SET_PLAYER_TURN = 'set_player_turn';
+export const CHECK_OPPONENTS_GUESS = 'check_opponents_guess';
 export const LOAD_BOARD = 'load_board';
 export const RESET_BOARD = 'reset_board';
-export const CHECK_MOVE_RESPONSE = 'check_move_response';
+export const GUESS_RESPONSE = 'guess_response';
 export const INCREMENT_SECONDS = 'increment_seconds';
 
 // User reducer
@@ -23,7 +22,7 @@ export const SET_CONNECTION = 'set_connection';
 export const PICK_FIELDS = 'pick_fields';
 export const LOAD_USER = 'load_user';
 export const RESET_CHANNEL = 'reset_channel';
-export const SET_OPPONENT_ADDR = 'set_opponent_addr';
+export const SET_OPPONENT_DATA = 'set_opponent_data';
 export const SET_LOBBY_USERS = 'set_lobby_users';
 export const ADD_NEW_USER_TO_LOBBY = 'add_new_user_to_lobby';
 export const OPEN_MODAL = 'open_modal';

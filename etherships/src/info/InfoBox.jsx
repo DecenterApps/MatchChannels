@@ -43,7 +43,7 @@ class InfoBox extends Component {
             }
             <hr />
             <div>Game bet ammount: { user.gameBetAmount }</div>
-            <div>Own points: { board.boardGuesses.filter(p => p === 3).length } / { board.boardGuesses.filter(p => p !== 0).length }</div>
+            <div>Own points: { board.opponentsBoard.filter(p => p === 3).length } / { board.opponentsBoard.filter(p => p !== 0).length }</div>
             <div>Opponent points: { board.board.filter(p => p === 3).length } / { board.board.filter(p => p !== 0).length }</div>
           </div>
         }

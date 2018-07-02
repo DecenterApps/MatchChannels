@@ -55,6 +55,6 @@ export const send = (data) => {
     console.error('Message not sent - connection missing!', data);
     return false;
   }
-  console.log('Sending message', data);
+  
   conn.send(data);
 };

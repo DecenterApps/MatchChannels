@@ -12,6 +12,14 @@ export const DEFAULT_PRICE = 1000000000000000; // 0.001 eth
 
 export const REFRESH_LOBBY_TIME = 10000; //10s
 
+// In the board 0,1,2,3 represent the state of the ships
+export const EMPTY_FIELD = 0;
+export const PLAYERS_SHIP = 1;
+export const MISSED_SHIP = 2;
+export const SUNK_SHIP = 3;
+
+export const SECONDS_PER_TURN = 30;
+
 export const customModalStyles = {
     content : {
       top                   : '50%',

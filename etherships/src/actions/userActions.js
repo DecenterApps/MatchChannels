@@ -9,7 +9,7 @@ import {
     PICK_FIELDS,
     LOAD_USER,
     RESET_CHANNEL,
-    SET_OPPONENT_ADDR,
+    SET_OPPONENT_DATA,
     SET_LOBBY_USERS,
     ADD_NEW_USER_TO_LOBBY,
     } from '../constants/actionTypes';
@@ -24,7 +24,7 @@ import short from 'short-uuid';
 
 import ethers from 'ethers';
 import { closeModal, openModal } from './modalActions';
-import { checkMove, checkMoveResponse } from './boardActions';
+import { receivedGuess, guessResponse } from './boardActions';
 
 const createWallet = () => ({ wallet: ethers.Wallet.createRandom() });
 
@@ -80,7 +80,6 @@ export const initAccount = () => (dispatch, getState) =>  {
         // webrtc.setConnection(_conn);
       });
       _conn.on('data', (message) => {
-        console.log("Message received (1): ", message);
         msgReceived(message)(dispatch, getState);
       });
     });
@@ -88,7 +87,7 @@ export const initAccount = () => (dispatch, getState) =>  {
     let user = localStorage.getItem("user");
 
     const userWallet = ethers.Wallet.createRandom();
-    console.log('sign address: ', userWallet.address);
+
     if (user) {
         user = JSON.parse(user);
         user.userWallet = userWallet;
@@ -117,8 +116,8 @@ export const resetChannel = () => (dispatch) => {
     dispatch({ type: RESET_CHANNEL});
 };
 
-export const setOpponentAddr = (addr, id) => (dispatch) => {
-    dispatch({type: SET_OPPONENT_ADDR, payload: {addr, id} });
+export const setOpponentData = (addr, id) => (dispatch) => {
+    dispatch({type: SET_OPPONENT_DATA, payload: {addr, id} });
 };
 
 export const connectToPlayer = (user) => (dispatch, getState) => {
@@ -140,14 +139,14 @@ export const connectToPlayer = (user) => (dispatch, getState) => {
 
   });
   conn.on('data', (message) => {
-    console.log("Message received (2): ", message);
+
     msgReceived(message)(dispatch, getState);
   });
 };
 
 export const acceptChallenge = () => (dispatch, getState) => {
   webrtc.send({
-    type: 'accepted',
+    type: 'challenge_accepted',
     channelId: getState().modal.modalData.channelId, // should perhaps be moved
     amount: getState().modal.modalData.amount,
     addr: getState().user.userAddr,
@@ -155,15 +154,15 @@ export const acceptChallenge = () => (dispatch, getState) => {
 };
 
 export const msgReceived = (message) => (dispatch, getState) => {
-  console.log("Message received: ", message);
-  switch(message.type) {
-    case 'accepted':
-      pickFields(message.channelId, message.amount, message.addr)(dispatch);
-      break;
 
+  switch(message.type) {
     case 'challenge':
-      setOpponentAddr(message.addr, message.channelId)(dispatch);
+      setOpponentData(message.addr, message.channelId)(dispatch);
       openModal('challenge', message)(dispatch);
+      break;
+      
+    case 'challenge_accepted':
+      pickFields(message.channelId, message.amount, message.addr)(dispatch);
       break;
 
     case 'start_game':
@@ -171,13 +170,12 @@ export const msgReceived = (message) => (dispatch, getState) => {
       browserHistory.push('/match');
       break;
 
-    case 'move':
-      // webrtc.send({type: 'move-resp', result: true});
-      checkMove(message.pos)(dispatch, getState);
+    case 'received_guess':
+      receivedGuess(message.pos)(dispatch, getState);
       break;
 
-    case 'move-resp':
-      checkMoveResponse(message)(dispatch, getState);
+    case 'guess_response':
+      guessResponse(message)(dispatch, getState);
       break;
 
     default:
@@ -191,14 +189,13 @@ export const addUsersToLobby = () => async (dispatch) => {
 
   const blockNum = await getCurrentBlockNumber();
 
-  console.log('block num: ', blockNum);
+  // TODO: disabled temporarily as it brings up channels that are joined
+  // window.ethershipContract.OpenChannel({},{fromBlock: blockNum -  NUM_BLOCKS_FOR_CHANNEL, toBlock: 'latest' })
+  //   .watch((err, user) => {
+  //     console.log('On event watch', user);
 
-  window.ethershipContract.OpenChannel({},{fromBlock: blockNum -  NUM_BLOCKS_FOR_CHANNEL, toBlock: 'latest' })
-    .watch((err, user) => {
-      console.log('On event watch', user);
-
-      if (!err) {
-        dispatch({type: ADD_NEW_USER_TO_LOBBY, payload: user });
-      }
-    });
+  //     if (!err) {
+  //       dispatch({type: ADD_NEW_USER_TO_LOBBY, payload: user });
+  //     }
+  //   });
 };

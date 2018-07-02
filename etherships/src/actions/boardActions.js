@@ -1,12 +1,11 @@
 import { SET_FIELD, 
         CREATE_TREE, 
-        ON_CONTRACT, 
         GUESS_FIELD, 
-        SET_PLAYER_MOVE, 
-        CHECK_MOVE,
         LOAD_BOARD,
         RESET_BOARD,
-        CHECK_MOVE_RESPONSE,
+        SET_PLAYER_TURN,
+        GUESS_RESPONSE,
+        CHECK_OPPONENTS_GUESS,
         INCREMENT_SECONDS,
         } from '../constants/actionTypes';
 
@@ -16,6 +15,8 @@ import { getRoot } from '../util/merkel';
 import * as webrtc from '../services/webrtcService';
 
 import { openModal } from './modalActions';
+
+import { SUNK_SHIP } from '../constants/config';
 
 import { browserHistory } from 'react-router'
 
@@ -37,9 +38,11 @@ export const initBoard = () => (dispatch) => {
     dispatch({ type: LOAD_BOARD, payload: board || {} });
 };
 
-export const submitGuess = payload => (dispatch) => {
-    webrtc.send({type: 'move', pos: payload});
-    dispatch({ type: SET_PLAYER_MOVE, payload: false });
+export const submitGuess = pos => (dispatch) => {
+    webrtc.send({type: 'received_guess', pos});
+    dispatch({ type: SET_PLAYER_TURN, payload: false });
+
+    console.log('Send guess: Position: ', pos);
 };
 
 export const generateBoard = (board) => async (dispatch, getState) => {
@@ -48,20 +51,16 @@ export const generateBoard = (board) => async (dispatch, getState) => {
     dispatch({ type: CREATE_TREE, payload });
 
     let state = getState();
-    console.log(state.user.userWallet.address);
     const walletAddress = state.user.userWallet.address;
 
     if (state.user.opponentChannel === -1) {
-
         await openChannel(getRoot(state.board.tree), state.user.peerId, walletAddress, state.user.gameBetAmount);
-
-        dispatch({type: ON_CONTRACT});
 
         browserHistory.push('/users');
     } else {
         await joinChannel(state.user.opponentChannel, getRoot(state.board.tree), state.user.peerId, walletAddress, state.user.gameBetAmount);
 
-        dispatch({ type: SET_PLAYER_MOVE, payload: true });
+        dispatch({ type: SET_PLAYER_TURN, payload: true });
 
         // notify other user
         webrtc.send({type: 'start_game'});
@@ -69,64 +68,45 @@ export const generateBoard = (board) => async (dispatch, getState) => {
         browserHistory.push('/match');
     }
 
-    // delete state.user.peer;
-
     // save data to localStorage so we don't lose it on refresh
     localStorage.setItem('user', JSON.stringify(state.user, getCircularReplacer()));
     localStorage.setItem('board', JSON.stringify(state.board, getCircularReplacer()))
 };
 
 // this is called when we receive a guess from the opponent
-export const checkMove = pos => (dispatch, getState) => {
-    let state = getState();
-
-    let result = false;
-
-    // check if user hit your ship
-    if (state.board.board[pos] === 1) {
-        result = true;
-    }
-
-    // reset your turn
-    dispatch({ type: CHECK_MOVE, payload: pos });
-    dispatch({ type: SET_PLAYER_MOVE, payload: true });
+export const receivedGuess = pos => (dispatch, getState) => {
+    dispatch({ type: CHECK_OPPONENTS_GUESS, payload: pos });
 
     // get the updated state
-    state = getState();
+    const state = getState();
 
-    const numHits = state.board.board.filter(b => b === 3).length;
+    const numHits = state.board.board.filter(b => b === SUNK_SHIP).length;
 
-    console.log('board: ', state.board.board, " board guess: ", state.board.boardGuesses);
-
-    if (state.board.board.filter(b => b === 3).length >= 5) {
+    if (numHits >= 5) {
         openModal('endgame', {})(dispatch);
     }
 
-    const channelId = state.user.opponentChannel;
-    const merkelTree = state.board.tree;
-    const hashedFields = state.board.hashedBoard;
-    const nonces = state.board.nonces;
-    const sequence = state.board.sequence;
-    const addr = state.user.opponentAddr;
+    console.log("Recevied Guess: ", numHits, state.board);
 
-    const data = checkGuess(state, channelId, pos, merkelTree, hashedFields, nonces, sequence, numHits, addr);
+    const data = checkGuess(state, pos, numHits);
 
-    // send the result to the opponent
-    webrtc.send({type: 'move-resp', result, pos, data });
+    const isShipHit = state.board.board[pos] === SUNK_SHIP;
+    webrtc.send({type: 'guess_response', isShipHit, pos, data });
+
+    // You received a guess, now it's your turn
+    dispatch({ type: SET_PLAYER_TURN, payload: true });
 };
 
 // this is called when the opponent responds to your guess
-export const checkMoveResponse = payload => async (dispatch, getState) => {
-    if (payload.pos) {
-        dispatch({type: CHECK_MOVE_RESPONSE, payload});
+export const guessResponse = payload => async (dispatch, getState) => {
+    dispatch({type: GUESS_RESPONSE, payload});
 
-        const numHits = getState().board.boardGuesses.filter(b => b === 3).length;
+    const numHits = getState().board.opponentsBoard.filter(b => b === SUNK_SHIP).length;
 
-        console.log('Response numHits: ', numHits);
+    console.log('Guess Response: ', numHits, getState().board);
 
-        if (numHits >= 5) {
-            openModal('endgame', {})(dispatch);
-        }
+    if (numHits >= 5) {
+        openModal('endgame', {})(dispatch);
     }
 };
 

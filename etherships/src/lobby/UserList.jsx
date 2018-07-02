@@ -1,16 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { getActiveChannels } from '../services/ethereumService';
-
 import {
   setConnection,
   pickFields,
-  setOpponentAddr,
   connectToPlayer,
   addUsersToLobby,
 } from '../actions/userActions';
-import { checkMove, checkMoveResponse } from '../actions/boardActions';
 import { openModal } from '../actions/modalActions';
 
 import './UserList.css';
@@ -74,9 +70,6 @@ const mapStateToProps = (props) => ({
 const mapDispatchToProps = {
   setConnection,
   pickFields,
-  checkMove,
-  checkMoveResponse,
-  setOpponentAddr,
   openModal,
   connectToPlayer,
   addUsersToLobby,

@@ -31,7 +31,7 @@ class EndGameModal extends Component {
     render() {
 
         const numHits = this.props.board.board.filter(b => b === 3).length;
-        const numOpponentHits = this.props.board.boardGuesses.filter(b => b === 3).length;
+        const numOpponentHits = this.props.board.opponentsBoard.filter(b => b === 3).length;
 
         return (
             <Modal

@@ -1,20 +1,20 @@
 import { 
     SET_FIELD, 
     CREATE_TREE, 
-    ON_CONTRACT, 
     GUESS_FIELD, 
-    SET_PLAYER_MOVE, 
-    CHECK_MOVE, 
+    SET_PLAYER_TURN, 
     LOAD_BOARD, 
     RESET_BOARD,
-    CHECK_MOVE_RESPONSE,
+    CHECK_OPPONENTS_GUESS,
+    GUESS_RESPONSE,
     INCREMENT_SECONDS,
-    OPEN_ENDGAME_MODAL,
-    CLOSE_ENDGAME_MODAL,
   } from '../constants/actionTypes';
 
+import { EMPTY_FIELD, MISSED_SHIP, SUNK_SHIP, PLAYERS_SHIP, SECONDS_PER_TURN } from '../constants/config';
+
 const INITIAL_STATE = {
-    board: [  
+    // Here we show your ships and where the opponent hit/missed your ships
+    board: [
         0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 
         0, 0, 0, 0, 0, 0, 0, 0,
@@ -23,7 +23,9 @@ const INITIAL_STATE = {
         0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0],
-    boardGuesses: [  
+
+    // Here we show which ships you hit or tried to hit
+    opponentsBoard: [
         0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 
         0, 0, 0, 0, 0, 0, 0, 0,
@@ -37,14 +39,11 @@ const INITIAL_STATE = {
     hashedBoard: [],
     numPicked: 0,
     sequence: 0,
-    onContract: false,
-    opponentTree: [],
-    yourMove: false,
-    recentGuess: -1,
-    timer: 30,
+    opponentTree: [], //TODO: set this when the game starts
+    isYourMove: false,
+    choosenField: -1, // the current field that is selected but not submited
+    timer: SECONDS_PER_TURN,
     seconds: 0,
-    timeoutModal: false,
-    hitModal: false,
     numOfGuesses: 0,
     signatureNumOfGuesses: "",
 };
@@ -57,7 +56,7 @@ export default (state = INITIAL_STATE, action) => {
             const pos = payload;
             const board = state.board;
 
-            board[pos] = 1;
+            board[pos] = PLAYERS_SHIP;
 
             return {
                 ...state,
@@ -71,48 +70,41 @@ export default (state = INITIAL_STATE, action) => {
                 ...payload
             };
 
-        case ON_CONTRACT:
-            return {
-                ...state,
-                onContract: true
-            }
-
         case GUESS_FIELD:
-            let newBoard = state.boardGuesses;
+            let newBoard = state.opponentsBoard;
 
             // reset the previous selected field
-            if (state.recentGuess !== -1) {
-                newBoard[state.recentGuess] = 0;
+            if (state.choosenField !== -1) {
+                newBoard[state.choosenField] = EMPTY_FIELD;
             }
 
-            newBoard[payload] = 1;
+            newBoard[payload] = PLAYERS_SHIP;
 
             return {
                 ...state,
-                boardGuesses: newBoard,
-                recentGuess: payload,
+                opponentsBoard: newBoard,
+                choosenField: payload,
             }
 
-        case SET_PLAYER_MOVE:
-
+        case SET_PLAYER_TURN:
             return {
                 ...state,
-                yourMove: payload,
-                boardGuesses: state.boardGuesses.map(b => b === 1 ? 2 : b),
-                timer: 30,
+                isYourMove: payload,
+                opponentsBoard: state.opponentsBoard.map(b => b === PLAYERS_SHIP ? MISSED_SHIP : b),
+                timer: SECONDS_PER_TURN,
                 seconds: 0,
                 sequence: ++state.sequence,
-                recentGuess: -1,
+                choosenField: -1,
             }
 
-        case CHECK_MOVE:
+        case CHECK_OPPONENTS_GUESS:
             const b = state.board;
+            const position = payload;
 
-            if (b[payload] === 1) {
-                console.log('Setujemo pogodak: ', payload);
-                b[payload] = 3;
-            } else if(b[payload] === 0) {
-                b[payload] = 2;
+            if (b[position] === PLAYERS_SHIP) {
+                b[position] = SUNK_SHIP;
+            } else if(b[position] === EMPTY_FIELD) {
+                b[position] = MISSED_SHIP;
             }
 
             return {
@@ -130,16 +122,16 @@ export default (state = INITIAL_STATE, action) => {
         case RESET_BOARD:
             return INITIAL_STATE;
 
-        case CHECK_MOVE_RESPONSE:
-            let newBoardGuesses = state.boardGuesses;
+        case GUESS_RESPONSE:
+            let newBoardGuesses = state.opponentsBoard;
 
-            if (payload.result) {
-                newBoardGuesses[payload.pos] = 3;
+            if (payload.isShipHit) {
+                newBoardGuesses[payload.pos] = SUNK_SHIP;
             }
 
             return {
                 ...state,
-                boardGuesses: newBoardGuesses,
+                opponentsBoard: newBoardGuesses,
                 numOfGuesses: payload.data.numOfGuesses,
                 signatureNumOfGuesses: payload.data.signatureNumOfGuesses,
             }
