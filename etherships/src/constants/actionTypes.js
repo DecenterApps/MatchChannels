@@ -27,4 +27,5 @@ export const SET_LOBBY_USERS = 'set_lobby_users';
 export const ADD_NEW_USER_TO_LOBBY = 'add_new_user_to_lobby';
 export const OPEN_MODAL = 'open_modal';
 export const CLOSE_MODAL = 'close_modal';
+export const SET_WALLET = 'set_wallet';
 export const SET_BALANCE = 'set_balance';

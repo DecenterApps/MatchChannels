@@ -1,4 +1,3 @@
-import _ from 'lodash';
 
 import { SET_NAME,
         SET_ADDR,
@@ -14,6 +13,7 @@ import { SET_NAME,
         SET_OPPONENT_DATA,
         SET_LOBBY_USERS,
         ADD_NEW_USER_TO_LOBBY,
+        SET_WALLET,
         SET_BALANCE
         } from '../constants/actionTypes';
 
@@ -32,10 +32,10 @@ const INITIAL_STATE = {
     peer: {},
     connection: {},
     peerId: "",
-    userWallet: {},
     registered: false,
     opponentChannel: -1,
-    opponentAddr: ""
+    opponentAddr: "",
+    userWallet: {},
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -157,6 +157,12 @@ export default (state = INITIAL_STATE, action) => {
                 ...state,
                 usersList: newUsersList,
             };
+
+        case SET_WALLET:
+            return {
+                ...state,
+                userWallet: payload,
+            }
 
         default:
             return {

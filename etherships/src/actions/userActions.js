@@ -12,6 +12,7 @@ import {
     SET_OPPONENT_DATA,
     SET_LOBBY_USERS,
     ADD_NEW_USER_TO_LOBBY,
+    SET_WALLET,
     SET_BALANCE,
     } from '../constants/actionTypes';
 
@@ -24,8 +25,6 @@ import {
   fundUser,
   withdraw
 } from '../services/ethereumService';
-
-import { NUM_BLOCKS_FOR_CHANNEL } from '../constants/config';
 
 import { browserHistory } from 'react-router';
 import short from 'short-uuid';
@@ -66,17 +65,23 @@ export const register = () => async (dispatch, getState) => {
 
   await createUser(state.user.userNameEdit, state.user.priceEdit);
 
-  dispatch({ type: REGISTERED, payload: createWallet() });
+  dispatch({ type: REGISTERED });
 
   browserHistory.push('/users');
 };
 
 export const newGame = (price) => (dispatch) => {
-    dispatch({ type: NEW_GAME, payload: {price, session: createWallet() } });
+    dispatch({ type: NEW_GAME, payload:  {price } });
 
     // remove data stored from the previous game
     localStorage.removeItem('user');
     localStorage.removeItem('board');
+
+    // create a wallet
+    const newWallet = createWallet();
+    localStorage.setItem('user', JSON.stringify({userWallet: newWallet}));
+
+    dispatch({type: SET_WALLET, payload: newWallet});
 
     browserHistory.push('/game');
 };
@@ -98,7 +103,7 @@ export const withdrawFunds = (amount) => async (dispatch) => {
 
 
 export const setName = () => (dispatch) => {
-    dispatch({ type: SET_NAME, payload: createWallet() });
+    dispatch({ type: SET_NAME });
 
     browserHistory.push('/game');
 };
@@ -135,13 +140,17 @@ export const initAccount = () => (dispatch, getState) =>  {
 
     let user = localStorage.getItem("user");
 
-    const userWallet = ethers.Wallet.createRandom();
+    const userWallet = createWallet();
+    console.log('Creating a new wallet!!!');
 
-    if (user) {
-        user = JSON.parse(user);
-        user.userWallet = userWallet;
+    if (!user) {
+      user = { userWallet };
+
+      localStorage.setItem('user', JSON.stringify(user));
     } else {
-        user = { userWallet };
+      user = JSON.parse(user);
+
+      user.userWallet = { wallet: new ethers.Wallet(user.userWallet.wallet.privateKey) };
     }
 
     dispatch({ type: LOAD_USER, payload: user});
@@ -150,9 +159,7 @@ export const initAccount = () => (dispatch, getState) =>  {
 
 // sets the webrtc connection data to the reducer
 export const setConnection = (connection, channelId) => (dispatch) => {
-    const wallet = ethers.Wallet.createRandom();
-
-    dispatch({ type: SET_CONNECTION, payload: {connection, wallet, channelId} });
+    dispatch({ type: SET_CONNECTION, payload: {connection, channelId} });
 };
 
 export const pickFields = (channelId, amount, addr) => (dispatch) => {
