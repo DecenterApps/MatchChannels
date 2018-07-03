@@ -14,6 +14,7 @@ import { SET_NAME,
         SET_OPPONENT_DATA,
         SET_LOBBY_USERS,
         ADD_NEW_USER_TO_LOBBY,
+        SET_BALANCE
         } from '../constants/actionTypes';
 
 const INITIAL_STATE = {
@@ -67,7 +68,13 @@ export default (state = INITIAL_STATE, action) => {
                 registered: true,
                 userName: state.userNameEdit,
                 userNameEdit: '',
-            }
+            };
+
+        case SET_BALANCE:
+            return {
+                ...state,
+                balance: parseFloat(state.balance) + parseFloat(payload.amount)
+            };
 
         case IS_REGISTERED:
 

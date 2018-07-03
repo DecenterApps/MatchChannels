@@ -12,6 +12,7 @@ import {
     SET_OPPONENT_DATA,
     SET_LOBBY_USERS,
     ADD_NEW_USER_TO_LOBBY,
+    SET_BALANCE,
     } from '../constants/actionTypes';
 
 import * as webrtc from '../services/webrtcService';
@@ -19,7 +20,8 @@ import {
   createUser,
   getActiveChannels,
   getCurrentBlockNumber,
-  getWeb3
+  getWeb3,
+  fundUser,
 } from '../services/ethereumService';
 
 import { NUM_BLOCKS_FOR_CHANNEL } from '../constants/config';
@@ -76,6 +78,13 @@ export const newGame = (price) => (dispatch) => {
     localStorage.removeItem('board');
 
     browserHistory.push('/game');
+};
+
+export const fundAccount = (amount) => async (dispatch) => {
+
+    await fundUser(amount);
+
+    dispatch({ type: SET_BALANCE, payload: {amount} });
 };
 
 export const setName = () => (dispatch) => {
