@@ -2,6 +2,7 @@ import util from 'ethereumjs-util';
 import ethers from 'ethers';
 
 import { createMerkel, keccak256 } from '../util/merkel';
+import { getSignerAddress } from './ethereumService';
 
 export const generateTree = (board) => {
     const elements = board.map(((type, i) => ([i, type, getRandomInt(Number.MAX_SAFE_INTEGER)])));
@@ -22,7 +23,7 @@ export const checkGuess = (state, pos, numOfGuesses) => {
 	  const { opponentChannel, opponentAddr } = state.user;
 	  const { tree, hashedBoard, nonces, sequence } = state.board;
 
-	  const type = (hashedBoard[pos] == keccak256(pos, 1, nonces[pos])) ? 1 : 0;
+	  const type = (hashedBoard[pos] === keccak256(pos, 1, nonces[pos])) ? 1 : 0;
 	  
       const path = joinPath(tree, hashedBoard, pos);
       const hash = keccak256(parseInt(opponentChannel, 10), pos, sequence, type, nonces[pos], "0x" + path.sig);
@@ -40,15 +41,16 @@ export const checkGuess = (state, pos, numOfGuesses) => {
 
 // get the result of your opponent, and check sig. and answer
 // if the result is wrong format data so we can call the dispute
-export const checkResult = (channelId, signedScore, opponentAddress, numOfGuesses) => {
+export const checkResult = async (channelId, signedScore, opponentAddress, numOfGuesses) => {
 	const msg = keccak256(channelId, opponentAddress, numOfGuesses);
 	const {v, r, s} = util.fromRpcSig(signedScore);
 
 	const pubKey  = util.ecrecover(util.toBuffer(msg), v, r, s);
 	const addrBuf = util.pubToAddress(pubKey);
 	const addr    = util.bufferToHex(addrBuf);
+	let opponentSignerAddress = await getSignerAddress(opponentAddress);
 
-	return (addr == opponentAddress);
+	return (addr === getSignerAddress(opponentSignerAddress));
 };
 
 
