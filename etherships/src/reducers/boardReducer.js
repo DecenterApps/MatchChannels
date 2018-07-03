@@ -72,12 +72,6 @@ export default (state = INITIAL_STATE, action) => {
 
         case GUESS_FIELD:
             let newBoard = state.opponentsBoard;
-
-            // reset the previous selected field
-            if (state.choosenField !== -1) {
-                newBoard[state.choosenField] = EMPTY_FIELD;
-            }
-
             newBoard[payload] = PLAYERS_SHIP;
 
             return {

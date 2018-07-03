@@ -24,8 +24,11 @@ export const setField = payload => (dispatch) => {
     dispatch({ type: SET_FIELD, payload });
 };
 
-export const guessField = payload => (dispatch) => {
-    dispatch({ type: GUESS_FIELD, payload });
+export const guessField = pos => (dispatch) => {
+    dispatch({ type: GUESS_FIELD, payload: pos });
+
+    webrtc.send({type: 'received_guess', pos});
+    dispatch({ type: SET_PLAYER_TURN, payload: false });
 };
 
 export const initBoard = () => (dispatch) => {
@@ -36,13 +39,6 @@ export const initBoard = () => (dispatch) => {
     }
 
     dispatch({ type: LOAD_BOARD, payload: board || {} });
-};
-
-export const submitGuess = pos => (dispatch) => {
-    webrtc.send({type: 'received_guess', pos});
-    dispatch({ type: SET_PLAYER_TURN, payload: false });
-
-    console.log('Send guess: Position: ', pos);
 };
 
 export const generateBoard = (board) => async (dispatch, getState) => {
@@ -86,9 +82,9 @@ export const receivedGuess = pos => (dispatch, getState) => {
         openModal('endgame', {})(dispatch);
     }
 
-    console.log("Recevied Guess: ", numHits, state.board);
-
     const data = checkGuess(state, pos, numHits);
+
+    console.log("Recevied Guess: ", numHits, data);
 
     const isShipHit = state.board.board[pos] === SUNK_SHIP;
     webrtc.send({type: 'guess_response', isShipHit, pos, data });
@@ -103,7 +99,7 @@ export const guessResponse = payload => async (dispatch, getState) => {
 
     const numHits = getState().board.opponentsBoard.filter(b => b === SUNK_SHIP).length;
 
-    console.log('Guess Response: ', numHits, getState().board);
+    console.log('Guess Response: ', numHits, payload);
 
     if (numHits >= 5) {
         openModal('endgame', {})(dispatch);
