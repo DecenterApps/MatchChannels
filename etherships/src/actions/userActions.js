@@ -13,6 +13,7 @@ import {
     SET_LOBBY_USERS,
     ADD_NEW_USER_TO_LOBBY,
     SET_WALLET,
+    SET_BALANCE,
     } from '../constants/actionTypes';
 
 import * as webrtc from '../services/webrtcService';
@@ -20,7 +21,9 @@ import {
   createUser,
   getActiveChannels,
   getCurrentBlockNumber,
-  getWeb3
+  getWeb3,
+  fundUser,
+  withdraw
 } from '../services/ethereumService';
 
 import { browserHistory } from 'react-router';
@@ -82,6 +85,22 @@ export const newGame = (price) => (dispatch) => {
 
     browserHistory.push('/game');
 };
+
+export const fundAccount = (amount) => async (dispatch) => {
+
+    await fundUser(amount);
+    let type = 'fund';
+
+    dispatch({ type: SET_BALANCE, payload: {amount, type} });
+};
+
+export const withdrawFunds = (amount) => async (dispatch) => {
+    await withdraw(amount);
+    let type = 'withdraw';
+
+    dispatch({ type: SET_BALANCE, payload: {amount, type} });
+};
+
 
 export const setName = () => (dispatch) => {
     dispatch({ type: SET_NAME });

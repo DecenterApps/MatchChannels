@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 import './Profile.css';
 
-import { getUser } from '../services/ethereumService';
+import { fundAccount, withdrawFunds } from '../actions/userActions';
 
 class Profile extends Component {
 
@@ -13,19 +13,28 @@ class Profile extends Component {
         super(props);
 
         this.state = {
-            user: []
+			fundValue: 0,
+			withdrawValue: 0
         };
     }
 
-    async componentDidMount() {
-        const user = await getUser(this.props.user.userAddr);
+    fundAccount = () => {
+        this.props.fundAccount(this.state.fundValue);
+        this.setState({fundValue: 0})
+    };
 
-        console.log(user[1].valueOf());
+    handleFundChange = (event) => {
+        this.setState({ fundValue: event.target.value});
+    };
 
-        this.setState({
-            user
-        });
-    }
+    withdrawFunds = () => {
+    	this.props.withdrawFunds(this.state.withdrawValue);
+        this.setState({withdrawValue: 0})
+	};
+
+    handleWithdrawChange = (event) => {
+        this.setState({ withdrawValue: event.target.value});
+    };
 
     handleClick = () => {
         browserHistory.push("users");
@@ -44,7 +53,7 @@ class Profile extends Component {
 	                </div>
 	                <div className='big-label'>
 	                {
-						this.state.user.length > 0 && this.state.user[0].toString()
+	                	this.props.user.username
 					}
 	                </div>
 	                <div className='small-titles'>
@@ -52,25 +61,25 @@ class Profile extends Component {
 	                </div>
 	                <div className='big-label'> 
 						{
-							this.state.user.length > 0 && this.state.user[1].toString()
+							this.props.user.balance
 						} (ETH)
 					</div>
 					<div className="div-flex">
 		                <div className="wrapper">
 		                	<div id="inner1">
-		                		<input className="input" type="text"/> 
+		                		<input className="input" type="text" onChange={this.handleFundChange} value={this.state.fundValue}/>
 		                	</div>
 		                	<div id="inner2">
-		                		<button className='btn'>Fund</button> 
+		                		<button className='btn' onClick={this.fundAccount}>Fund</button>
 		                	</div>
 		                </div>
 
 		                <div className="wrapper">
 		                	<div id="inner1">
-		                		<input className="input" type="text"/> 
+		                		<input className="input" type="text" onChange={this.handleWithdrawChange} value={this.state.withdrawValue}/>
 		                	</div>
 		                	<div id="inner2">
-		                		<button className='btn'>Withdraw</button> 
+		                		<button className='btn' onClick={this.withdrawFunds}>Withdraw</button>
 		                	</div>
 		                </div>
 		            </div>
@@ -79,7 +88,7 @@ class Profile extends Component {
 						games
 					</div>
 					<div className="big-label">
-						{this.state.user.length > 0 && this.state.user[2].toString()}/{this.state.user.length > 0 && this.state.user[3].toString()}
+						{this.props.user.finishedGames}/{this.props.user.gamesPlayed}
 					</div>
 	            </div>
             </div>
@@ -93,6 +102,8 @@ const mapStateToProps = (props) => ({
 });
   
 const mapDispatchToProps = {
+	fundAccount,
+	withdrawFunds
 };
   
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);

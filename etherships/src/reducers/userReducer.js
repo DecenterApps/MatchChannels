@@ -1,4 +1,3 @@
-import _ from 'lodash';
 
 import { SET_NAME,
         SET_ADDR,
@@ -15,6 +14,7 @@ import { SET_NAME,
         SET_LOBBY_USERS,
         ADD_NEW_USER_TO_LOBBY,
         SET_WALLET,
+        SET_BALANCE
         } from '../constants/actionTypes';
 
 const INITIAL_STATE = {
@@ -68,7 +68,14 @@ export default (state = INITIAL_STATE, action) => {
                 registered: true,
                 userName: state.userNameEdit,
                 userNameEdit: '',
-            }
+            };
+
+        case SET_BALANCE:
+            // if withdraw then decrease balance, else increase
+            return {
+                ...state,
+                balance: (payload.type === 'withdraw') ? parseFloat(state.balance) - parseFloat(payload.amount) : parseFloat(state.balance) + parseFloat(payload.amount)
+            };
 
         case IS_REGISTERED:
 
