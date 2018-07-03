@@ -28,8 +28,10 @@ export const checkGuess = (state, pos, numOfGuesses) => {
       const hash = keccak256(parseInt(opponentChannel, 10), pos, sequence, type, nonces[pos], "0x" + path.sig);
       const hashNumOfGuesses = keccak256(parseInt(opponentChannel, 10), opponentAddr, numOfGuesses);
 
-      const signatureResponse = state.user.userWallet.signMessage(ethers.utils.arrayify(hash));
-      const signatureNumOfGuesses = state.user.userWallet.signMessage(ethers.utils.arrayify(hashNumOfGuesses));
+	  console.log('Hash: ', hashNumOfGuesses, parseInt(opponentChannel, 10), opponentAddr, numOfGuesses);
+
+      const signatureResponse = state.user.userWallet.wallet.signMessage(ethers.utils.arrayify(hash));
+      const signatureNumOfGuesses = state.user.userWallet.wallet.signMessage(ethers.utils.arrayify(hashNumOfGuesses));
 
       return {
       	signatureResponse,

@@ -21,7 +21,7 @@ class InfoBox extends Component {
           this.state.shown &&
           <div className="infobox-inner">
             <div>User Address: { user.userAddr }</div>
-            <div>User Signing Address: { user.userWallet.address }</div>
+            {/* <div>User Signing Address: { user.userWallet.wallet.address }</div> */}
             <div>Peer ID: { user.peer.id }</div>
             <hr />
             <div>Opponent Address: { user.opponentAddr }</div>
