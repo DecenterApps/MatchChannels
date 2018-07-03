@@ -22,6 +22,7 @@ import {
   getCurrentBlockNumber,
   getWeb3,
   fundUser,
+  withdraw
 } from '../services/ethereumService';
 
 import { NUM_BLOCKS_FOR_CHANNEL } from '../constants/config';
@@ -83,9 +84,18 @@ export const newGame = (price) => (dispatch) => {
 export const fundAccount = (amount) => async (dispatch) => {
 
     await fundUser(amount);
+    let type = 'fund';
 
-    dispatch({ type: SET_BALANCE, payload: {amount} });
+    dispatch({ type: SET_BALANCE, payload: {amount, type} });
 };
+
+export const withdrawFunds = (amount) => async (dispatch) => {
+    await withdraw(amount);
+    let type = 'withdraw';
+
+    dispatch({ type: SET_BALANCE, payload: {amount, type} });
+};
+
 
 export const setName = () => (dispatch) => {
     dispatch({ type: SET_NAME, payload: createWallet() });

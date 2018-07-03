@@ -71,9 +71,10 @@ export default (state = INITIAL_STATE, action) => {
             };
 
         case SET_BALANCE:
+            // if withdraw then decrease balance, else increase
             return {
                 ...state,
-                balance: parseFloat(state.balance) + parseFloat(payload.amount)
+                balance: (payload.type === 'withdraw') ? parseFloat(state.balance) - parseFloat(payload.amount) : parseFloat(state.balance) + parseFloat(payload.amount)
             };
 
         case IS_REGISTERED:

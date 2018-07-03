@@ -45,15 +45,17 @@ export const createUser = async (username, price) => {
 export const fundUser = async (amount) => {
     let addr = await getCurrUser();
 
-    let ethAmount = window.web3.toWei(amount, 'ether');
-    const res = await window.ethershipContract.fundAccount({from: addr, value: ethAmount});
+    let weiAmount = window.web3.toWei(amount, 'ether');
+    const res = await window.ethershipContract.fundAccount({from: addr, value: weiAmount});
 
     return res;
 };
 
 export const withdraw = async (amount) => {
     let addr = await getCurrUser();
-    const res = await window.ethershipContract.withdraw({from: addr, value: amount});
+    let weiAmount = window.web3.toWei(amount, 'ether');
+
+    const res = await window.ethershipContract.withdraw(weiAmount, {from: addr});
 
     return res;
 };

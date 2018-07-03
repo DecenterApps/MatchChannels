@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 import './Profile.css';
 
-import { fundAccount } from '../actions/userActions';
+import { fundAccount, withdrawFunds } from '../actions/userActions';
 
 class Profile extends Component {
 
@@ -25,6 +25,15 @@ class Profile extends Component {
 
     handleFundChange = (event) => {
         this.setState({ fundValue: event.target.value});
+    };
+
+    withdrawFunds = () => {
+    	this.props.withdrawFunds(this.state.withdrawValue);
+        this.setState({withdrawValue: 0})
+	};
+
+    handleWithdrawChange = (event) => {
+        this.setState({ withdrawValue: event.target.value});
     };
 
     handleClick = () => {
@@ -67,10 +76,10 @@ class Profile extends Component {
 
 		                <div className="wrapper">
 		                	<div id="inner1">
-		                		<input className="input" type="text" value={this.state.withdrawValue}/>
+		                		<input className="input" type="text" onChange={this.handleWithdrawChange} value={this.state.withdrawValue}/>
 		                	</div>
 		                	<div id="inner2">
-		                		<button className='btn'>Withdraw</button> 
+		                		<button className='btn' onClick={this.withdrawFunds}>Withdraw</button>
 		                	</div>
 		                </div>
 		            </div>
@@ -94,6 +103,7 @@ const mapStateToProps = (props) => ({
   
 const mapDispatchToProps = {
 	fundAccount,
+	withdrawFunds
 };
   
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);
