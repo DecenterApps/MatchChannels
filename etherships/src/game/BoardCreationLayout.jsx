@@ -43,7 +43,7 @@ class BoardCreationLayout extends Component {
                         place your ships
                     </div>
                   <div className="board-area">
-                      <Board type="setup" />
+                      <Board type="my-board" state="setup" />
                       <div className="slots">
                         <div className="empty-slot-field"></div>
                       {

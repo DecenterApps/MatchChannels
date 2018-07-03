@@ -2,15 +2,74 @@
 @import url('https://fonts.googleapis.com/css?family=Barlow+Condensed');
 
 .board {
-  padding: 18px;
+  padding: 12px;
   background: #302E38;
   border-radius: 10px;
   text-align: center;
   margin-top: 30px;
   box-shadow: 1px 10px #24202E;
-  margin-left: 40px;
+  margin: 30px 20px;
 }
 
+.waiting-board {
+  opacity: 0.5;
+}
+
+.board-title {
+  font-family: Boogaloo;
+
+  font-size: 26px;
+  text-align: center;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.turn-text {
+  font-family: Boogaloo;
+
+  font-size: 26px;
+  text-align: center;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+
+  margin-right: 40px;
+
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.grey-text-medium {
+    height: 31px;
+    font-family: Boogaloo;
+    font-style: normal;
+    font-weight: normal;
+    line-height: normal;
+    font-size: 26px;
+    text-align: center;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: #FFFFFF;
+}
+
+.score-text {
+  font-family: Boogaloo;
+  font-size: 56px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+
+  color: #FFFFFF;
+}
+
+.match-info-row {
+  align-items: center;
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+}
+.match-info-row > div {
+  flex: 1 1 100%;
+}
 .submit_btn {
   margin-top: 50px;
   background-color: #4CAF50;
@@ -29,13 +88,12 @@
 }
 
 .match-board {
-  margin-left: 220px !important;
 }
 
 .slot-field {
-  height: 54px;
+  height: 50px;
     display: -ms-flexbox;
-    width: 54px;
+    width: 50px;
     background: url('../images/green_ship.svg') center center no-repeat;
     border-radius: 10px;
     box-shadow: 0px 3px #5D9314;
@@ -44,18 +102,18 @@
 
 .empty-slot-field {
   margin: 10px 0px 0px 25px;
-  width: 54px;
+  width: 50px;
 }
 
 .choosen {
-  height: 54px;
+  height: 50px;
   text-align: right;
   display: -ms-flexbox;
   display: flex;
   -ms-flex-align: center;
   align-items: center;
   -ms-flex-pack: center;
-  width: 54px;
+  width: 50px;
   background: url('../images/green_ship.svg') center center no-repeat;
   border-radius: 10px;
   margin: 3px;
@@ -63,29 +121,29 @@
 }
 
 .field-miss {
-  height: 54px;
+  height: 50px;
   text-align: right;
   display: -ms-flexbox;
   display: flex;
   -ms-flex-align: center;
   align-items: center;
   -ms-flex-pack: center;
-  width: 54px;
-  background: url('../images/red_miss.svg') center center no-repeat;
+  width: 50px;
+  background: url('../images/miss_field.svg') center center no-repeat;
   border-radius: 10px;
   margin: 3px;
   justify-content: center;
 }
 
 .field-hit {
-  height: 54px;
+  height: 50px;
   text-align: right;
   display: -ms-flexbox;
   display: flex;
   -ms-flex-align: center;
   align-items: center;
   -ms-flex-pack: center;
-  width: 54px;
+  width: 50px;
   background: url('../images/green_skull.svg') center center no-repeat;
   border-radius: 10px;
   margin: 3px;
@@ -93,14 +151,14 @@
 }
 
 .red-choosen {
-  height: 54px;
+  height: 50px;
   text-align: right;
   display: -ms-flexbox;
   display: flex;
   -ms-flex-align: center;
   align-items: center;
   -ms-flex-pack: center;
-  width: 54px;
+  width: 50px;
   border-radius: 10px;
   margin: 3px;
   justify-content: center;
@@ -108,14 +166,14 @@
 }
 
 .red-question-choosen {
-  height: 54px;
+  height: 50px;
   text-align: right;
   display: -ms-flexbox;
   display: flex;
   -ms-flex-align: center;
   align-items: center;
   -ms-flex-pack: center;
-  width: 54px;
+  width: 50px;
   border-radius: 10px;
   margin: 3px;
   justify-content: center;
@@ -123,14 +181,14 @@
 }
 
 .field-hit-red {
-  height: 54px;
+  height: 50px;
   text-align: right;
   display: -ms-flexbox;
   display: flex;
   -ms-flex-align: center;
   align-items: center;
   -ms-flex-pack: center;
-  width: 54px;
+  width: 50px;
   border-radius: 10px;
   margin: 3px;
   justify-content: center;
@@ -138,14 +196,14 @@
 }
 
 .red-field {
-  height: 54px;
+  height: 50px;
     text-align: right;
     display: -ms-flexbox;
     display: flex;
     -ms-flex-align: center;
     align-items: center;
     -ms-flex-pack: center;
-    width: 54px;
+    width: 50px;
     background: rgba(32, 29, 40, 0.23);
     border-radius: 10px;
     margin: 3px;
@@ -160,14 +218,14 @@
 }
 
 .no-hover-field {
-  height: 54px;
+  height: 50px;
     text-align: right;
     display: -ms-flexbox;
     display: flex;
     -ms-flex-align: center;
     align-items: center;
     -ms-flex-pack: center;
-    width: 54px;
+    width: 50px;
     background: rgba(32, 29, 40, 0.23);
     border-radius: 10px;
     margin: 3px;
@@ -248,14 +306,14 @@
   
   /* content */
   .field {
-    height: 54px;
+    height: 50px;
     text-align: right;
     display: -ms-flexbox;
     display: flex;
     -ms-flex-align: center;
     align-items: center;
     -ms-flex-pack: center;
-    width: 54px;
+    width: 50px;
     background: rgba(32, 29, 40, 0.23);
     border-radius: 10px;
     margin: 3px;
@@ -288,18 +346,18 @@
 }
 
 .my-fields {
-  height: 54px;
+  height: 50px;
     display: -ms-flexbox;
-    width: 54px;
+    width: 50px;
     background: url('../images/green_ship.svg') center center no-repeat;
     border-radius: 10px;
     margin: 10px 0px 0px 0px;
 }
 
 .opponent-fields {
-  height: 54px;
+  height: 50px;
   display: -ms-flexbox;
-  width: 54px;
+  width: 50px;
   background: url('../images/red_ship.svg') center center no-repeat;
   border-radius: 10px;
   margin: 10px 0px 0px 8px;
@@ -318,5 +376,6 @@
 }
 
 .timer-area {
-  margin-top:40px;
+  display: flex;
+  
 }

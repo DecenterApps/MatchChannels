@@ -52,7 +52,7 @@ class Timer extends Component {
         const { countdown } = this.props;
 
         return (
-            <div className="small-titles">
+            <div className="grey-text-medium">
                 { this.formatTime(countdown) }
             </div>
         );

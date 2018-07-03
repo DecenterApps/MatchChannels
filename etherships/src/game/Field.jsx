@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 
 import { setField, guessField } from '../actions/boardActions';
 
+import { EMPTY_FIELD, PLAYERS_SHIP, MISSED_SHIP, SUNK_SHIP} from '../constants/config';
+
 import './Board.css';
 
 class Field extends Component {
@@ -17,61 +19,67 @@ class Field extends Component {
     }
 
     guessOppponentField = () => {
-        const pos = this.props.id;
-        this.props.guessField(pos);
+        if (this.props.state === 'match') {
+            const pos = this.props.id;
+            this.props.guessField(pos);
+        }
     }
 
     render() {
         const { board, opponentsBoard } = this.props.board;
-        const { type } = this.props;
+        const { state, type } = this.props;
 
         let fieldClass = 'no-hover-field';
         
-        if (board[this.props.id] === 1) {
+        if (board[this.props.id] === PLAYERS_SHIP) {
             fieldClass = 'choosen';
-        } else if (board[this.props.id] === 2) {
+        } else if (board[this.props.id] === MISSED_SHIP) {
             fieldClass = 'field-miss';
-        } else if(board[this.props.id] === 3) {
+        } else if(board[this.props.id] === SUNK_SHIP) {
             fieldClass = 'field-hit';
         }
 
         let guessFieldClass = 'red-field';
 
-        if (opponentsBoard[this.props.id] === 1) {
-            guessFieldClass = 'red-choosen';
-        } else if (opponentsBoard[this.props.id] === 2) {
+        if (opponentsBoard[this.props.id] === MISSED_SHIP) {
             guessFieldClass = 'field-miss';
-        } else if(opponentsBoard[this.props.id] === 3) {
+        } else if(opponentsBoard[this.props.id] === SUNK_SHIP) {
             guessFieldClass = 'field-hit-red';
         }
 
-        if (type === 'setup') {
+        if (state === 'waiting') {
+            guessFieldClass = 'no-hover-field';
+        }
+
+        if (state === 'setup') {
             return (
                 <div 
-                    className={(board[this.props.id] === 1 ? 'choosen' : 'field')}
+                    className={(board[this.props.id] === PLAYERS_SHIP ? 'choosen' : 'field')}
                     onClick={this.chooseYourFields}>
 
-                    <span className={board[this.props.id] === 1 ? "" : "pin"}></span>
-                </div>
-            )
-        } else if (type === 'match') {
-            return (
-                <div 
-                    className={guessFieldClass}
-                    onClick={this.guessOppponentField}>
-
-
-                    <span className={opponentsBoard[this.props.id] !== 0 ? "" : "pin"}></span>
+                    <span className={board[this.props.id] === PLAYERS_SHIP ? "" : "pin"}></span>
                 </div>
             )
         } else {
-            return (
-                <div 
-                    className={fieldClass}>
-
-                    <span className={board[this.props.id] !== 0 ? "" : "pin"}></span>
-                </div>
-            )
+            if (type === 'my-board') {
+                return (
+                    <div 
+                        className={fieldClass}>
+    
+                        <span className={board[this.props.id] !== EMPTY_FIELD ? "" : "pin"}></span>
+                    </div>
+                )
+            } else {
+                return (
+                    <div 
+                        className={guessFieldClass}
+                        onClick={this.guessOppponentField}>
+    
+    
+                        <span className={opponentsBoard[this.props.id] !== EMPTY_FIELD ? "" : "pin"}></span>
+                    </div>
+                )
+            }
         }
     }
 
