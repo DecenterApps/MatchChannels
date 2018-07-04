@@ -7,6 +7,7 @@ import { SET_FIELD,
         GUESS_RESPONSE,
         CHECK_OPPONENTS_GUESS,
         INCREMENT_SECONDS,
+        SET_OPPONENT_TREE,
         } from '../constants/actionTypes';
 
 import { generateTree, checkGuess } from '../services/boardService';
@@ -18,7 +19,7 @@ import { openModal, closeModal } from './modalActions';
 
 import { SUNK_SHIP } from '../constants/config';
 
-import { browserHistory } from 'react-router'
+import { browserHistory } from 'react-router';
 
 export const setField = payload => (dispatch) => {
     dispatch({ type: SET_FIELD, payload });
@@ -61,8 +62,10 @@ export const generateBoard = (board) => async (dispatch, getState) => {
 
         dispatch({ type: SET_PLAYER_TURN, payload: true });
 
+        console.log('Join tree: ', state.board.tree);
+
         // notify other user
-        webrtc.send({type: 'start_game'});
+        webrtc.send({type: 'start_game', opponentTree: state.board.tree});
 
         browserHistory.push('/match');
     }
@@ -115,6 +118,10 @@ export const resetBoard = () => (dispatch) => {
 
 export const incrementSeconds = () => dispatch => {
     dispatch({type: INCREMENT_SECONDS });
+};
+
+export const setOpponentTree = (opponentTree) => dispatch => {
+    dispatch({type: SET_OPPONENT_TREE, payload: opponentTree});
 };
 
 export const submitScore = () => async (dispatch, getState) => {

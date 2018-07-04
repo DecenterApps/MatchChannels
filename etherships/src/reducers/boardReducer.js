@@ -8,6 +8,7 @@ import {
     CHECK_OPPONENTS_GUESS,
     GUESS_RESPONSE,
     INCREMENT_SECONDS,
+    SET_OPPONENT_TREE,
   } from '../constants/actionTypes';
 
 import { EMPTY_FIELD, MISSED_SHIP, SUNK_SHIP, PLAYERS_SHIP, SECONDS_PER_TURN } from '../constants/config';
@@ -137,6 +138,12 @@ export default (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 seconds: ++state.seconds
+            };
+
+        case SET_OPPONENT_TREE:
+            return {
+                ...state,
+                opponentTree: payload,
             };
 
         default:

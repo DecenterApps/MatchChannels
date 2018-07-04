@@ -31,7 +31,7 @@ import short from 'short-uuid';
 
 import ethers from 'ethers';
 import { closeModal, openModal } from './modalActions';
-import { receivedGuess, guessResponse } from './boardActions';
+import { receivedGuess, guessResponse, setOpponentTree } from './boardActions';
 
 const createWallet = () => ({ wallet: ethers.Wallet.createRandom() });
 
@@ -162,8 +162,8 @@ export const setConnection = (connection, channelId) => (dispatch) => {
     dispatch({ type: SET_CONNECTION, payload: {connection, channelId} });
 };
 
-export const pickFields = (channelId, amount, addr) => (dispatch) => {
-    dispatch({ type: PICK_FIELDS, payload: {channelId, amount, addr} });
+export const pickFields = (channelId, amount, addr, opponentTree) => (dispatch) => {
+    dispatch({ type: PICK_FIELDS, payload: {channelId, amount, addr, opponentTree} });
 
     browserHistory.push('/game');
 };
@@ -201,11 +201,14 @@ export const connectToPlayer = (user) => (dispatch, getState) => {
 };
 
 export const acceptChallenge = () => (dispatch, getState) => {
+  const state = getState();
+
   webrtc.send({
     type: 'challenge_accepted',
-    channelId: getState().modal.modalData.channelId, // should perhaps be moved
-    amount: getState().modal.modalData.amount,
-    addr: getState().user.userAddr,
+    channelId: state.modal.modalData.channelId,
+    amount: state.modal.modalData.amount,
+    addr: state.user.userAddr,
+    opponentTree: state.board.tree,
   })
 };
 
@@ -219,11 +222,13 @@ export const msgReceived = (message) => (dispatch, getState) => {
       
     case 'challenge_accepted':
       pickFields(message.channelId, message.amount, message.addr)(dispatch);
+      setOpponentTree(message.opponentTree)(dispatch);
       break;
 
     case 'start_game':
       closeModal()(dispatch);
       browserHistory.push('/match');
+      setOpponentTree(message.opponentTree)(dispatch);
       break;
 
     case 'received_guess':

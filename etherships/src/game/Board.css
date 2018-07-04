@@ -118,6 +118,7 @@
   border-radius: 10px;
   margin: 3px;
   justify-content: center;
+  cursor: pointer;
 }
 
 .field-miss {
