@@ -48,7 +48,7 @@ class Field extends Component {
         }
 
         if (state === 'waiting') {
-            guessFieldClass = 'no-hover-field';
+            guessFieldClass += ' nohover';
         }
 
         if (state === 'setup') {

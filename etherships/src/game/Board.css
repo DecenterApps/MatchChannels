@@ -211,7 +211,7 @@
     justify-content: center;
 }
 
-.red-field:hover {
+.red-field:not(.nohover):hover {
   cursor: pointer;
   background: url('../images/target.svg') center center no-repeat;
 
@@ -233,7 +233,7 @@
     justify-content: center;
 }
 
-.red-field:hover > .pin {
+.red-field:not(.nohover):hover > .pin {
     display: none;
 }
 
@@ -321,12 +321,12 @@
     justify-content: center;
   }
   
-.field:hover {
+.field:not(.nohover):hover {
     background: url('../images/green_ship.svg') center center no-repeat;
     cursor: pointer;
   }
 
-.field:hover > .pin {
+.field:not(.nohover):hover > .pin {
     display: none;
 }
 

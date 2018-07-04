@@ -22,11 +22,12 @@ export const createPeer = (peerId) => {
 
       if (err.message.indexOf('Lost connection') !== -1) {
         localStorage.setItem('peer', peerId);
+      } else if(err.message.indexOf('is taken') !== -1) {
+        localStorage.setItem('peer', short.uuid());
+        window.location.reload();
       } else {
         localStorage.setItem('peer', short.uuid());
       }
-
-      browserHistory.push('/');
     });
 
     peer.on('connection', (_conn) => { conn = _conn });
@@ -55,6 +56,6 @@ export const send = (data) => {
     console.error('Message not sent - connection missing!', data);
     return false;
   }
-  
+
   conn.send(data);
 };
