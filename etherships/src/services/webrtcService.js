@@ -3,7 +3,6 @@ import Peer from "peerjs";
 import { WEBRTC_SERVER, WEBRTC_API_KEY, WEBRTC_PORT } from '../constants/config';
 
 import short from 'short-uuid';
-import { browserHistory } from 'react-router'
 
 let peer;
 let conn;
@@ -20,9 +19,7 @@ export const createPeer = (peerId) => {
     peer.on('error', (err) => {
       console.log('error', err);
 
-      if (err.message.indexOf('Lost connection') !== -1) {
-        localStorage.setItem('peer', peerId);
-      } else if(err.message.indexOf('is taken') !== -1) {
+      if(err.message.indexOf('is taken') !== -1) {
         localStorage.setItem('peer', short.uuid());
         window.location.reload();
       } else {
@@ -42,6 +39,7 @@ export const createPeer = (peerId) => {
 export const connectToPlayer = (peerId) => {
     try {
         conn = peer.connect(peerId);
+
         return conn;
     } catch(err) {
         console.log(err);

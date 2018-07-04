@@ -133,6 +133,12 @@ export const initAccount = () => (dispatch, getState) =>  {
         // setConnection(_conn)(dispatch);
         // webrtc.setConnection(_conn);
       });
+
+      _conn.on('close', () => {
+        console.log('Player close');
+        openModal('timeout', {})(dispatch);
+      });
+
       _conn.on('data', (message) => {
         msgReceived(message)(dispatch, getState);
       });
@@ -183,6 +189,11 @@ export const connectToPlayer = (user) => (dispatch, getState) => {
     console.log('Conn open - challenger side');
     setConnection(conn, user.webrtcId, user.channelId.valueOf())(dispatch);
 
+    conn.on('close', () => {
+      console.log('Player close 1');
+      openModal('timeout', {})(dispatch);
+    });
+
     // send the challenge to the opponent
     webrtc.send({
       type: 'challenge',
@@ -195,7 +206,6 @@ export const connectToPlayer = (user) => (dispatch, getState) => {
 
   });
   conn.on('data', (message) => {
-
     msgReceived(message)(dispatch, getState);
   });
 };

@@ -5,6 +5,7 @@ import { initBoard } from './actions/boardActions';
 import ChallengeModal from './modals/ChallengeModal';
 import InfoBox from './info/InfoBox';
 import EndGameModal from './modals/EndGameModal';
+import TimeoutModal from './modals/TimeoutModal';
 
 // Styles
 import './css/oswald.css';
@@ -48,6 +49,12 @@ class App extends Component {
           this.props.modalShown === 'endgame' &&
           <EndGameModal />
         }
+
+        {
+          this.props.modalShown === 'timeout' &&
+          <TimeoutModal />
+        }
+
         <InfoBox />
       </div>
     );
