@@ -10,11 +10,11 @@ import { SET_FIELD,
         } from '../constants/actionTypes';
 
 import { generateTree, checkGuess } from '../services/boardService';
-import { openChannel, joinChannel } from '../services/ethereumService';
+import { openChannel, joinChannel, closeChannel } from '../services/ethereumService';
 import { getRoot } from '../util/merkel';
 import * as webrtc from '../services/webrtcService';
 
-import { openModal } from './modalActions';
+import { openModal, closeModal } from './modalActions';
 
 import { SUNK_SHIP } from '../constants/config';
 
@@ -117,11 +117,24 @@ export const incrementSeconds = () => dispatch => {
     dispatch({type: INCREMENT_SECONDS });
 };
 
-export const submitScore = () => () => {
+export const submitScore = () => async (dispatch, getState) => {
+    const state = getState();
+
+    const opponentChannel = state.user.opponentChannel;
+    const { signatureNumOfGuesses, numOfGuesses } = state.board;
+
+    console.log(opponentChannel, signatureNumOfGuesses, numOfGuesses);
+
+    const res = await closeChannel(opponentChannel, signatureNumOfGuesses, numOfGuesses);
+
+    console.log(res);
+
     localStorage.removeItem('user');
     localStorage.removeItem('board');
 
     browserHistory.push('/users');
+
+    closeModal()(dispatch);
 };
 
 // helper function to help stringify deal with circual referencing in json

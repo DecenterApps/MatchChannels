@@ -13,19 +13,18 @@ import './Modal.css';
 
 class EndGameModal extends Component {
 
+    constructor(props) {
+        super(props);
+    
+        this.state = {
+          waiting: false,
+        };
+      }
+
     submit = async () => {
-
-        console.log(this.props.user.opponentChannel, 
-            this.props.board.signatureNumOfGuesses, 
-            this.props.board.numOfGuesses);
-
-        const res = await closeChannel(this.props.user.opponentChannel, 
-                                       this.props.board.signatureNumOfGuesses, 
-                                       this.props.board.numOfGuesses);
-
-        console.log(res);
-
         this.props.submitScore();
+
+        this.setState({ waiting: true });
     }
 
     render() {
@@ -41,25 +40,36 @@ class EndGameModal extends Component {
                 style={customModalStyles}>
 
                     <div className="modal-content end-game-content">
-                        <div className="modal-small-title">
-                            game finished
+                            <div className="modal-small-title">
+                                game finished
+                            </div>
+
+                            <div className="modal-title end-game-title">
+                                score
+                            </div>
+
+                            <div className="big-label">
+                                {numHits} - {numOpponentHits}
+                            </div>
+
+                            {
+                                this.state.waiting &&
+                                        <div className="lds-ring">
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        </div>
+                            }
+
+                            { !this.state.waiting &&
+                                <button className="modal-create-btn" onClick={this.submit}>submit</button>
+                            }
+
+                            <div className="modal-warning-text">
+                                You must submit the score to close the channel!
+                            </div>
                         </div>
-
-                        <div className="modal-title end-game-title">
-                            score
-                        </div>
-
-                        <div className="big-label">
-                            {numHits} - {numOpponentHits}
-                        </div>
-
-                        <button className="modal-create-btn" onClick={this.submit}>submit</button>
-
-                        <div className="modal-warning-text">
-                            You must submit the score to close the channel!
-                        </div>
-
-                    </div>
             </Modal>
         );
     }
