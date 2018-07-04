@@ -56,11 +56,14 @@ export default (state = INITIAL_STATE, action) => {
             const pos = payload;
             const board = state.board;
 
-            board[pos] = PLAYERS_SHIP;
+            let currPicked = state.numPicked;
+
+            board[pos] = board[pos] ? EMPTY_FIELD : PLAYERS_SHIP;
+            currPicked += board[pos] ? 1 : -1;
 
             return {
                 ...state,
-                numPicked: ++state.numPicked,
+                numPicked: currPicked,
                 board
             }
 

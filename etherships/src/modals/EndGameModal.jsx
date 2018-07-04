@@ -7,8 +7,6 @@ import { customModalStyles } from '../constants/config';
 
 import { submitScore } from '../actions/boardActions';
 
-import { closeChannel } from '../services/ethereumService';
-
 import './Modal.css';
 
 class EndGameModal extends Component {

@@ -32,44 +32,50 @@ class BoardCreationLayout extends Component {
     }
 
     render() {
-        const fieldsLeft = Array.from({length: 5 - this.props.board.numPicked}, (_, k) => k++); 
+        const fieldsLeft = Array.from({length: 5 - this.props.board.numPicked}, (_, k) => k++);
 
-            return (
-                <div className="container">
-                    <div className="title">
-                        battleship
-                    </div>
-                    <div className='instruction'>
-                        place your ships
-                    </div>
-                  <div className="board-area">
-                      <Board type="my-board" state="setup" />
-                      <div className="slots">
-                        <div className="empty-slot-field"></div>
-                      {
-                          fieldsLeft.map( f => 
-                            <div key={f} className="slot-field"></div>
-                          )
-                      }
-                      </div>
-                  </div>
+        let btnStyle = "next-btn grey-btn";
 
-                {
-                    !this.state.loading && 
-                        <div>
-                        <button className="next-btn" onClick={this.generateBoard}>Next</button>
-                        </div>
-                }
+        if (this.props.board.numPicked === 5) {
+            btnStyle = "next-btn";
+        }
 
-                {
-                    this.state.loading && 
-                    <div>
-                        <button className="spinner-btn">
-                        </button>
-                    </div>
-                }
-            
+        return (
+            <div className="container">
+                <div className="title">
+                    battleship
                 </div>
+                <div className='instruction'>
+                    place your ships
+                </div>
+                <div className="board-area">
+                    <Board type="my-board" state="setup" />
+                    <div className="slots">
+                    <div className="empty-slot-field"></div>
+                    {
+                        fieldsLeft.map( f => 
+                        <div key={f} className="slot-field"></div>
+                        )
+                    }
+                    </div>
+                </div>
+
+            {
+                !this.state.loading && 
+                    <div>
+                    <button className={btnStyle} onClick={this.generateBoard}>Next</button>
+                    </div>
+            }
+
+            {
+                this.state.loading && 
+                <div>
+                    <button className="spinner-btn">
+                    </button>
+                </div>
+            }
+        
+            </div>
         );
     }
 

@@ -13,8 +13,8 @@ class Field extends Component {
         const { numPicked, board } = this.props.board;
         const pos = this.props.id;
 
-        if (numPicked < 5 && board[pos] !== 1) {
-            this.props.setField(pos);
+        if (board[pos] === PLAYERS_SHIP || numPicked < 5) {
+            this.props.setField(this.props.id);
         }
     }
 
