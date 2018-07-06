@@ -7,7 +7,6 @@ export const CHECK_OPPONENTS_GUESS = 'check_opponents_guess';
 export const LOAD_BOARD = 'load_board';
 export const RESET_BOARD = 'reset_board';
 export const GUESS_RESPONSE = 'guess_response';
-export const INCREMENT_SECONDS = 'increment_seconds';
 export const SET_OPPONENT_TREE = 'set_opponent_tree';
 
 // User reducer

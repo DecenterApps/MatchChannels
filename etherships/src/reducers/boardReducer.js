@@ -7,7 +7,6 @@ import {
     RESET_BOARD,
     CHECK_OPPONENTS_GUESS,
     GUESS_RESPONSE,
-    INCREMENT_SECONDS,
     SET_OPPONENT_TREE,
     START_GAME,
   } from '../constants/actionTypes';
@@ -45,7 +44,6 @@ const INITIAL_STATE = {
     isYourMove: false,
     choosenField: -1, // the current field that is selected but not submited
     timer: SECONDS_PER_TURN,
-    seconds: 0,
     numOfGuesses: 0,
     signatureNumOfGuesses: "",
     gameInProgress: false,
@@ -92,7 +90,6 @@ export default (state = INITIAL_STATE, action) => {
                 isYourMove: payload,
                 opponentsBoard: state.opponentsBoard.map(b => b === PLAYERS_SHIP ? MISSED_SHIP : b),
                 timer: SECONDS_PER_TURN,
-                seconds: 0,
                 sequence: ++state.sequence,
                 choosenField: -1,
             }
@@ -135,12 +132,6 @@ export default (state = INITIAL_STATE, action) => {
                 numOfGuesses: payload.data.numOfGuesses,
                 signatureNumOfGuesses: payload.data.signatureNumOfGuesses,
             }
-
-        case INCREMENT_SECONDS:
-            return {
-                ...state,
-                seconds: ++state.seconds
-            };
 
         case SET_OPPONENT_TREE:
             return {

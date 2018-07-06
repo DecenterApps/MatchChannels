@@ -2,10 +2,6 @@ import React, { Component } from 'react';
 
 import { setInterval } from 'timers';
 
-import { connect } from 'react-redux';
-
-import { incrementSeconds } from '../actions/boardActions';
-
 class Timer extends Component {
 
     constructor(props) {
@@ -13,21 +9,34 @@ class Timer extends Component {
 
         this.state = {
             timer: null,
+            seconds: 0,
+            countdown: props.countdown,
         };
     }
 
     componentDidMount() {
         const timer = setInterval(() => {
-            if (this.props.board.seconds < this.props.countdown) {
-                this.props.incrementSeconds();
+            if (this.state.seconds < this.state.countdown) {
+                this.setState({
+                    seconds: ++this.state.seconds
+                });
             } else {
-                clearInterval(this.state.timer);
+                // clearInterval(this.state.timer);
             }
 
         }, 1000);
 
         this.setState({
             timer,
+        });
+    }
+
+    componentWillReceiveProps(newProps) {
+        console.log('New Props', newProps);
+
+        this.setState({
+            countdown: newProps.countdown,
+            seconds: 0,
         });
     }
 
@@ -38,18 +47,18 @@ class Timer extends Component {
     }
 
     formatTime = (countdown) => {
-        if (countdown - this.props.board.seconds > 60) {
-            const minutes = Math.floor((countdown - this.props.board.seconds) / 60);
-            const sec = (countdown - this.props.board.seconds) % 60;
+        if (countdown - this.state.seconds > 60) {
+            const minutes = Math.floor((countdown - this.state.seconds) / 60);
+            const sec = (countdown - this.state.seconds) % 60;
 
             return `${minutes} min ${sec} s left`;
         } else {
-            return `${countdown - this.props.board.seconds}s left`;
+            return `${countdown - this.state.seconds}s left`;
         }
     }
 
     render() {
-        const { countdown } = this.props;
+        const { countdown } = this.state;
 
         return (
             <div className="grey-text-medium">
@@ -59,12 +68,4 @@ class Timer extends Component {
     }
 }
 
-const mapStateToProps = (props) => ({
-    ...props
-});
-
-const mapDispatchToProps = {
-    incrementSeconds,
-};
-  
-export default connect(mapStateToProps, mapDispatchToProps)(Timer);
+export default Timer;
