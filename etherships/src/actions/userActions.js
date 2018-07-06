@@ -31,7 +31,7 @@ import short from 'short-uuid';
 
 import ethers from 'ethers';
 import { closeModal, openModal } from './modalActions';
-import { receivedGuess, guessResponse, setOpponentTree } from './boardActions';
+import { receivedGuess, guessResponse, setOpponentTree, gameIsStarted, getCircularReplacer } from './boardActions';
 
 const createWallet = () => ({ wallet: ethers.Wallet.createRandom() });
 
@@ -120,6 +120,8 @@ export const editPrice = ({ target }) => (dispatch) => {
 export const initAccount = () => (dispatch, getState) =>  {
     let peerId = localStorage.getItem('peer');
 
+   console.log("Peerid: ", peerId);
+
     if(!peerId) {
       peerId = short.uuid();
 
@@ -127,11 +129,15 @@ export const initAccount = () => (dispatch, getState) =>  {
     }
 
     const peer = webrtc.createPeer(peerId);
+
+    const board = localStorage.getItem('board');
+    let user = localStorage.getItem('user');
+
     peer.on('connection', (_conn) => {
-      _conn.on('open', () => {
-        console.log('Conn open - receiver side');
-        // setConnection(_conn)(dispatch);
-        // webrtc.setConnection(_conn);
+
+      _conn.on('open', (d) => {
+        console.log('Conn open - receiver side', d);
+        closeModal()(dispatch);
       });
 
       _conn.on('close', () => {
@@ -144,7 +150,11 @@ export const initAccount = () => (dispatch, getState) =>  {
       });
     });
 
-    let user = localStorage.getItem("user");
+    if(user && board && JSON.parse(board).gameInProgress) {
+      console.log('Reconnect');
+      const connection = peer.connect(JSON.parse(user).opponentPeerId);
+      webrtc.setWebRTCConnection(connection);
+    }
 
     const userWallet = createWallet();
     console.log('Creating a new wallet!!!');
@@ -164,8 +174,8 @@ export const initAccount = () => (dispatch, getState) =>  {
 };
 
 // sets the webrtc connection data to the reducer
-export const setConnection = (connection, channelId) => (dispatch) => {
-    dispatch({ type: SET_CONNECTION, payload: {connection, channelId} });
+export const setConnection = (connection, webrtcId, channelId) => (dispatch) => {
+    dispatch({ type: SET_CONNECTION, payload: {connection, channelId, opponentPeerId: webrtcId} });
 };
 
 export const pickFields = (channelId, amount, addr, opponentTree) => (dispatch) => {
@@ -178,8 +188,10 @@ export const resetChannel = () => (dispatch) => {
     dispatch({ type: RESET_CHANNEL});
 };
 
-export const setOpponentData = (addr, id) => (dispatch) => {
-    dispatch({type: SET_OPPONENT_DATA, payload: {addr, id} });
+export const setOpponentData = (addr, id, opponentPeerId) => (dispatch, getState) => {
+    dispatch({type: SET_OPPONENT_DATA, payload: {addr, id, opponentPeerId} });
+
+    localStorage.setItem('user', JSON.stringify(getState().user, getCircularReplacer()));
 };
 
 export const connectToPlayer = (user) => (dispatch, getState) => {
@@ -194,6 +206,8 @@ export const connectToPlayer = (user) => (dispatch, getState) => {
       openModal('timeout', {})(dispatch);
     });
 
+    console.log(getState().user.peerId);
+
     // send the challenge to the opponent
     webrtc.send({
       type: 'challenge',
@@ -201,6 +215,7 @@ export const connectToPlayer = (user) => (dispatch, getState) => {
       username: getState().user.userName,
       amount: user.amount.valueOf(),
       addr: getState().user.userAddr,
+      opponentPeerId: getState().user.peerId,
     });
     console.log('challenge sent');
 
@@ -226,7 +241,7 @@ export const msgReceived = (message) => (dispatch, getState) => {
 
   switch(message.type) {
     case 'challenge':
-      setOpponentData(message.addr, message.channelId)(dispatch);
+      setOpponentData(message.addr, message.channelId, message.opponentPeerId)(dispatch, getState);
       openModal('challenge', message)(dispatch);
       break;
       
@@ -239,6 +254,9 @@ export const msgReceived = (message) => (dispatch, getState) => {
       closeModal()(dispatch);
       browserHistory.push('/match');
       setOpponentTree(message.opponentTree)(dispatch);
+      gameIsStarted()(dispatch);
+
+      localStorage.setItem('board', JSON.stringify(getState().board));
       break;
 
     case 'received_guess':

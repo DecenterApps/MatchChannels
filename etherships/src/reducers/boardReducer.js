@@ -9,6 +9,7 @@ import {
     GUESS_RESPONSE,
     INCREMENT_SECONDS,
     SET_OPPONENT_TREE,
+    START_GAME,
   } from '../constants/actionTypes';
 
 import { EMPTY_FIELD, MISSED_SHIP, SUNK_SHIP, PLAYERS_SHIP, SECONDS_PER_TURN } from '../constants/config';
@@ -47,6 +48,7 @@ const INITIAL_STATE = {
     seconds: 0,
     numOfGuesses: 0,
     signatureNumOfGuesses: "",
+    gameInProgress: false,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -144,6 +146,12 @@ export default (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 opponentTree: payload,
+            };
+            
+        case START_GAME:
+            return {
+                ...state,
+                gameInProgress: true,
             };
 
         default:

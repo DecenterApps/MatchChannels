@@ -23,7 +23,7 @@ export const createPeer = (peerId) => {
         localStorage.setItem('peer', short.uuid());
         window.location.reload();
       } else {
-        localStorage.setItem('peer', short.uuid());
+        // localStorage.setItem('peer', short.uuid());
       }
     });
 
@@ -47,7 +47,7 @@ export const connectToPlayer = (peerId) => {
     }
 };
 
-export const setConnection = (_conn) => conn = _conn;
+export const setWebRTCConnection = (_conn) => conn = _conn;
 
 export const send = (data) => {
   if (!conn) {

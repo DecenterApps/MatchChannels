@@ -30,3 +30,4 @@ export const OPEN_MODAL = 'open_modal';
 export const CLOSE_MODAL = 'close_modal';
 export const SET_WALLET = 'set_wallet';
 export const SET_BALANCE = 'set_balance';
+export const START_GAME = 'start_game';

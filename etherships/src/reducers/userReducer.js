@@ -14,7 +14,7 @@ import { SET_NAME,
         SET_LOBBY_USERS,
         ADD_NEW_USER_TO_LOBBY,
         SET_WALLET,
-        SET_BALANCE
+        SET_BALANCE,
         } from '../constants/actionTypes';
 
 const INITIAL_STATE = {
@@ -35,6 +35,7 @@ const INITIAL_STATE = {
     registered: false,
     opponentChannel: -1,
     opponentAddr: "",
+    opponentPeerId: "",
     userWallet: {},
 };
 
@@ -111,11 +112,13 @@ export default (state = INITIAL_STATE, action) => {
             };
 
         case SET_CONNECTION:
+            console.log('Opponent peer id: ', payload.opponentPeerId);
 
             return {
                 ...state,
                 connection: payload.connection,
                 opponentChannel: payload.channelId || state.opponentChannel,
+                opponentPeerId: payload.opponentPeerId,
             };
 
         case PICK_FIELDS:
@@ -137,6 +140,7 @@ export default (state = INITIAL_STATE, action) => {
                 ...state,
                 opponentAddr: payload.addr,
                 opponentChannel: payload.id,
+                opponentPeerId: payload.opponentPeerId,
             };
 
         case SET_LOBBY_USERS:
@@ -162,7 +166,7 @@ export default (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 userWallet: payload,
-            }
+            };
 
         default:
             return {

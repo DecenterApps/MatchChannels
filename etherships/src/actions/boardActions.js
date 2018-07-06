@@ -8,6 +8,7 @@ import { SET_FIELD,
         CHECK_OPPONENTS_GUESS,
         INCREMENT_SECONDS,
         SET_OPPONENT_TREE,
+        START_GAME,
         } from '../constants/actionTypes';
 
 import { generateTree, checkGuess } from '../services/boardService';
@@ -67,12 +68,14 @@ export const generateBoard = (board) => async (dispatch, getState) => {
         // notify other user
         webrtc.send({type: 'start_game', opponentTree: state.board.tree});
 
+        gameIsStarted()(dispatch);
+
         browserHistory.push('/match');
     }
 
     // save data to localStorage so we don't lose it on refresh
-    localStorage.setItem('user', JSON.stringify(state.user, getCircularReplacer()));
-    localStorage.setItem('board', JSON.stringify(state.board, getCircularReplacer()))
+    localStorage.setItem('user', JSON.stringify(getState().user, getCircularReplacer()));
+    localStorage.setItem('board', JSON.stringify(getState().board, getCircularReplacer()))
 };
 
 // this is called when we receive a guess from the opponent
@@ -97,6 +100,8 @@ export const receivedGuess = pos => (dispatch, getState) => {
 
     // You received a guess, now it's your turn
     dispatch({ type: SET_PLAYER_TURN, payload: true });
+
+    localStorage.setItem('board', JSON.stringify(getState().board));
 };
 
 // this is called when the opponent responds to your guess
@@ -110,6 +115,8 @@ export const guessResponse = payload => async (dispatch, getState) => {
     if (numHits >= 5) {
         openModal('endgame', {})(dispatch);
     }
+
+    localStorage.setItem('board', JSON.stringify(getState().board));
 };
 
 export const resetBoard = () => (dispatch) => {
@@ -122,6 +129,10 @@ export const incrementSeconds = () => dispatch => {
 
 export const setOpponentTree = (opponentTree) => dispatch => {
     dispatch({type: SET_OPPONENT_TREE, payload: opponentTree});
+};
+
+export const gameIsStarted = () => (dispatch) => {
+    dispatch({type: START_GAME});
 };
 
 export const submitScore = () => async (dispatch, getState) => {
@@ -145,7 +156,7 @@ export const submitScore = () => async (dispatch, getState) => {
 };
 
 // helper function to help stringify deal with circual referencing in json
-const getCircularReplacer = () => {
+export const getCircularReplacer = () => {
     const seen = new WeakSet;
     return (key, value) => {
       if (typeof value === "object" && value !== null) {
