@@ -156,6 +156,10 @@ export const submitScore = () => async (dispatch, getState) => {
     closeModal()(dispatch);
 };
 
+export const submitDispute = () => () => {
+
+};
+
 // helper function to help stringify deal with circual referencing in json
 export const getCircularReplacer = () => {
     const seen = new WeakSet;

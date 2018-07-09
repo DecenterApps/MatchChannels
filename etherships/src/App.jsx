@@ -12,6 +12,7 @@ import './css/oswald.css';
 import './css/open-sans.css';
 import './css/pure-min.css';
 import './App.css';
+import DisputeModal from './modals/DisputeModal';
 
 class App extends Component {
 
@@ -53,6 +54,11 @@ class App extends Component {
         {
           this.props.modalShown === 'timeout' &&
           <TimeoutModal />
+        }
+
+        {
+          this.props.modalShown === 'dispute' &&
+          <DisputeModal />
         }
 
         <InfoBox />
