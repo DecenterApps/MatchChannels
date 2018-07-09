@@ -33,6 +33,8 @@ class UserList extends Component {
 
     const { usersList } = this.props.user;
 
+    console.log(usersList);
+
     return (
       <div>
         <div className="user-list">

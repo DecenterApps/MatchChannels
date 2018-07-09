@@ -21,13 +21,19 @@ class Timer extends Component {
                     seconds: ++this.state.seconds
                 });
             } else {
-                // clearInterval(this.state.timer);
+                clearInterval(this.state.timer);
+                
+                if (this.props.onTimerEnd) {
+                    this.props.onTimerEnd();
+                }
             }
 
         }, 1000);
 
+        console.log('timer: ', timer._id);
+
         this.setState({
-            timer,
+            timer: timer._id,
         });
     }
 

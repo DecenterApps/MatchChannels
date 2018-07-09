@@ -6,6 +6,9 @@ import Modal from 'react-modal';
 import { customModalStyles } from '../constants/config';
 
 import './Modal.css';
+import Timer from '../game/Timer';
+
+import { submitScore } from '../actions/boardActions';
 
 class TimeoutModal extends Component {
 
@@ -13,15 +16,24 @@ class TimeoutModal extends Component {
         super(props);
 
         this.state = {
-            waiting: false,
+            waiting: true,
         };
     }
 
     submitTimeout = () => {
+        this.props.submitScore();
+    }
 
+    onTimerEnd = () => {
+        console.log('timer callback');
+        this.setState({
+            waiting: false,
+        });
     }
 
     render() {
+
+        const { timeoutTimer } = this.props.board;
 
         return (
             <Modal
@@ -35,7 +47,16 @@ class TimeoutModal extends Component {
                                 Opponent disconnected
                             </div>
 
-                            <button className="modal-create-btn" onClick={this.submitTimeout}>submit</button>
+                            {
+                                this.state.waiting && 
+                                <Timer countdown={timeoutTimer} onTimerEnd={this.onTimerEnd}/>
+                            }
+
+                            {
+                                !this.state.waiting && 
+                                <button className="modal-create-btn" onClick={this.submitTimeout}>submit</button>
+
+                            }
 
                             <div className="modal-warning-text">
                                 Your opponent has disconnected 
@@ -53,6 +74,7 @@ const mapStateToProps = (props) => ({
 });
 
 const mapDispatchToProps = {
+    submitScore,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TimeoutModal);

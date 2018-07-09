@@ -11,7 +11,7 @@ import {
     START_GAME,
   } from '../constants/actionTypes';
 
-import { EMPTY_FIELD, MISSED_SHIP, SUNK_SHIP, PLAYERS_SHIP, SECONDS_PER_TURN } from '../constants/config';
+import { EMPTY_FIELD, MISSED_SHIP, SUNK_SHIP, PLAYERS_SHIP, SECONDS_PER_TURN, TIMEOUT_WAIT_PERIOD } from '../constants/config';
 
 const INITIAL_STATE = {
     // Here we show your ships and where the opponent hit/missed your ships
@@ -43,7 +43,8 @@ const INITIAL_STATE = {
     opponentTree: [], //TODO: set this when the game starts
     isYourMove: false,
     choosenField: -1, // the current field that is selected but not submited
-    timer: SECONDS_PER_TURN,
+    gameTimer: SECONDS_PER_TURN,
+    timeoutTimer: TIMEOUT_WAIT_PERIOD,
     numOfGuesses: 0,
     signatureNumOfGuesses: "",
     gameInProgress: false,
@@ -89,7 +90,7 @@ export default (state = INITIAL_STATE, action) => {
                 ...state,
                 isYourMove: payload,
                 opponentsBoard: state.opponentsBoard.map(b => b === PLAYERS_SHIP ? MISSED_SHIP : b),
-                timer: SECONDS_PER_TURN,
+                gameTimer: SECONDS_PER_TURN,
                 sequence: ++state.sequence,
                 choosenField: -1,
             }

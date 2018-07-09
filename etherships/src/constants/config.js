@@ -12,6 +12,8 @@ export const DEFAULT_PRICE = 1000000000000000; // 0.001 eth
 
 export const REFRESH_LOBBY_TIME = 10000; //10s
 
+export const TIMEOUT_WAIT_PERIOD = 60;
+
 // In the board 0,1,2,3 represent the state of the ships
 export const EMPTY_FIELD = 0;
 export const PLAYERS_SHIP = 1;

@@ -9,7 +9,7 @@ import Timer from './Timer';
 class Match extends Component {
 
     render() {
-        const { isYourMove, timer } = this.props.board;
+        const { isYourMove, gameTimer } = this.props.board;
 
         const numHits = this.props.board.board.filter(b => b === 3).length;
         const numOpponentHits = this.props.board.opponentsBoard.filter(b => b === 3).length;
@@ -36,7 +36,7 @@ class Match extends Component {
 
             <div className="timer-area">
                 <span className="turn-text">{isYourMove ? 'Your turn' : 'Opponents turn'}  </span>
-                <Timer countdown={timer} />
+                <Timer countdown={gameTimer} />
             </div>
 
             </div>
