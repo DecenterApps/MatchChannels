@@ -34,6 +34,8 @@ class Lobby extends Component {
   };
 
   render() {
+    const { hasCreatedMatch } = this.props.user;
+
     return (
       <div>
         <div className="lobby-header">
@@ -45,7 +47,16 @@ class Lobby extends Component {
           <div className='lobby-list'>
             <div className="user-list-item">
               <input className='user-list-input' value={this.state.ethAmount} onChange={this.handleChange} type="text" placeholder="Amount" />
-              <button className='user-list-btn' onClick={this.createNewGame}>Create Game</button>
+              {
+                !hasCreatedMatch && 
+                <button className='user-list-btn' onClick={this.createNewGame}>Create Game</button>
+
+              }
+
+              {
+                hasCreatedMatch && 
+                <button className='user-list-btn grey-btn'>created</button>
+              }
             </div>
 
             <UserList />

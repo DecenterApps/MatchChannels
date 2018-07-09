@@ -37,6 +37,7 @@ const INITIAL_STATE = {
     opponentAddr: "",
     opponentPeerId: "",
     userWallet: {},
+    hasCreatedMatch: false, // if the user already created a channel
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -145,9 +146,14 @@ export default (state = INITIAL_STATE, action) => {
             };
 
         case SET_LOBBY_USERS:
+            console.log([...state.usersList, ...payload]);
+
+            const hasCreatedMatch = [...state.usersList, ...payload].find(u => u.args.addr === state.userAddr);
+
             return {
                 ...state,
                 usersList: payload,
+                hasCreatedMatch,
             };
         
         case ADD_NEW_USER_TO_LOBBY:

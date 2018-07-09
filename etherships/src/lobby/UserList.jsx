@@ -31,9 +31,7 @@ class UserList extends Component {
 
   render() {
 
-    const { usersList } = this.props.user;
-
-    console.log(usersList);
+    const { usersList, userAddr } = this.props.user;
 
     return (
       <div>
@@ -51,9 +49,26 @@ class UserList extends Component {
                   <span className='user-list-name'> {user.args.username} </span>
                   <span
                     className='user-list-value'> ETH {window.web3.fromWei(user.args.amount.valueOf(), 'ether')} </span>
-                  <button className='user-list-btn'
+
+                  {
+                    user.args.addr !== userAddr && 
+                    <button className='user-list-btn'
                           onClick={() => this.props.connectToPlayer(user.args)}>Battle
                   </button>
+                  }
+
+                  {
+                    user.args.addr === userAddr && 
+                    <button className='user-list-btn grey-btn waiting-btn'>
+                      <div className="lds-ring-small">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                      </div>
+                    </button>
+                  }
+
                 </div>)
             }
 

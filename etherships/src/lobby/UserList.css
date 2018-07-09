@@ -73,6 +73,10 @@ input {
     padding: 0px 0px 10px 0px;
     width: 400px;
  }
+
+ .grey-disabled-btn {
+
+ }
  
  .user-list-value {
     font-family: Roboto;
@@ -99,6 +103,10 @@ input {
     margin-bottom: 20px;
 
     color: #FFFFFF;
+ }
+
+ .waiting-btn {
+     padding: 2px !important;
  }
 
 .user-list-body {

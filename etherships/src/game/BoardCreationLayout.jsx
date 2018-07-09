@@ -70,7 +70,13 @@ class BoardCreationLayout extends Component {
             {
                 this.state.loading && 
                 <div>
-                    <button className="spinner-btn">
+                    <button className='next-btn waiting-btn'>
+                        <div className="lds-ring-small">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
                     </button>
                 </div>
             }
