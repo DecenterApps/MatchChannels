@@ -4,30 +4,43 @@ import Web3 from 'web3';
 import EtherShips from '../../../solidity/build/contracts/EtherShips';
 
 export const openChannel = async (markelRoot, webrtcId, signAddress, amount) => {
-    console.log(amount)
-    const priceInWei = amount === '' ? DEFAULT_PRICE : window.web3.toWei(amount, 'ether');
-    console.log(priceInWei)
+    let priceInWei = amount === '' ? DEFAULT_PRICE : window.web3.toWei(amount, 'ether');
+    let toPay = new window.web3.BigNumber(priceInWei);
+    priceInWei = new window.web3.BigNumber(priceInWei);
 
-    let addr = await getCurrUser();
+    let addr = await getCurrAddr();
+    const balance = await getUserCtxBalance(addr);
+    if (balance.greaterThan(0)) {
+        console.log(`User already has ${window.web3.fromWei(balance.toString())} eth on ct`);
+        toPay = toPay.minus(balance);
+        if (toPay.lessThan(0)) toPay = new window.web3.BigNumber('0');
+    }
 
-    const res = await window.ethershipContract.openChannel(
-        markelRoot, webrtcId, priceInWei, signAddress, {from: addr, value: priceInWei});
-
-    return res;
+    return window.ethershipContract.openChannel(
+        markelRoot, webrtcId, priceInWei, signAddress, { from: addr, value: toPay });
 };
 
 
 export const joinChannel = async (id, markelRoot, webrtcId, signAddress, amount) => {
-    const priceInWei = amount === '' ? DEFAULT_PRICE : amount;
-    let addr = await getCurrUser();
-    const res = await window.ethershipContract.joinChannel(id, markelRoot,
-        webrtcId, priceInWei, signAddress, {from: addr, value: priceInWei});
+    console.log(amount);
+    let priceInWei = amount === '' ? DEFAULT_PRICE : amount;
+    let toPay = new window.web3.BigNumber(priceInWei);
+    priceInWei = new window.web3.BigNumber(priceInWei);
 
-    return res;
+    let addr = await getCurrAddr();
+    const balance = await getUserCtxBalance(addr);
+    if (balance.greaterThan(0)) {
+        console.log(`User already has ${window.web3.fromWei(balance.toString())} eth on ct`);
+        toPay = toPay.minus(balance);
+        if (toPay.lessThan(0)) toPay = new window.web3.BigNumber('0');
+    }
+
+    return window.ethershipContract.joinChannel(id, markelRoot,
+        webrtcId, priceInWei, signAddress, {from: addr, value: toPay});
 };
 
 export const closeChannel = async (id, sig, numGuesses) => {
-    let addr = await getCurrUser();
+    let addr = await getCurrAddr();
     const res = await window.ethershipContract.closeChannel(id, sig, numGuesses, {from: addr});
 
     return res;
@@ -36,14 +49,14 @@ export const closeChannel = async (id, sig, numGuesses) => {
 export const createUser = async (username, price) => {
 
     const priceInWei = price === '' ? DEFAULT_PRICE : window.web3.toWei(price, 'ether');
-    let addr = await getCurrUser();
+    let addr = await getCurrAddr();
     const res = await window.ethershipContract.createAccount(username, {from: addr, value: priceInWei});
 
     return res;
 };
 
 export const fundUser = async (amount) => {
-    let addr = await getCurrUser();
+    let addr = await getCurrAddr();
 
     let weiAmount = window.web3.toWei(amount, 'ether');
     const res = await window.ethershipContract.fundAccount({from: addr, value: weiAmount});
@@ -52,7 +65,7 @@ export const fundUser = async (amount) => {
 };
 
 export const withdraw = async (amount) => {
-    let addr = await getCurrUser();
+    let addr = await getCurrAddr();
     let weiAmount = window.web3.toWei(amount, 'ether');
 
     const res = await window.ethershipContract.withdraw(weiAmount, {from: addr});
@@ -66,12 +79,16 @@ export const getSignerAddress = async (addr) => {
     return res;
 }
 
-export const getUser = async (addr) => {
+export const getUserInfo = async (addr) => {
     const user = await window.ethershipContract.players(addr);
-
     user[1] = window.web3.fromWei(user[1], 'ether');
-
     return user;
+};
+
+// wei balance
+export const getUserCtxBalance = async (addr) => {
+    const user = await window.ethershipContract.players(addr);
+    return user[1];
 };
 
 export const getJoinedChannels = async (blockNum) =>
@@ -131,7 +148,7 @@ export const getActiveChannels = async () =>
         });
     });
 
-export const getCurrUser = async () =>
+export const getCurrAddr = async () =>
     new Promise((resolve, reject) => {
         window.web3.eth.getAccounts(async (err, accounts) => {
             resolve(accounts[0]);
@@ -158,7 +175,7 @@ export const getWeb3 = () =>
             ethershipContract.setProvider(web3.currentProvider);
             window.ethershipContract = ethershipContract.at(ETHERSHIP_ADDRESS);
 
-            const reg = await getUser(accounts[0]);
+            const reg = await getUserInfo(accounts[0]);
 
             const user = {
                 userAddr: addr,
