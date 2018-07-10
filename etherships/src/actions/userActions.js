@@ -206,13 +206,13 @@ export const connectToPlayer = (user) => (dispatch, getState) => {
       openModal('timeout', {})(dispatch);
     });
 
-    console.log(getState().user.peerId);
+    console.log('Challenge', getState().user);
 
     // send the challenge to the opponent
     webrtc.send({
       type: 'challenge',
       channelId: user.channelId.valueOf(),
-      username: getState().user.userName,
+      username: getState().user.username,
       amount: user.amount.valueOf(),
       addr: getState().user.userAddr,
       opponentPeerId: getState().user.peerId,
@@ -241,6 +241,7 @@ export const msgReceived = (message) => (dispatch, getState) => {
 
   switch(message.type) {
     case 'challenge':
+      console.log(message);
       setOpponentData(message.addr, message.channelId, message.opponentPeerId)(dispatch, getState);
       openModal('challenge', message)(dispatch);
       break;

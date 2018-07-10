@@ -21,7 +21,7 @@ const INITIAL_STATE = {
     userAddr: "",
     userError: "",
     userNameEdit: "",
-    userName: "",
+    username: "",
     priceEdit: "",
     editPrice: "",
     gameBetAmount: 0,
@@ -47,7 +47,7 @@ export default (state = INITIAL_STATE, action) => {
         case SET_NAME:
             return {
                 ...state,
-                userName: state.userNameEdit,
+                username: state.userNameEdit,
                 userNameEdit: '',
             }
 
@@ -68,7 +68,7 @@ export default (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 registered: true,
-                userName: state.userNameEdit,
+                username: state.userNameEdit,
                 userNameEdit: '',
             };
 
@@ -83,7 +83,7 @@ export default (state = INITIAL_STATE, action) => {
 
             return {
                 ...state,
-                userName: payload.username,
+                username: payload.username,
                 userNameEdit: payload.username,
                 balance: payload.balance,
                 gamesPlayed: payload.gamesPlayed,
@@ -149,6 +149,8 @@ export default (state = INITIAL_STATE, action) => {
             console.log([...state.usersList, ...payload]);
 
             const hasCreatedMatch = [...state.usersList, ...payload].find(u => u.args.addr === state.userAddr);
+
+            console.log(hasCreatedMatch);
 
             return {
                 ...state,

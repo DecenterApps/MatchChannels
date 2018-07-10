@@ -156,6 +156,10 @@ export const submitScore = () => async (dispatch, getState) => {
     closeModal()(dispatch);
 };
 
+export const resetTurn = () => (dispatch, getState) => {
+    dispatch({type: SET_PLAYER_TURN, payload: !getState().board.isYourMove})
+};
+
 export const submitDispute = () => () => {
 
 };

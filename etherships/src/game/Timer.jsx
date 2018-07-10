@@ -11,24 +11,12 @@ class Timer extends Component {
             timer: null,
             seconds: 0,
             countdown: props.countdown,
+            cleared: false,
         };
     }
 
     componentDidMount() {
-        const timer = setInterval(() => {
-            if (this.state.seconds < this.state.countdown) {
-                this.setState({
-                    seconds: ++this.state.seconds
-                });
-            } else {
-                clearInterval(this.state.timer);
-                
-                if (this.props.onTimerEnd) {
-                    this.props.onTimerEnd();
-                }
-            }
-
-        }, 1000);
+        const timer = this.setTimer();
 
         console.log('timer: ', timer._id);
 
@@ -37,13 +25,42 @@ class Timer extends Component {
         });
     }
 
+    setTimer = () => {
+        return setInterval(() => {
+            if (this.state.seconds < this.state.countdown) {
+                this.setState({
+                    seconds: ++this.state.seconds
+                });
+            } else {
+                // clearInterval(this.state.timer);
+                
+                if (this.props.onTimerEnd) {
+                    this.props.onTimerEnd();
+                }
+            }
+
+        }, 1000);
+    }
+
     componentWillReceiveProps(newProps) {
-        console.log('New Props', newProps);
+        console.log('New Props', newProps, this.state);
+
+        // if (this.state.cleared) {
+        //     const timer = this.setTimer();
+
+        //     this.setState({
+        //         timer: timer._id,
+        //         cleared: false,
+        //     });
+        // }  
+
 
         this.setState({
             countdown: newProps.countdown,
             seconds: 0,
         });
+
+
     }
 
     componentWillUnmount() {

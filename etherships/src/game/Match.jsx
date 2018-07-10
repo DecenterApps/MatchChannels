@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { openModal, closeEndGameModal } from '../actions/boardActions';
+import { openModal, closeEndGameModal, resetTurn } from '../actions/boardActions';
 
 import Board from './Board';
 import Timer from './Timer';
 
 class Match extends Component {
+
+    onTimerEnd = () => {
+        this.props.resetTurn();
+    }
 
     render() {
         const { isYourMove, gameTimer } = this.props.board;
@@ -36,7 +40,7 @@ class Match extends Component {
 
             <div className="timer-area">
                 <span className="turn-text">{isYourMove ? 'Your turn' : 'Opponents turn'}  </span>
-                <Timer countdown={gameTimer} />
+                <Timer countdown={gameTimer} onTimerEnd={this.onTimerEnd}/>
             </div>
 
             </div>
@@ -53,6 +57,7 @@ const mapStateToProps = (props) => ({
 const mapDispatchToProps = {
     openModal,
     closeEndGameModal,
+    resetTurn,
 };
   
 export default connect(mapStateToProps, mapDispatchToProps)(Match);
