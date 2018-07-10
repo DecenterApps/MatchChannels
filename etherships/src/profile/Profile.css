@@ -1,22 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Boogaloo');
 @import url('https://fonts.googleapis.com/css?family=Roboto');
 
-.title-front {
-    margin-top: 80px;
-    margin-bottom: 20px;
-
-    font-family: Boogaloo;
-    font-style: normal;
-    font-weight: normal;
-    line-height: normal;
-    font-size: 52px;
-    letter-spacing: 0.03em;
-    text-transform: uppercase;
-
-    color: #FFFFFF;
-    text-shadow: -6px 0 #73B816, 0 6px #73B816, 6px 0 #73B816, 0 -6px #73B816;
-}
-
 .big-label {
     -webkit-text-stroke-width: 2px;
     -webkit-text-stroke-color: #73B816;
@@ -98,6 +82,8 @@
     text-transform: uppercase;
 
     color: #FFFFFF;
+    border: 0;
+    box-shadow: 0px 5px #7E7E7E;
 }
 
 .input {
@@ -120,7 +106,7 @@ input {
 .btn {
     background: #73B816;
     border-radius: 6.26484px;
-    font-family: Roboto;
+    font-family: Boogaloo;
     font-weight: bold;
     letter-spacing: 0.03em;
     text-transform: uppercase;

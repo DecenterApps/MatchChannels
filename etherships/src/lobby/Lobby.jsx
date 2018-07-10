@@ -63,9 +63,10 @@ class Lobby extends Component {
 
           </div>
 
-          <div className="left-ship" />
-          <div className="right-ship" />
         </div>
+
+        <div className="left-ship" />
+        <div className="right-ship" />
       </div>
     );
   }
