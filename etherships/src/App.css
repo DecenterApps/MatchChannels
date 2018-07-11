@@ -1,5 +1,4 @@
-/* PAGE */
-
+@import url('https://fonts.googleapis.com/css?family=Boogaloo');
 
 html, body {
   height: 100%;
@@ -139,6 +138,39 @@ code {
   font-size: 32px;
   color: gray;
   font-family: Boogaloo;
+}
+
+.container-404 {
+  height: 100vh;
+  padding: 0;
+  margin: 0;
+  flex-direction: column;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.big-text-404 {
+  font-family: Boogaloo;
+  font-size: 122px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  
+  color: #73B816;
+}
+
+.small-text-404 {
+  font-family: Roboto;
+  font-style: italic;
+  font-size: 16px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  
+  color: #C6C6C6;
 }
 
 .user-error {

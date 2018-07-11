@@ -11,6 +11,7 @@ import BoardCreationLayout from './game/BoardCreationLayout';
 import Lobby from './lobby/Lobby';
 import Profile from './profile/Profile';
 import Match from './game/Match';
+import Page404 from './Page404';
 
 // Redux Store
 import store from './store';
@@ -36,6 +37,7 @@ ReactDOM.render((
           <Route path="profile" component={Profile} />
           <Route path="match" component={Match} />
         </Route>
+        <Route path='*' exact={true} component={Page404} />
       </Router>
     </Provider>
   ),
