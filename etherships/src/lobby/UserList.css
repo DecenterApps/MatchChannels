@@ -1,5 +1,5 @@
- @import url('https://fonts.googleapis.com/css?family=Boogaloo');
- @import url('https://fonts.googleapis.com/css?family=Roboto');
+@import url('https://fonts.googleapis.com/css?family=Boogaloo');
+@import url('https://fonts.googleapis.com/css?family=Roboto');
 
 .userItem {
     font-size: 10px;
@@ -30,55 +30,56 @@
     font-family: Boogaloo;
 }
 
-input { 
-    text-align: center; 
+input {
+    text-align: center;
 }
-
 
 ::-webkit-input-placeholder {
     text-align: center;
- }
- 
- :-moz-placeholder { /* Firefox 18- */
-    text-align: center;  
- }
- 
- ::-moz-placeholder {  /* Firefox 19+ */
-    text-align: center;  
- }
- 
- :-ms-input-placeholder {  
-    text-align: center; 
- }
+}
 
- .lobby-header {
-     position: relative;
-     width: 80%;
-     display: flex;
-     margin: 0 auto;
+:-moz-placeholder { /* Firefox 18- */
+    text-align: center;
+}
+
+::-moz-placeholder { /* Firefox 19+ */
+    text-align: center;
+}
+
+:-ms-input-placeholder {
+    text-align: center;
+}
+
+.lobby-header {
+    position: relative;
+    width: 80%;
+    display: flex;
+    margin: 0 auto;
     align-items: center;
     justify-content: center;
     margin-bottom: 50px;
- }
+    z-index: 1;
+    position: relative;
+}
 
- .lobby-header button {
+.lobby-header button {
     position: absolute;
     right: 0;
     bottom: 5px;
 }
 
- .user-list {
+.user-list {
     border-radius: 10px;
     margin-top: 50px;
     padding: 0px 0px 10px 0px;
     width: 400px;
- }
+}
 
- .grey-disabled-btn {
+.grey-disabled-btn {
 
- }
- 
- .user-list-value {
+}
+
+.user-list-value {
     font-family: Roboto;
     font-weight: bold;
     font-size: 13px;
@@ -88,10 +89,9 @@ input {
     width: 90px;
 
     color: #FFFFFF;
- }
+}
 
-
- .user-list-header {
+.user-list-header {
     font-family: Boogaloo;
     font-style: normal;
     font-weight: normal;
@@ -103,11 +103,11 @@ input {
     margin-bottom: 20px;
 
     color: #FFFFFF;
- }
+}
 
- .waiting-btn {
-     padding: 2px !important;
- }
+.waiting-btn {
+    padding: 2px !important;
+}
 
 .user-list-body {
     overflow: auto;
@@ -117,7 +117,7 @@ input {
 .btn-profile {
     background: #73B816;
     border-radius: 6.26484px;
-    font-family: Roboto;
+    font-family: Boogaloo;
     font-weight: bold;
     letter-spacing: 0.03em;
     text-transform: uppercase;
@@ -151,7 +151,7 @@ input {
 .user-list-btn {
     background: #FF3546;
     border-radius: 7.28352px;
-  
+
     font-family: Boogaloo;
     font-weight: bold;
     font-size: 16px;
@@ -183,7 +183,8 @@ button:active {
     width: 258px;
     height: 67px;
     background: url('../images/logo.png') center center no-repeat;
-    margin-top: 40px;
+    /*margin-top: 40px;*/
+    margin: 40px auto 0;
 }
 
 .left-ship {
@@ -193,6 +194,7 @@ button:active {
     position: absolute;
     bottom: 0;
     pointer-events: none;
+    z-index: 0;
 }
 
 .lobby-list {
@@ -210,6 +212,7 @@ button:active {
     right: 0;
     float: right;
     pointer-events: none;
+    z-index: 0;
 }
 
 .lobby-container {
@@ -217,21 +220,23 @@ button:active {
     display: flex;
     flex-direction: row;
     align-items: center;
+    z-index: 1;
+    position: relative;
 }
 
 ::-webkit-scrollbar {
     width: 12px;
     height: 0px;
 }
- 
- 
+
 /* Handle */
 ::-webkit-scrollbar-thumb {
     -webkit-border-radius: 10px;
     border-radius: 10px;
-    background: #FF3546; 
-    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+    background: #FF3546;
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
 }
+
 ::-webkit-scrollbar-thumb:window-inactive {
     border-radius: 10px;
     background: #FF3546;

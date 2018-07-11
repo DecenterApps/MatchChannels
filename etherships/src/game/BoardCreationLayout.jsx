@@ -42,33 +42,30 @@ class BoardCreationLayout extends Component {
 
         return (
             <div className="container">
-                <div className="title">
-                    battleship
-                </div>
+                <div className="logo"></div>
                 <div className='instruction'>
                     place your ships
                 </div>
                 <div className="board-area">
                     <Board type="my-board" state="setup" />
                     <div className="slots">
-                    <div className="empty-slot-field"></div>
-                    {
-                        fieldsLeft.map( f => 
-                        <div key={f} className="slot-field"></div>
-                        )
-                    }
+                      {
+                          fieldsLeft.map(f =>
+                              <div key={f} className="field slot-field" />
+                          )
+                      }
                     </div>
                 </div>
 
             {
-                !this.state.loading && 
+                !this.state.loading &&
                     <div>
-                    <button className={btnStyle} onClick={this.generateBoard}>Next</button>
+                        <button className={btnStyle} onClick={this.generateBoard}>Next</button>
                     </div>
             }
 
             {
-                this.state.loading && 
+                this.state.loading &&
                 <div>
                     <button className='next-btn waiting-btn'>
                         <div className="lds-ring-small">
@@ -80,7 +77,7 @@ class BoardCreationLayout extends Component {
                     </button>
                 </div>
             }
-        
+
             </div>
         );
     }
@@ -95,5 +92,5 @@ const mapDispatchToProps = {
     generateBoard,
     resetBoard,
 };
-  
+
 export default connect(mapStateToProps, mapDispatchToProps)(BoardCreationLayout);

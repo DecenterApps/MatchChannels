@@ -17,6 +17,11 @@ code {
   background: #eee;
 }
 
+.ReactModalPortal {
+  z-index: 1;
+  position: relative;
+}
+
 .container {
     width: 100%;
     display: -ms-flexbox;
@@ -98,7 +103,7 @@ code {
 .register-btn {
   background: #73B816;
   border-radius: 6.26484px;
-  font-family: Roboto;
+  font-family: Boogaloo;
   font-weight: bold;
   letter-spacing: 0.03em;
   text-transform: uppercase;

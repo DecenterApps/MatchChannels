@@ -54,29 +54,26 @@ class Field extends Component {
         if (state === 'setup') {
             return (
                 <div 
-                    className={(board[this.props.id] === PLAYERS_SHIP ? 'choosen' : 'field')}
-                    onClick={this.chooseYourFields}>
-
-                    <span className={board[this.props.id] === PLAYERS_SHIP ? "" : "pin"}></span>
+                    className={`field ${(board[this.props.id] === PLAYERS_SHIP ? 'choosen' : 'not-chosen')}`}
+                    onClick={this.chooseYourFields}
+                >
+                    <span className={board[this.props.id] === PLAYERS_SHIP ? "" : "pin"} />
                 </div>
             )
         } else {
             if (type === 'my-board') {
                 return (
-                    <div 
-                        className={fieldClass}>
-    
-                        <span className={board[this.props.id] !== EMPTY_FIELD ? "" : "pin"}></span>
+                    <div className={`field ${fieldClass}`}>
+                        <span className={board[this.props.id] !== EMPTY_FIELD ? "" : "pin"} />
                     </div>
                 )
             } else {
                 return (
                     <div 
-                        className={guessFieldClass}
-                        onClick={this.guessOppponentField}>
-    
-    
-                        <span className={opponentsBoard[this.props.id] !== EMPTY_FIELD ? "" : "pin"}></span>
+                        className={`field ${guessFieldClass}`}
+                        onClick={this.guessOppponentField}
+                    >
+                        <span className={opponentsBoard[this.props.id] !== EMPTY_FIELD ? "" : "pin"} />
                     </div>
                 )
             }
