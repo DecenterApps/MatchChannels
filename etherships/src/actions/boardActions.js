@@ -107,17 +107,19 @@ export const receivedGuess = pos => (dispatch, getState) => {
 
 // this is called when the opponent responds to your guess
 export const guessResponse = payload => async (dispatch, getState) => {
-    dispatch({type: GUESS_RESPONSE, payload});
+    if(getState().board.numOfGuesses <= payload.data.numOfGuesses) {
+        dispatch({type: GUESS_RESPONSE, payload});
 
-    const numHits = getState().board.opponentsBoard.filter(b => b === SUNK_SHIP).length;
+        const numHits = getState().board.opponentsBoard.filter(b => b === SUNK_SHIP).length;
 
-    console.log('Guess Response: ', numHits, payload);
+        console.log('Guess Response: ', numHits, payload);
 
-    if (numHits >= 5) {
-        openModal('endgame', {})(dispatch);
+        if (numHits >= 5) {
+            openModal('endgame', {})(dispatch);
+        }
+
+        localStorage.setItem('board', JSON.stringify(getState().board));
     }
-
-    localStorage.setItem('board', JSON.stringify(getState().board));
 };
 
 export const resetBoard = () => (dispatch) => {

@@ -20,7 +20,6 @@ import * as webrtc from '../services/webrtcService';
 import {
   createUser,
   getActiveChannels,
-  getCurrentBlockNumber,
   getWeb3,
   fundUser,
   withdraw
@@ -277,15 +276,12 @@ export const addUsersToLobby = () => async (dispatch) => {
   const users = await getActiveChannels();
   dispatch({type: SET_LOBBY_USERS, payload: users });
 
-  const blockNum = await getCurrentBlockNumber();
+  window.ethershipContract.OpenChannel({},{})
+    .watch((err, user) => {
+      console.log('On event watch', user);
 
-  // TODO: disabled temporarily as it brings up channels that are joined
-  // window.ethershipContract.OpenChannel({},{fromBlock: blockNum -  NUM_BLOCKS_FOR_CHANNEL, toBlock: 'latest' })
-  //   .watch((err, user) => {
-  //     console.log('On event watch', user);
-
-  //     if (!err) {
-  //       dispatch({type: ADD_NEW_USER_TO_LOBBY, payload: user });
-  //     }
-  //   });
+      if (!err) {
+        dispatch({type: ADD_NEW_USER_TO_LOBBY, payload: user });
+      }
+    });
 };
