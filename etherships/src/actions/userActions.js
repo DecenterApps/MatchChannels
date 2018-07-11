@@ -248,13 +248,13 @@ export const msgReceived = (message) => (dispatch, getState) => {
       
     case 'challenge_accepted':
       pickFields(message.channelId, message.amount, message.addr)(dispatch);
-      setOpponentTree(message.opponentTree)(dispatch);
+      setOpponentTree(message.opponentTree, message.channelId)(dispatch, getState);
       break;
 
     case 'start_game':
       closeModal()(dispatch);
       browserHistory.push('/match');
-      setOpponentTree(message.opponentTree)(dispatch);
+      setOpponentTree(message.opponentTree, getState().user.opponentChannel)(dispatch, getState);
       gameIsStarted()(dispatch);
 
       localStorage.setItem('board', JSON.stringify(getState().board));

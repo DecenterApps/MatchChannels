@@ -11,7 +11,6 @@ class Timer extends Component {
             timer: null,
             seconds: 0,
             countdown: props.countdown,
-            cleared: false,
         };
     }
 
@@ -44,16 +43,6 @@ class Timer extends Component {
 
     componentWillReceiveProps(newProps) {
         console.log('New Props', newProps, this.state);
-
-        // if (this.state.cleared) {
-        //     const timer = this.setTimer();
-
-        //     this.setState({
-        //         timer: timer._id,
-        //         cleared: false,
-        //     });
-        // }  
-
 
         this.setState({
             countdown: newProps.countdown,

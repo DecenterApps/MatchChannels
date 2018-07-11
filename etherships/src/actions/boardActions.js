@@ -12,7 +12,7 @@ import { SET_FIELD,
         } from '../constants/actionTypes';
 
 import { generateTree, checkGuess } from '../services/boardService';
-import { openChannel, joinChannel, closeChannel } from '../services/ethereumService';
+import { openChannel, joinChannel, closeChannel, getChannelInfo } from '../services/ethereumService';
 import { getRoot } from '../util/merkel';
 import * as webrtc from '../services/webrtcService';
 
@@ -128,7 +128,25 @@ export const incrementSeconds = () => dispatch => {
     dispatch({type: INCREMENT_SECONDS });
 };
 
-export const setOpponentTree = (opponentTree) => dispatch => {
+export const setOpponentTree = (opponentTree, channelId) => async (dispatch, getState) => {
+    const channelInfo = await getChannelInfo(channelId);
+
+    const root = opponentTree[6][0];
+
+    if(channelInfo.p2root !== root && channelInfo.p1root !== root) {
+        console.log('Omg he cheated!!!');
+
+        localStorage.removeItem('user');
+        localStorage.removeItem('board');
+
+        dispatch({type: RESET_BOARD});
+
+        closeModal()(dispatch);
+        browserHistory.push('/');
+    } else {
+        console.log('You good fam!');
+    }
+
     dispatch({type: SET_OPPONENT_TREE, payload: opponentTree});
 };
 

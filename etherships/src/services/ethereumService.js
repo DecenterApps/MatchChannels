@@ -20,6 +20,7 @@ export const openChannel = async (markelRoot, webrtcId, signAddress, amount) => 
 export const joinChannel = async (id, markelRoot, webrtcId, signAddress, amount) => {
     const priceInWei = amount === '' ? DEFAULT_PRICE : amount;
     let addr = await getCurrUser();
+
     const res = await window.ethershipContract.joinChannel(id, markelRoot,
         webrtcId, priceInWei, signAddress, {from: addr, value: priceInWei});
 
@@ -98,6 +99,16 @@ export const getCurrentBlockNumber = () =>
             }
         });
     });
+
+export const getChannelInfo = async (channelId) => {
+    const channelInfo = await window.ethershipContract.channels(channelId);
+
+    return {
+        p1root: channelInfo[3],
+		p2root: channelInfo[4],
+		finished: channelInfo[8],
+    };
+};
 
 // list all the channels that are recent and that are open for users to join
 export const getActiveChannels = async () =>
