@@ -13,7 +13,7 @@ class Lobby extends Component {
     super(props);
 
     this.state = {
-      ethAmount: 0
+      ethAmount: 0.01
     };
   }
 
@@ -46,7 +46,8 @@ class Lobby extends Component {
         <div className='lobby-container'>
           <div className='lobby-list'>
             <div className="user-list-item">
-              <input className='user-list-input' value={this.state.ethAmount} onChange={this.handleChange} type="text" placeholder="Amount" />
+              <input className='user-list-input' value={this.state.ethAmount} onChange={this.handleChange} type="number" placeholder="Amount (ETH)" />
+              <span className="eth-text">ETH</span>
               {
                 !hasCreatedMatch && 
                 <button className='user-list-btn' onClick={this.createNewGame}>Create Game</button>

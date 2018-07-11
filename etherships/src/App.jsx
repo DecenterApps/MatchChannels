@@ -14,12 +14,20 @@ import './css/pure-min.css';
 import './App.css';
 import DisputeModal from './modals/DisputeModal';
 
+import { browserHistory } from 'react-router';
+
 class App extends Component {
 
   componentDidMount() {
     if (this.props.user.userAddr) {
       this.props.initAccount();
       this.props.initBoard();
+    }
+
+    const board = localStorage.getItem("board");
+
+    if (board && JSON.parse(board).gameInProgress) {
+      browserHistory.push('/match');
     }
   }
 
@@ -69,6 +77,7 @@ class App extends Component {
 
 const mapStateToProps = (state) => ({
   user: state.user,
+  board: state.board,
   modalShown: state.modal.modalShown,
 });
 

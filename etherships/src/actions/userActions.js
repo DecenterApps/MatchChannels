@@ -140,8 +140,11 @@ export const initAccount = () => (dispatch, getState) =>  {
       });
 
       _conn.on('close', () => {
-        console.log('Player close');
-        openModal('timeout', {})(dispatch);
+        if(getState().board.gameInProgress) {
+          openModal('timeout', {})(dispatch);
+        } else {
+          browserHistory.push('/');
+        }
       });
 
       _conn.on('data', (message) => {
@@ -201,8 +204,11 @@ export const connectToPlayer = (user) => (dispatch, getState) => {
     setConnection(conn, user.webrtcId, user.channelId.valueOf())(dispatch);
 
     conn.on('close', () => {
-      console.log('Player close 1');
-      openModal('timeout', {})(dispatch);
+      if(getState().board.gameInProgress) {
+        openModal('timeout', {})(dispatch);
+    } else {
+      browserHistory.push('/');
+    }
     });
 
     console.log('Challenge', getState().user);

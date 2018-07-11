@@ -75,10 +75,6 @@ input {
     width: 400px;
 }
 
-.grey-disabled-btn {
-
-}
-
 .user-list-value {
     font-family: Roboto;
     font-weight: bold;
@@ -240,4 +236,14 @@ button:active {
 ::-webkit-scrollbar-thumb:window-inactive {
     border-radius: 10px;
     background: #FF3546;
+}
+
+.eth-text {
+    font-family: Boogaloo;
+    font-weight: bold;
+    font-size: 17px;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: #FFFFFF;
+    opacity: 0.2;
 }
