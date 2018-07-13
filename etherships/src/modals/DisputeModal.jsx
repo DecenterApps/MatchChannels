@@ -12,7 +12,13 @@ import { submitDispute } from '../actions/boardActions';
 class DisputeModal extends Component {
 
     submitDispute = () => {
-        this.props.submitDispute();
+        console.log(this.props);
+        console.log('modal data: ', this.props.modalData);
+        const { channelId, sig, pos, seq, type, nonce, path } = this.props.modalData;
+
+        console.log('Nonce: ', nonce);
+
+        this.props.submitDispute(channelId, sig, pos, seq, type, nonce, path);
     }
 
     render() {
@@ -29,7 +35,7 @@ class DisputeModal extends Component {
                                 Opponent cheated!
                             </div>
 
-                            <button className="modal-create-btn" onClick={this.submitTimeout}>punish</button>
+                            <button className="modal-create-btn" onClick={this.submitDispute}>punish</button>
 
                             <div className="modal-warning-text">
                                 We caught your opponent cheating you are now the winner 
@@ -44,6 +50,7 @@ class DisputeModal extends Component {
 const mapStateToProps = (props) => ({
     user: props.user,
     board: props.board,
+    modalData: props.modal.modalData,
 });
 
 const mapDispatchToProps = {

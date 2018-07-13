@@ -47,6 +47,7 @@ const INITIAL_STATE = {
     timeoutTimer: TIMEOUT_WAIT_PERIOD,
     numOfGuesses: 0,
     signatureNumOfGuesses: "",
+    signatureResponse: {},
     gameInProgress: false,
 };
 
@@ -132,6 +133,7 @@ export default (state = INITIAL_STATE, action) => {
                 opponentsBoard: newBoardGuesses,
                 numOfGuesses: payload.data.numOfGuesses,
                 signatureNumOfGuesses: payload.data.signatureNumOfGuesses,
+                signatureResponse: payload.data.disputeData.signatureResponse,
             }
 
         case SET_OPPONENT_TREE:

@@ -1,44 +1,58 @@
 import util from 'ethereumjs-util';
 import ethers from 'ethers';
 
-import { createMerkel, keccak256 } from '../util/merkel';
+import { createMerkle, keccak256, findPath, joinPath } from '../util/merkle';
 import { getSignerAddress } from './ethereumService';
 
+//TODO: check if we need channelId in board element
 export const generateTree = (board) => {
     const elements = board.map(((type, i) => ([i, type, getRandomInt(Number.MAX_SAFE_INTEGER)])));
     const elementsHashed = elements.map(e => keccak256(...e));
 
-	const tree = createMerkel(elementsHashed.map(p => util.bufferToHex(p)));
+	const tree = createMerkle(elementsHashed.map(p => util.bufferToHex(p)));
 
     return { 
         tree,
         nonces: elements.map(e => e[2]),
         hashedBoard: elementsHashed,
     };
-
-}
-
+};
 
 export const checkGuess = (state, pos, numOfGuesses) => {
 	  const { opponentChannel, opponentAddr } = state.user;
 	  const { tree, hashedBoard, nonces, sequence } = state.board;
 
-	  const type = (hashedBoard[pos] === keccak256(pos, 1, nonces[pos])) ? 1 : 0;
+	  let type = (hashedBoard[pos] === keccak256(pos, 1, nonces[pos])) ? 1 : 0;
 	  
-      const path = joinPath(tree, hashedBoard, pos);
-      const hash = keccak256(parseInt(opponentChannel, 10), pos, sequence, type, nonces[pos], "0x" + path.sig);
-      const hashNumOfGuesses = keccak256(parseInt(opponentChannel, 10), opponentAddr, numOfGuesses);
+	  const path = joinPath(tree, hashedBoard, pos);
+	  const hash = keccak256(parseInt(opponentChannel, 10), parseInt(pos, 10), 
+	  parseInt(sequence, 10), parseInt(type, 10), parseInt(nonces[pos], 10), "0x" + path.sig);
 
-	  console.log('Hash: ', hashNumOfGuesses, parseInt(opponentChannel, 10), opponentAddr, numOfGuesses);
+      const hashNumOfGuesses = keccak256(parseInt(opponentChannel, 10), opponentAddr, numOfGuesses);
 
       const signatureResponse = state.user.userWallet.wallet.signMessage(ethers.utils.arrayify(hash));
       const signatureNumOfGuesses = state.user.userWallet.wallet.signMessage(ethers.utils.arrayify(hashNumOfGuesses));
 
       return {
-      	signatureResponse,
       	signatureNumOfGuesses,
-      	numOfGuesses,
+		numOfGuesses,
+		disputeData: {
+			channelId: opponentChannel,
+			signatureResponse,
+			nonce: nonces[pos],
+			path: path.path,
+			type,
+			sequence,
+		}
       };
+};
+
+export const checkMerklePath = (opponentTree, pos, isHit, nonce) => {
+	const elem = keccak256(pos, isHit ? 1 : 0, nonce);
+
+	const path = findPath(opponentTree, elem);
+
+	return path.length === 0 ? false : true;
 };
 
 // get the result of your opponent, and check sig. and answer
@@ -58,42 +72,4 @@ export const checkResult = async (channelId, signedScore, opponentAddress, numOf
 
 export const getRandomInt = (max) => {
     return Math.floor(Math.random() * Math.floor(max));
-}
-
-function joinPath(merkleTree, elementsHashed, pos) {
-	const path = findPath(merkleTree, util.bufferToHex(elementsHashed[pos]));
-
-	let sig = "";
-	path.forEach((elem) => {
-		sig += elem.substring(2);
-	});
-
-	return {
-		sig,
-		path
-	};
-}
-
-
-function findPath(tree, elem) {
-	let index = tree[0].findIndex(e => e === elem);
-
-	if (index === -1) {
-		console.log('Unable to find the node in a tree');
-		return;
-	}
-
-	let path = [tree[0][index]];
-
-	for (let i = 0; i < tree.length-1; ++i) {          
-		if (index % 2 === 0) {
-			path.push(tree[i][index+1]);
-		} else {
-			path.push(tree[i][index-1]);
-		}
-
-		index = Math.floor(index / 2);
-	}
-
-	return path;
-}
+};

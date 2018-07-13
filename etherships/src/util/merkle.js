@@ -24,14 +24,14 @@ export const keccak256 = (...args) =>{
     return window.web3.sha3(args, { encoding: 'hex' })
 }
 
-export const createMerkel = (elements) => {
+export const createMerkle = (elements) => {
     const tree = [elements];
-     _createMerkel(elements, tree);
+     _createMerkle(elements, tree);
 
      return tree;
   }
 
-function _createMerkel(elements, tree) {
+function _createMerkle(elements, tree) {
     const lvl2 = [];
 
     for (let i = 0; i < elements.length - 1; i += 2) {
@@ -44,7 +44,7 @@ function _createMerkel(elements, tree) {
         return tree;
     }
 
-    return _createMerkel(lvl2, tree);
+    return _createMerkle(lvl2, tree);
 }
 
 export const findPath = (tree, elem) => {
@@ -52,7 +52,7 @@ export const findPath = (tree, elem) => {
 
        if (index === -1) {
            console.log('Unable to find the node in a tree');
-           return;
+           return [];
        }
 
       let path = [tree[0][index]];
@@ -69,5 +69,19 @@ export const findPath = (tree, elem) => {
 
       return path;
 }
+
+export const joinPath = (merkleTree, elementsHashed, pos)  => {
+	const path = findPath(merkleTree, util.bufferToHex(elementsHashed[pos]));
+
+	let sig = "";
+	path.forEach((elem) => {
+		sig += elem.substring(2);
+	});
+
+	return {
+        sig,
+		path,
+	};
+};
 
 export const getRoot = tree => tree[tree.length - 1][0];

@@ -18,8 +18,8 @@ contract EtherShips is Players, ECTools {
 		bool finished;
 	}
 
-	event OpenChannel(uint channelId, bytes32 root, string webrtcId, uint amount, string username, address addr);
-	event JoinChannel(uint channelId, bytes32 root, string webrtcId, uint amount);
+	event OpenChannel(uint channelId, bytes32 root, string webrtcId, uint amount, string username, address indexed addr);
+	event JoinChannel(uint channelId, bytes32 root, string webrtcId, uint amount, address indexed addr);
 	event CloseChannel(uint channelId, address player, bool finished);
 
 	event Log(address addr1, address addr2, bytes32 hash);
@@ -73,7 +73,7 @@ contract EtherShips is Players, ECTools {
 		players[c.p1].gamesPlayed += 1;
 		players[c.p2].gamesPlayed += 1;
 
-        emit JoinChannel(_channelId, _merkleRoot, _webrtcId, _amount);
+        emit JoinChannel(_channelId, _merkleRoot, _webrtcId, _amount, msg.sender);
     }
 
     function closeChannel(uint _channelId, bytes _sig, uint _numberOfGuesses) public {
@@ -131,12 +131,13 @@ contract EtherShips is Players, ECTools {
     	require(!channels[_channelId].finished);
 
     	address opponent = channels[_channelId].p1 == msg.sender ? channels[_channelId].p2 : channels[_channelId].p1;
+		
     	bytes32 hash = keccak256(abi.encodePacked(_channelId, _pos, _seq, _type, _nonce, _path));
     	require(_recoverSig(hash, _sig) == signAddresses[opponent]);
 
     	bytes32 opponentRoot = channels[_channelId].p1 == msg.sender ? channels[_channelId].p2root : channels[_channelId].p1root;
     	if (keccak256(abi.encodePacked(_pos, _type, _nonce)) != _path[0] || _getRoot(_path) != opponentRoot) {
-    		// only player that didn't cheat get plus one on finished gamess
+    		// only player that didn't cheat get plus one on finished games
     		players[msg.sender].finishedGames += 1;
     		players[msg.sender].balance += channels[_channelId].stake * 2;
     		

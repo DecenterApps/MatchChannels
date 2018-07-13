@@ -11,9 +11,9 @@ import { SET_FIELD,
         START_GAME,
         } from '../constants/actionTypes';
 
-import { generateTree, checkGuess } from '../services/boardService';
-import { openChannel, joinChannel, closeChannel, getChannelInfo } from '../services/ethereumService';
-import { getRoot } from '../util/merkel';
+import { generateTree, checkGuess, checkResult, checkMerklePath } from '../services/boardService';
+import { openChannel, joinChannel, closeChannel, getChannelInfo, disputeAnswer } from '../services/ethereumService';
+import { getRoot } from '../util/merkle';
 import * as webrtc from '../services/webrtcService';
 
 import { openModal, closeModal } from './modalActions';
@@ -110,6 +110,25 @@ export const guessResponse = payload => async (dispatch, getState) => {
     if(getState().board.numOfGuesses <= payload.data.numOfGuesses) {
         dispatch({type: GUESS_RESPONSE, payload});
 
+        //TODO: check if numOffGuess is the signature of your opponent
+        //const isOpponentSig = await checkResult();
+
+        const opponentTree = getState().board.opponentTree;
+
+        const isPathCorrect = checkMerklePath(opponentTree, payload.pos, payload.isShipHit, payload.data.disputeData.nonce);
+
+        if(!isPathCorrect) {
+            openModal('dispute', {
+                pos: payload.pos,
+                nonce: payload.data.disputeData.nonce,
+                path: payload.data.disputeData.path,
+                type: payload.data.disputeData.type,
+                seq: payload.data.disputeData.sequence,
+                channelId: payload.data.disputeData.channelId,
+                sig: payload.data.disputeData.signatureResponse,
+            })(dispatch);
+        }
+
         const numHits = getState().board.opponentsBoard.filter(b => b === SUNK_SHIP).length;
 
         console.log('Guess Response: ', numHits, payload);
@@ -180,8 +199,19 @@ export const resetTurn = () => (dispatch, getState) => {
     dispatch({type: SET_PLAYER_TURN, payload: !getState().board.isYourMove})
 };
 
-export const submitDispute = () => () => {
+export const submitDispute = (channelId, sig, pos, seq, type, nonce, path) => async (dispatch) => {
+    const res = await disputeAnswer(channelId, sig, pos, seq, type, nonce, path);
 
+    console.log(res);
+
+    localStorage.removeItem('user');
+    localStorage.removeItem('board');
+
+    dispatch({type: RESET_BOARD});
+
+    browserHistory.push('/');
+
+    closeModal()(dispatch);
 };
 
 // helper function to help stringify deal with circual referencing in json

@@ -46,6 +46,16 @@ export const closeChannel = async (id, sig, numGuesses) => {
     return res;
 };
 
+export const disputeAnswer = async (channelId, sig, pos, seq, type, nonce, path) => {
+    let addr = await getCurrAddr();
+
+    console.log(channelId, sig, pos, seq, type, nonce, path);
+
+    const res = await window.ethershipContract.disputeAnswer(parseInt(channelId, 10), sig, pos, seq, type, nonce, path, {from: addr});
+
+    return res;
+}
+
 export const createUser = async (username, price) => {
 
     const priceInWei = price === '' ? DEFAULT_PRICE : window.web3.toWei(price, 'ether');
@@ -204,3 +214,8 @@ export const getWeb3 = () =>
         reject('Please install MetaMask')
     }
 });
+
+
+export const hasOngoingMatch = () => {
+
+};
