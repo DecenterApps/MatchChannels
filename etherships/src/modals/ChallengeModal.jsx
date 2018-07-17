@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import Modal from 'react-modal';
 
-import { acceptChallenge } from '../actions/userActions';
+import { acceptChallenge, declineChallenge } from '../actions/userActions';
 import { closeModal } from '../actions/modalActions';
 import './Modal.css';
 
@@ -19,9 +19,13 @@ class ChallengeModal extends Component {
     };
   }
 
-  clicked = () => {
+  accept = () => {
     this.props.acceptChallenge();
     this.setState({ waiting: true });
+  };
+  
+  decline = () => {
+    this.props.declineChallenge();
   };
 
   render() {
@@ -38,10 +42,13 @@ class ChallengeModal extends Component {
           !this.state.waiting &&
           <div className="modal-content">
             <div className="modal-title">
-              You were challenged by {this.props.modalData && this.props.modalData.username}
+              You were challenged by: {this.props.modalData && this.props.modalData.username}
             </div>
 
-            <button className="modal-create-btn" onClick={this.clicked}>Accept</button>
+            <div className="two-btn-row">
+              <button className="modal-create-btn" onClick={this.accept}>Accept</button>
+              <button className="modal-decline-btn" onClick={this.decline}>Decline</button>
+            </div>
 
           </div>
         }
@@ -77,6 +84,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   acceptChallenge,
   closeModal,
+  declineChallenge,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChallengeModal);

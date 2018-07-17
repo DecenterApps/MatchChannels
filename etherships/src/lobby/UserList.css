@@ -157,7 +157,8 @@ input {
     border: none;
     padding: 8px;
     box-shadow: 0px 5px #BB2A36;
-    width: 110px
+    width: 110px;
+    outline: none;
 }
 
 button:active {

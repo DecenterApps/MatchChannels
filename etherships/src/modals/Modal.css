@@ -120,6 +120,26 @@
   }
 }
 
+.two-btn-row {
+  display: flex;
+  justify-content: space-around;
+  width: 80%;
+}
+
+.modal-decline-btn {
+  background: #FF3546;
+  border-radius: 6.26484px;
+  color: #FFFFFF;
+  border: none;
+  padding: 10px 14px 10px 14px;
+  box-shadow: 0px 5px #BB2A36;
+  font-family: Boogaloo;
+  font-size: 16px;
+  text-align: center;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
 .lds-ring {
     display: inline-block;
     position: relative;

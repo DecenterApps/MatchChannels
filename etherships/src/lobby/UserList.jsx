@@ -12,19 +12,6 @@ import { openModal } from '../actions/modalActions';
 import './UserList.css';
 
 class UserList extends Component {
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      username: '',
-      amount: -1,
-      channelId: -1,
-      timer: null,
-      addr: '',
-    };
-  }
-
   async componentDidMount() {
     this.props.addUsersToLobby();
   }

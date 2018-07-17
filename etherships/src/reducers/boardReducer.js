@@ -40,7 +40,7 @@ const INITIAL_STATE = {
     hashedBoard: [],
     numPicked: 0,
     sequence: 0,
-    opponentTree: [], //TODO: set this when the game starts
+    opponentTree: [],
     isYourMove: false,
     choosenField: -1, // the current field that is selected but not submited
     gameTimer: SECONDS_PER_TURN,

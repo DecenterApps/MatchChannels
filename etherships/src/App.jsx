@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { initAccount } from './actions/userActions';
 import { initBoard } from './actions/boardActions';
 import ChallengeModal from './modals/ChallengeModal';
-import InfoBox from './info/InfoBox';
+import ConnectionModal from './modals/ConnectionModal';
 import EndGameModal from './modals/EndGameModal';
 import TimeoutModal from './modals/TimeoutModal';
 
@@ -69,7 +69,12 @@ class App extends Component {
           <DisputeModal />
         }
 
-        <InfoBox />
+        {
+          this.props.modalShown === 'connection' &&
+          <ConnectionModal />
+        }
+
+        {/* <InfoBox /> */}
       </div>
     );
   }

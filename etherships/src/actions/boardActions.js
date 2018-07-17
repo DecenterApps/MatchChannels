@@ -111,7 +111,10 @@ export const guessResponse = payload => async (dispatch, getState) => {
         dispatch({type: GUESS_RESPONSE, payload});
 
         //TODO: check if numOffGuess is the signature of your opponent
-        //const isOpponentSig = await checkResult();
+        const isOpponentSig = await checkResult(payload.data.disputeData.channelId, payload.data.signatureNumOfGuesses,
+            getState().user.opponentAddr, getState().board.numOfGuesses);
+
+        console.log("Is opponent sig: ", isOpponentSig);
 
         const opponentTree = getState().board.opponentTree;
 

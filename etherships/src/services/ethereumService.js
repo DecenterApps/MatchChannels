@@ -191,22 +191,33 @@ export const getWeb3 = () =>
 
             let addr = accounts[0];
 
-            const ethershipContract = contract(EtherShips);
-            ethershipContract.setProvider(web3.currentProvider);
-            window.ethershipContract = ethershipContract.at(ETHERSHIP_ADDRESS);
+            web3.version.getNetwork(async (err, network) => {
 
-            const reg = await getUserInfo(accounts[0]);
+                if (err) {
+                    return reject(err);
+                }
 
-            const user = {
-                userAddr: addr,
-                username: reg[0],
-                balance: reg[1].valueOf(),
-                gamesPlayed: reg[2].valueOf(),
-                finishedGames: reg[3].valueOf(),
-                registered: reg[4].valueOf()
-            };
+                if (network !== '42') {
+                    return reject("Please switch over to kovan testnet");
+                }
 
-            resolve(user);
+                const ethershipContract = contract(EtherShips);
+                ethershipContract.setProvider(web3.currentProvider);
+                window.ethershipContract = ethershipContract.at(ETHERSHIP_ADDRESS);
+
+                const reg = await getUserInfo(accounts[0]);
+
+                const user = {
+                    userAddr: addr,
+                    username: reg[0],
+                    balance: reg[1].valueOf(),
+                    gamesPlayed: reg[2].valueOf(),
+                    finishedGames: reg[3].valueOf(),
+                    registered: reg[4].valueOf()
+                };
+
+                resolve(user);
+            });
         });
 
     } else {

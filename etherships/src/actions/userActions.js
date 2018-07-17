@@ -183,6 +183,8 @@ export const setConnection = (connection, webrtcId, channelId) => (dispatch) => 
 export const pickFields = (channelId, amount, addr, opponentTree) => (dispatch) => {
     dispatch({ type: PICK_FIELDS, payload: {channelId, amount, addr, opponentTree} });
 
+    closeModal()(dispatch);
+
     browserHistory.push('/game');
 };
 
@@ -222,7 +224,8 @@ export const connectToPlayer = (user) => (dispatch, getState) => {
       addr: getState().user.userAddr,
       opponentPeerId: getState().user.peerId,
     });
-    console.log('challenge sent');
+
+    openModal('connection', {})(dispatch);    
 
   });
   conn.on('data', (message) => {
@@ -242,6 +245,12 @@ export const acceptChallenge = () => (dispatch, getState) => {
   })
 };
 
+export const declineChallenge = () => (dispatch) => {
+  closeModal()(dispatch);
+
+  webrtc.send({type: 'decline_challenge'});
+};
+
 export const msgReceived = (message) => (dispatch, getState) => {
 
   switch(message.type) {
@@ -254,6 +263,10 @@ export const msgReceived = (message) => (dispatch, getState) => {
     case 'challenge_accepted':
       pickFields(message.channelId, message.amount, message.addr)(dispatch);
       setOpponentTree(message.opponentTree, message.channelId)(dispatch, getState);
+      break;
+
+    case 'decline_challenge': 
+      closeModal()(dispatch);
       break;
 
     case 'start_game':

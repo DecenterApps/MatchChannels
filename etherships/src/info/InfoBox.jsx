@@ -9,7 +9,7 @@ class InfoBox extends Component {
     super(props);
 
     this.state = {
-      shown: true,
+      shown: false,
     };
   }
   render() {
