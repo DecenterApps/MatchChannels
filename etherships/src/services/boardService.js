@@ -28,7 +28,7 @@ export const checkGuess = (state, pos, numOfGuesses) => {
 	  const hash = keccak256(parseInt(opponentChannel, 10), parseInt(pos, 10), 
 	  parseInt(sequence, 10), parseInt(type, 10), parseInt(nonces[pos], 10), "0x" + path.sig);
 
-      const hashNumOfGuesses = keccak256(parseInt(opponentChannel, 10), opponentAddr, numOfGuesses);
+	  const hashNumOfGuesses = keccak256(parseInt(opponentChannel, 10), opponentAddr, numOfGuesses);
 
       const signatureResponse = state.user.userWallet.wallet.signMessage(ethers.utils.arrayify(hash));
       const signatureNumOfGuesses = state.user.userWallet.wallet.signMessage(ethers.utils.arrayify(hashNumOfGuesses));
@@ -57,16 +57,14 @@ export const checkMerklePath = (opponentTree, pos, isHit, nonce) => {
 
 // get the result of your opponent, and check sig. and answer
 // if the result is wrong format data so we can call the dispute
-export const checkResult = async (channelId, signedScore, opponentAddress, numOfGuesses) => {
-	const msg = keccak256(channelId, opponentAddress, numOfGuesses);
-	const {v, r, s} = util.fromRpcSig(signedScore);
+export const checkResult = async (channelId, signedScore, myAddress, opponentAddr, numOfGuesses) => {
+	const msg = keccak256(parseInt(channelId, 10), myAddress, numOfGuesses);
 
-	const pubKey  = util.ecrecover(util.toBuffer(msg), v, r, s);
-	const addrBuf = util.pubToAddress(pubKey);
-	const addr    = util.bufferToHex(addrBuf);
-	let opponentSignerAddress = await getSignerAddress(opponentAddress);
+	const addr = ethers.Wallet.verifyMessage(ethers.utils.arrayify(msg), signedScore);
 
-	return (addr === getSignerAddress(opponentSignerAddress));
+	let opponentSignerAddress = await getSignerAddress(opponentAddr);
+
+	return (addr.toLowerCase() === opponentSignerAddress.toLowerCase());
 };
 
 

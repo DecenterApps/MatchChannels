@@ -12,10 +12,12 @@ contract EtherShips is Players, ECTools {
 		uint stake;
 		bytes32 p1root;
 		bytes32 p2root;
+		address halfFinisher;
+		uint timeStarted;
 		uint p1Score;
 		uint p2Score;
-		address halfFinisher;
 		bool finished;
+
 	}
 
 	event OpenChannel(uint channelId, bytes32 root, string webrtcId, uint amount, string username, address indexed addr);
@@ -26,6 +28,8 @@ contract EtherShips is Players, ECTools {
 
 	Channel[] public channels;
 	mapping(address => address) public signAddresses;
+
+	uint TIMEOUT_PERIOD = 2 days;
 
 	function openChannel(bytes32 _merkleRoot, string _webrtcId, uint _amount, address _signAddress) payable public {
 		require(players[msg.sender].exists);
@@ -45,6 +49,7 @@ contract EtherShips is Players, ECTools {
 		c.p1 = msg.sender;
 		c.stake = _amount;
 		c.p1root = _merkleRoot;
+		c.timeStarted = now;
 
         emit OpenChannel(_channelId, _merkleRoot, _webrtcId, _amount, players[msg.sender].username, msg.sender);
     }
@@ -67,6 +72,7 @@ contract EtherShips is Players, ECTools {
 
 		c.p2 = msg.sender;
 		c.p2root = _merkleRoot;
+		c.timeStarted = now;
 
 		// update player stats
 		players[msg.sender].balance -= _amount;
@@ -77,53 +83,83 @@ contract EtherShips is Players, ECTools {
     }
 
     function closeChannel(uint _channelId, bytes _sig, uint _numberOfGuesses) public {
-		require(channels[_channelId].p1 == msg.sender || channels[_channelId].p2 == msg.sender);
-    	require(!channels[_channelId].finished);
-    	require(msg.sender != channels[_channelId].halfFinisher);
+		Channel memory c = channels[_channelId];
+
+		require(c.p1 == msg.sender || c.p2 == msg.sender);
+    	require(!c.finished);
+    	require(msg.sender != c.halfFinisher);
     	
-    	address opponent = channels[_channelId].p1 == msg.sender ? channels[_channelId].p2 : channels[_channelId].p1;
+    	address opponent = c.p1 == msg.sender ? c.p2 : c.p1;
     	bytes32 hash = keccak256(abi.encodePacked(_channelId, msg.sender, _numberOfGuesses));
 
 		emit Log(_recoverSig(hash, _sig), signAddresses[opponent], hash);
 
        	require(_recoverSig(hash, _sig) == signAddresses[opponent]);
 
-    	if (channels[_channelId].halfFinisher != address(0)) {
+    	if (c.halfFinisher != address(0)) {
     		// one player already submitted score
-    		channels[_channelId].finished = true;
-    		if (msg.sender == channels[_channelId].p1) {
-				channels[_channelId].p1Score = _numberOfGuesses;
+    		c.finished = true;
+    		if (msg.sender == c.p1) {
+				c.p1Score = _numberOfGuesses;
 			} else {
-				channels[_channelId].p2Score = _numberOfGuesses;
+				c.p2Score = _numberOfGuesses;
 			}
 
-			players[msg.sender].balance += channels[_channelId].stake * _numberOfGuesses / 5;
+			players[msg.sender].balance += c.stake * _numberOfGuesses / 5;
 
-			if (channels[_channelId].p1Score == 5 || channels[_channelId].p2Score == 5) {
-				players[channels[_channelId].p1].finishedGames += 1;
-				players[channels[_channelId].p2].finishedGames += 1;
+			if (c.p1Score == 5 || c.p2Score == 5) {
+				players[c.p1].finishedGames += 1;
+				players[c.p2].finishedGames += 1;
 
 				// if game ended we send rest of stake to winner
-				if (channels[_channelId].p1Score == 5) {
-					players[channels[_channelId].p1].balance += channels[_channelId].stake * (5 - channels[_channelId].p2Score) / 5;
+				if (c.p1Score == 5) {
+					players[c.p1].balance += c.stake * (5 - c.p2Score) / 5;
 				} else {
-					players[channels[_channelId].p2].balance += channels[_channelId].stake * (5 - channels[_channelId].p1Score) / 5;
+					players[c.p2].balance += c.stake * (5 - c.p1Score) / 5;
 				}
+			}
+			// nobody has won the game distribute the rest of the money accordingly
+			else {
+				players[c.p1].balance += c.stake * (5 - c.p2Score) / 5;
+				players[c.p2].balance += c.stake * (5 - c.p1Score) / 5;
 			}
     	} else {
     		// other player still didn't answer
-			channels[_channelId].halfFinisher = msg.sender;
-			if (msg.sender == channels[_channelId].p1) {
-				channels[_channelId].p1Score = _numberOfGuesses;
+			c.halfFinisher = msg.sender;
+			if (msg.sender == c.p1) {
+				c.p1Score = _numberOfGuesses;
 			} else {
-				channels[_channelId].p2Score = _numberOfGuesses;
+				c.p2Score = _numberOfGuesses;
 			}
 
-			players[msg.sender].balance += channels[_channelId].stake * _numberOfGuesses / 5;
+			players[msg.sender].balance += c.stake * _numberOfGuesses / 5;
     	}
 
-    	emit CloseChannel(_channelId, msg.sender, channels[_channelId].finished);
+    	emit CloseChannel(_channelId, msg.sender, c.finished);
     }
+
+	function timeout(uint _channelId) public {
+		Channel memory c = channels[_channelId];
+
+		require(c.p1 == msg.sender || c.p2 == msg.sender);
+		require(now > (c.timeStarted + TIMEOUT_PERIOD));
+		require(!c.finished);
+
+		// If nobody joined the channel let the user retreive the money
+		if (c.p2 == 0x0) {
+			players[c.p1].balance += c.stake;
+			c.finished = true;
+		} 
+		// If one of the players hasn't closed the game
+		else if (c.halfFinisher != 0x0) {
+			uint score = c.halfFinisher == c.p1 ? c.p1Score : c.p2Score;
+			uint oneHit = c.stake / 5;
+
+			// the user gets all the left over money in the channel
+			players[c.halfFinisher].balance += oneHit * (10 - score);
+			c.finished = true;
+		}
+	}
 
 
     function disputeAnswer(uint _channelId, bytes _sig, uint _pos, uint _seq, uint _type, uint _nonce, bytes32[7] _path) public {

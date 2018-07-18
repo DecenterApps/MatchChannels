@@ -112,35 +112,39 @@ export const guessResponse = payload => async (dispatch, getState) => {
 
         //TODO: check if numOffGuess is the signature of your opponent
         const isOpponentSig = await checkResult(payload.data.disputeData.channelId, payload.data.signatureNumOfGuesses,
-            getState().user.opponentAddr, getState().board.numOfGuesses);
+            getState().user.userAddr, getState().user.opponentAddr, getState().board.numOfGuesses);
 
         console.log("Is opponent sig: ", isOpponentSig);
 
-        const opponentTree = getState().board.opponentTree;
+        if (isOpponentSig) {
+            const opponentTree = getState().board.opponentTree;
 
-        const isPathCorrect = checkMerklePath(opponentTree, payload.pos, payload.isShipHit, payload.data.disputeData.nonce);
+            const isPathCorrect = checkMerklePath(opponentTree, payload.pos, payload.isShipHit, payload.data.disputeData.nonce);
 
-        if(!isPathCorrect) {
-            openModal('dispute', {
-                pos: payload.pos,
-                nonce: payload.data.disputeData.nonce,
-                path: payload.data.disputeData.path,
-                type: payload.data.disputeData.type,
-                seq: payload.data.disputeData.sequence,
-                channelId: payload.data.disputeData.channelId,
-                sig: payload.data.disputeData.signatureResponse,
-            })(dispatch);
-        }
+            if(!isPathCorrect) {
+                openModal('dispute', {
+                    pos: payload.pos,
+                    nonce: payload.data.disputeData.nonce,
+                    path: payload.data.disputeData.path,
+                    type: payload.data.disputeData.type,
+                    seq: payload.data.disputeData.sequence,
+                    channelId: payload.data.disputeData.channelId,
+                    sig: payload.data.disputeData.signatureResponse,
+                })(dispatch);
+            }
 
-        const numHits = getState().board.opponentsBoard.filter(b => b === SUNK_SHIP).length;
+            const numHits = getState().board.opponentsBoard.filter(b => b === SUNK_SHIP).length;
 
-        console.log('Guess Response: ', numHits, payload);
+            console.log('Guess Response: ', numHits, payload);
 
-        if (numHits >= 5) {
+            if (numHits >= 5) {
+                openModal('endgame', {})(dispatch);
+            }
+
+            localStorage.setItem('board', JSON.stringify(getState().board));
+        } else {
             openModal('endgame', {})(dispatch);
         }
-
-        localStorage.setItem('board', JSON.stringify(getState().board));
     }
 };
 
