@@ -22,7 +22,7 @@ contract EtherShips is Players, ECTools {
 
 	event OpenChannel(uint channelId, bytes32 root, string webrtcId, uint amount, string username, address indexed addr);
 	event JoinChannel(uint channelId, bytes32 root, string webrtcId, uint amount, address indexed addr);
-	event CloseChannel(uint channelId, address player, bool finished);
+	event CloseChannel(uint channelId, address indexed player, bool finished);
 
 	event Log(address addr1, address addr2, bytes32 hash);
 
@@ -83,7 +83,7 @@ contract EtherShips is Players, ECTools {
     }
 
     function closeChannel(uint _channelId, bytes _sig, uint _numberOfGuesses) public {
-		Channel memory c = channels[_channelId];
+		Channel storage c = channels[_channelId];
 
 		require(c.p1 == msg.sender || c.p2 == msg.sender);
     	require(!c.finished);
@@ -139,7 +139,7 @@ contract EtherShips is Players, ECTools {
     }
 
 	function timeout(uint _channelId) public {
-		Channel memory c = channels[_channelId];
+		Channel storage c = channels[_channelId];
 
 		require(c.p1 == msg.sender || c.p2 == msg.sender);
 		require(now > (c.timeStarted + TIMEOUT_PERIOD));

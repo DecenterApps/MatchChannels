@@ -18,6 +18,7 @@ import store from './store';
 
 import Modal from 'react-modal';
 import { setUpWeb3 } from './actions/userActions';
+import PlayedMatches from './history/PlayedMatches';
 
 // Initialize react-router-redux.
 const history = syncHistoryWithStore(browserHistory, store);
@@ -36,6 +37,7 @@ ReactDOM.render((
           <Route path="users" component={Lobby} />
           <Route path="profile" component={Profile} />
           <Route path="match" component={Match} />
+          <Route path="history" component={PlayedMatches} />
         </Route>
         <Route path='*' exact={true} component={Page404} />
       </Router>

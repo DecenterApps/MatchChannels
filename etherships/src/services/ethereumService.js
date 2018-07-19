@@ -136,6 +136,20 @@ export const getChannelInfo = async (channelId) => {
     };
 };
 
+export const getClosedChannels = async () => {
+    new Promise(async (resolve, reject) => {
+        let addr = await getCurrAddr();
+
+        window.ethershipContract.CloseChannel({}, {player: addr}).get((err, res) => {
+            if (!err) {
+                resolve(res);
+            } else {
+                reject(err);
+            }
+        });
+    });
+};
+
 // list all the channels that are recent and that are open for users to join
 export const getActiveChannels = async () =>
     new Promise((resolve, reject) => {
