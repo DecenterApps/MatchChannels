@@ -1,7 +1,6 @@
 .DS_Store
 .env
 node_modules
-build
 
 lib/core/metadata.js
 lib/core/MetadataBlog.js

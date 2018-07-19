@@ -6,16 +6,19 @@
   "private": true,
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
+    "prod": "webpack --config build/webpack.prod.conf.js",
     "start": "npm run dev",
     "build": "node build/build.js"
   },
   "dependencies": {
+    "ethereumjs-util": "^5.2.0",
     "ethers": "^3.0.15",
     "fs": "0.0.1-security",
     "g": "^2.0.1",
     "jsonutil": "^0.2.0",
     "peerjs": "^0.3.14",
     "raw-loader": "^0.5.1",
+    "truffle-contract": "^3.0.6",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1"
   },
