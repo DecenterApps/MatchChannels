@@ -6,7 +6,7 @@ export const WEBRTC_PORT = 9000;
 
 export const ETHERSHIP_ADDRESS = '0x58ecbaadfa5c441a519c63e9f0488afa7ff02bb6';
 
-export const NUM_BLOCKS_FOR_CHANNEL = 500;
+export const NUM_BLOCKS_FOR_CHANNEL = 50;
 
 export const DEFAULT_PRICE = 1000000000000000; // 0.001 eth
 

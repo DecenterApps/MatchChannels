@@ -97,12 +97,14 @@ contract EtherShips is Players, ECTools {
 	/// @param _channelId The id of the channel you want to close
 	/// @param _sig The signature of the other user confirming how many ships you hit
 	/// @param _numberOfGuesses Number of ships you hit
-    function closeChannel(uint _channelId, bytes _sig, uint _numberOfGuesses) public {
+    function closeChannel(uint _channelId, bytes _sig, uint _numberOfGuesses, bytes32[35] _paths, uint[5] _pos, uint[5] _nonces) public {
 		Channel storage c = channels[_channelId];
 
 		require(c.p1 == msg.sender || c.p2 == msg.sender);
     	require(!c.finished);
     	require(msg.sender != c.halfFinisher);
+
+		didUserSetShips(_paths, _pos, _nonces, c.p1 == msg.sender ? c.p1root : c.p2root);
     	
     	address opponent = c.p1 == msg.sender ? c.p2 : c.p1;
     	bytes32 hash = keccak256(abi.encodePacked(_channelId, msg.sender, _numberOfGuesses));
@@ -242,4 +244,20 @@ contract EtherShips is Players, ECTools {
 	        _root = keccak256(abi.encodePacked(_root, _path[i]));
 	    }
     }
+
+	function didUserSetShips(bytes32[35] _paths, uint[5] _pos, uint[5] _nonces, bytes32 _root) private {
+		for(uint i = 0; i < 5; ++i) {
+			bytes32 n = keccak256(abi.encodePacked(_pos[i], 1, _nonces[i]));
+			
+			assert(n == _paths[i*7]);
+			
+			bytes32 startNode = _paths[i * 7];
+		
+			for (uint j=1; j<7; j++) {
+				startNode = keccak256(abi.encodePacked(startNode, _paths[(i*7) + j]));
+			}
+			
+			assert(startNode == _root);
+		}
+	}
 }

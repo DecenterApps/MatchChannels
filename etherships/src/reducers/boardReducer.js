@@ -119,7 +119,10 @@ export default (state = INITIAL_STATE, action) => {
             }
 
         case RESET_BOARD:
-            return INITIAL_STATE;
+            return {
+                ...INITIAL_STATE,
+                board: new Array(65).join('0').split('').map(parseFloat)
+            };
 
         case GUESS_RESPONSE:
             let newBoardGuesses = state.opponentsBoard;

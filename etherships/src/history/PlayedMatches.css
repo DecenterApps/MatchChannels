@@ -1,0 +1,108 @@
+@import url('https://fonts.googleapis.com/css?family=Boogaloo');
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
+.match-title {
+    margin-top: 20px;
+    margin-bottom: 40px;
+    font-family: Boogaloo;
+    font-size: 52px;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    text-align: center;
+
+    color: #73B816;
+}
+
+.match-header {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-bottom: 10px;
+    font-size: 20px;
+    font-family: Boogaloo;
+    color: white;
+    width: 60%;
+    border-bottom: solid white 2px;
+}
+
+.match-item {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-evenly;
+    padding-bottom: 10px;
+    font-size: 20px;
+    font-family: Boogaloo;
+    color: white;
+    width: 80%;
+}
+
+.match-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80%;
+    margin-top: 20px;
+}
+
+.match-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.back-btn-pos {
+    top: 40px;
+}
+
+.btn-timeout {
+    background: #73B816;
+    border-radius: 6.26484px;
+    font-family: Boogaloo;
+    font-weight: bold;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: #FFFFFF;
+    border: none;
+    width: 45px;
+    padding: 6px;
+    box-shadow: 0px 5px #5D9314;
+    font-size: 14px;
+    outline: none;
+}
+
+.id {
+    font-family: Boogaloo;
+    width: 20px;
+}
+
+.opponent {
+    font-family: Boogaloo;
+    font-size: 20px;
+    width: 400px;
+}
+
+.stake {
+    font-family: Boogaloo;
+}
+
+.status {
+    font-family: Boogaloo;
+}
+
+.score {
+    font-family: Boogaloo;
+}
+
+.green {
+    color: #73B816;
+}
+
+.red {
+    color: #FF3546;
+}
+
+.grey {
+    color: grey;
+}

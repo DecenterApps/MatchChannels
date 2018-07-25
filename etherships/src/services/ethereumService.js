@@ -54,7 +54,15 @@ export const disputeAnswer = async (channelId, sig, pos, seq, type, nonce, path)
     const res = await window.ethershipContract.disputeAnswer(parseInt(channelId, 10), sig, pos, seq, type, nonce, path, {from: addr});
 
     return res;
-}
+};
+
+export const timeout = async (channelId) => {
+    let addr = await getCurrAddr();
+
+    const res = await window.ethershipContract.timeout(channelId, {from: addr});
+
+    return res;
+};
 
 export const createUser = async (username, price) => {
 
@@ -130,25 +138,38 @@ export const getChannelInfo = async (channelId) => {
     const channelInfo = await window.ethershipContract.channels(channelId);
 
     return {
+        p1 : channelInfo[0],
+        p2 : channelInfo[1],
+        stake: channelInfo[2].valueOf(),
         p1root: channelInfo[3],
-		p2root: channelInfo[4],
-		finished: channelInfo[8],
+        p2root: channelInfo[4],
+        halfFinisher: channelInfo[5],
+        blockStarted: channelInfo[6].valueOf(),
+        balance: channelInfo[7].valueOf(),
+        p1Score: channelInfo[8].valueOf(),
+        p2Score: channelInfo[9].valueOf(),
+        finished: channelInfo[10],
+        channelId,
     };
 };
 
-export const getClosedChannels = async () => {
-    new Promise(async (resolve, reject) => {
-        let addr = await getCurrAddr();
 
-        window.ethershipContract.CloseChannel({}, {player: addr}).get((err, res) => {
+export const getUserChannels = async (type) =>
+    new Promise( async (resolve, reject) => {
+        let addr = await getCurrAddr();
+        window.ethershipContract[type]({addr: addr}, {fromBlock: 100000,
+            toBlock: 'latest'}).get(async (err, res) => {
             if (!err) {
-                resolve(res);
+                const channelPromises = res.map(r => getChannelInfo(r.args.channelId.valueOf()));
+
+                const channels = await Promise.all(channelPromises);
+
+                resolve(channels);
             } else {
                 reject(err);
             }
         });
     });
-};
 
 // list all the channels that are recent and that are open for users to join
 export const getActiveChannels = async () =>

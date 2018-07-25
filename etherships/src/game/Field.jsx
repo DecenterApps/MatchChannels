@@ -27,6 +27,8 @@ class Field extends Component {
 
     render() {
         const { board, opponentsBoard } = this.props.board;
+
+        console.log(board);
         const { state, type } = this.props;
 
         let fieldClass = 'no-hover-field';

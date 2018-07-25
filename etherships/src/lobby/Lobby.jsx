@@ -33,12 +33,17 @@ class Lobby extends Component {
     browserHistory.push('/profile');
   };
 
+  gotoMatches = () => {
+    browserHistory.push('/history');
+  };
+
   render() {
     const { hasCreatedMatch } = this.props.user;
 
     return (
       <div>
         <div className="lobby-header">
+          <button className='btn-matches' onClick={this.gotoMatches}>Matches</button>
           <div className='logo' />
           <button className='btn-profile' onClick={this.gotoProfile}>Profile</button>
         </div>

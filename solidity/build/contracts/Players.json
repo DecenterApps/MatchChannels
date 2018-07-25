@@ -140,14 +140,14 @@
     "absolutePath": "/Users/nenadpalinkasevic/Desktop/blockchain/StateChannels/solidity/contracts/Players.sol",
     "exportedSymbols": {
       "Players": [
-        1293
+        1419
       ]
     },
-    "id": 1294,
+    "id": 1420,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 1146,
+        "id": 1272,
         "literals": [
           "solidity",
           "^",
@@ -163,23 +163,23 @@
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 1293,
+        "id": 1419,
         "linearizedBaseContracts": [
-          1293
+          1419
         ],
         "name": "Players",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "canonicalName": "Players.Player",
-            "id": 1157,
+            "id": 1283,
             "members": [
               {
                 "constant": false,
-                "id": 1148,
+                "id": 1274,
                 "name": "username",
                 "nodeType": "VariableDeclaration",
-                "scope": 1157,
+                "scope": 1283,
                 "src": "65:15:2",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -188,7 +188,7 @@
                   "typeString": "string"
                 },
                 "typeName": {
-                  "id": 1147,
+                  "id": 1273,
                   "name": "string",
                   "nodeType": "ElementaryTypeName",
                   "src": "65:6:2",
@@ -202,10 +202,10 @@
               },
               {
                 "constant": false,
-                "id": 1150,
+                "id": 1276,
                 "name": "balance",
                 "nodeType": "VariableDeclaration",
-                "scope": 1157,
+                "scope": 1283,
                 "src": "84:12:2",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -214,7 +214,7 @@
                   "typeString": "uint256"
                 },
                 "typeName": {
-                  "id": 1149,
+                  "id": 1275,
                   "name": "uint",
                   "nodeType": "ElementaryTypeName",
                   "src": "84:4:2",
@@ -228,10 +228,10 @@
               },
               {
                 "constant": false,
-                "id": 1152,
+                "id": 1278,
                 "name": "gamesPlayed",
                 "nodeType": "VariableDeclaration",
-                "scope": 1157,
+                "scope": 1283,
                 "src": "100:16:2",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -240,7 +240,7 @@
                   "typeString": "uint256"
                 },
                 "typeName": {
-                  "id": 1151,
+                  "id": 1277,
                   "name": "uint",
                   "nodeType": "ElementaryTypeName",
                   "src": "100:4:2",
@@ -254,10 +254,10 @@
               },
               {
                 "constant": false,
-                "id": 1154,
+                "id": 1280,
                 "name": "finishedGames",
                 "nodeType": "VariableDeclaration",
-                "scope": 1157,
+                "scope": 1283,
                 "src": "120:18:2",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -266,7 +266,7 @@
                   "typeString": "uint256"
                 },
                 "typeName": {
-                  "id": 1153,
+                  "id": 1279,
                   "name": "uint",
                   "nodeType": "ElementaryTypeName",
                   "src": "120:4:2",
@@ -280,10 +280,10 @@
               },
               {
                 "constant": false,
-                "id": 1156,
+                "id": 1282,
                 "name": "exists",
                 "nodeType": "VariableDeclaration",
-                "scope": 1157,
+                "scope": 1283,
                 "src": "142:11:2",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -292,7 +292,7 @@
                   "typeString": "bool"
                 },
                 "typeName": {
-                  "id": 1155,
+                  "id": 1281,
                   "name": "bool",
                   "nodeType": "ElementaryTypeName",
                   "src": "142:4:2",
@@ -307,27 +307,27 @@
             ],
             "name": "Player",
             "nodeType": "StructDefinition",
-            "scope": 1293,
+            "scope": 1419,
             "src": "47:110:2",
             "visibility": "public"
           },
           {
             "constant": false,
-            "id": 1161,
+            "id": 1287,
             "name": "players",
             "nodeType": "VariableDeclaration",
-            "scope": 1293,
+            "scope": 1419,
             "src": "160:41:2",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Player_$1157_storage_$",
+              "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Player_$1283_storage_$",
               "typeString": "mapping(address => struct Players.Player)"
             },
             "typeName": {
-              "id": 1160,
+              "id": 1286,
               "keyType": {
-                "id": 1158,
+                "id": 1284,
                 "name": "address",
                 "nodeType": "ElementaryTypeName",
                 "src": "168:7:2",
@@ -339,18 +339,18 @@
               "nodeType": "Mapping",
               "src": "160:26:2",
               "typeDescriptions": {
-                "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Player_$1157_storage_$",
+                "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Player_$1283_storage_$",
                 "typeString": "mapping(address => struct Players.Player)"
               },
               "valueType": {
                 "contractScope": null,
-                "id": 1159,
+                "id": 1285,
                 "name": "Player",
                 "nodeType": "UserDefinedTypeName",
-                "referencedDeclaration": 1157,
+                "referencedDeclaration": 1283,
                 "src": "179:6:2",
                 "typeDescriptions": {
-                  "typeIdentifier": "t_struct$_Player_$1157_storage_ptr",
+                  "typeIdentifier": "t_struct$_Player_$1283_storage_ptr",
                   "typeString": "struct Players.Player"
                 }
               }
@@ -361,20 +361,20 @@
           {
             "anonymous": false,
             "documentation": null,
-            "id": 1169,
+            "id": 1295,
             "name": "NewPlayer",
             "nodeType": "EventDefinition",
             "parameters": {
-              "id": 1168,
+              "id": 1294,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1163,
+                  "id": 1289,
                   "indexed": true,
                   "name": "player",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1169,
+                  "scope": 1295,
                   "src": "221:22:2",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -383,7 +383,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 1162,
+                    "id": 1288,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "221:7:2",
@@ -397,11 +397,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 1165,
+                  "id": 1291,
                   "indexed": false,
                   "name": "username",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1169,
+                  "scope": 1295,
                   "src": "245:15:2",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -410,7 +410,7 @@
                     "typeString": "string"
                   },
                   "typeName": {
-                    "id": 1164,
+                    "id": 1290,
                     "name": "string",
                     "nodeType": "ElementaryTypeName",
                     "src": "245:6:2",
@@ -424,11 +424,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 1167,
+                  "id": 1293,
                   "indexed": false,
                   "name": "balance",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1169,
+                  "scope": 1295,
                   "src": "262:12:2",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -437,7 +437,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 1166,
+                    "id": 1292,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "262:4:2",
@@ -457,20 +457,20 @@
           {
             "anonymous": false,
             "documentation": null,
-            "id": 1175,
+            "id": 1301,
             "name": "AccountFunded",
             "nodeType": "EventDefinition",
             "parameters": {
-              "id": 1174,
+              "id": 1300,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1171,
+                  "id": 1297,
                   "indexed": true,
                   "name": "player",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1175,
+                  "scope": 1301,
                   "src": "298:22:2",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -479,7 +479,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 1170,
+                    "id": 1296,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "298:7:2",
@@ -493,11 +493,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 1173,
+                  "id": 1299,
                   "indexed": false,
                   "name": "value",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1175,
+                  "scope": 1301,
                   "src": "322:10:2",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -506,7 +506,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 1172,
+                    "id": 1298,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "322:4:2",
@@ -526,20 +526,20 @@
           {
             "anonymous": false,
             "documentation": null,
-            "id": 1181,
+            "id": 1307,
             "name": "Withdraw",
             "nodeType": "EventDefinition",
             "parameters": {
-              "id": 1180,
+              "id": 1306,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1177,
+                  "id": 1303,
                   "indexed": true,
                   "name": "player",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1181,
+                  "scope": 1307,
                   "src": "351:22:2",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -548,7 +548,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 1176,
+                    "id": 1302,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "351:7:2",
@@ -562,11 +562,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 1179,
+                  "id": 1305,
                   "indexed": false,
                   "name": "amount",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1181,
+                  "scope": 1307,
                   "src": "375:11:2",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -575,7 +575,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 1178,
+                    "id": 1304,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "375:4:2",
@@ -594,7 +594,7 @@
           },
           {
             "body": {
-              "id": 1217,
+              "id": 1343,
               "nodeType": "Block",
               "src": "447:248:2",
               "statements": [
@@ -604,7 +604,7 @@
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 1192,
+                        "id": 1318,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -619,34 +619,34 @@
                             "argumentTypes": null,
                             "baseExpression": {
                               "argumentTypes": null,
-                              "id": 1187,
+                              "id": 1313,
                               "name": "players",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 1161,
+                              "referencedDeclaration": 1287,
                               "src": "460:7:2",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Player_$1157_storage_$",
+                                "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Player_$1283_storage_$",
                                 "typeString": "mapping(address => struct Players.Player storage ref)"
                               }
                             },
-                            "id": 1190,
+                            "id": 1316,
                             "indexExpression": {
                               "argumentTypes": null,
                               "expression": {
                                 "argumentTypes": null,
-                                "id": 1188,
+                                "id": 1314,
                                 "name": "msg",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 1308,
+                                "referencedDeclaration": 1434,
                                 "src": "468:3:2",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_magic_message",
                                   "typeString": "msg"
                                 }
                               },
-                              "id": 1189,
+                              "id": 1315,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": false,
@@ -667,18 +667,18 @@
                             "nodeType": "IndexAccess",
                             "src": "460:19:2",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_struct$_Player_$1157_storage",
+                              "typeIdentifier": "t_struct$_Player_$1283_storage",
                               "typeString": "struct Players.Player storage ref"
                             }
                           },
-                          "id": 1191,
+                          "id": 1317,
                           "isConstant": false,
                           "isLValue": true,
                           "isPure": false,
                           "lValueRequested": false,
                           "memberName": "exists",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 1156,
+                          "referencedDeclaration": 1282,
                           "src": "460:26:2",
                           "typeDescriptions": {
                             "typeIdentifier": "t_bool",
@@ -698,21 +698,21 @@
                           "typeString": "bool"
                         }
                       ],
-                      "id": 1186,
+                      "id": 1312,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        1311,
-                        1312
+                        1437,
+                        1438
                       ],
-                      "referencedDeclaration": 1311,
+                      "referencedDeclaration": 1437,
                       "src": "451:7:2",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
                         "typeString": "function (bool) pure"
                       }
                     },
-                    "id": 1193,
+                    "id": 1319,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -726,14 +726,14 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 1194,
+                  "id": 1320,
                   "nodeType": "ExpressionStatement",
                   "src": "451:36:2"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 1207,
+                    "id": 1333,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -742,34 +742,34 @@
                       "argumentTypes": null,
                       "baseExpression": {
                         "argumentTypes": null,
-                        "id": 1195,
+                        "id": 1321,
                         "name": "players",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 1161,
+                        "referencedDeclaration": 1287,
                         "src": "494:7:2",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Player_$1157_storage_$",
+                          "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Player_$1283_storage_$",
                           "typeString": "mapping(address => struct Players.Player storage ref)"
                         }
                       },
-                      "id": 1198,
+                      "id": 1324,
                       "indexExpression": {
                         "argumentTypes": null,
                         "expression": {
                           "argumentTypes": null,
-                          "id": 1196,
+                          "id": 1322,
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 1308,
+                          "referencedDeclaration": 1434,
                           "src": "502:3:2",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
                             "typeString": "msg"
                           }
                         },
-                        "id": 1197,
+                        "id": 1323,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -790,7 +790,7 @@
                       "nodeType": "IndexAccess",
                       "src": "494:19:2",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_struct$_Player_$1157_storage",
+                        "typeIdentifier": "t_struct$_Player_$1283_storage",
                         "typeString": "struct Players.Player storage ref"
                       }
                     },
@@ -801,11 +801,11 @@
                       "arguments": [
                         {
                           "argumentTypes": null,
-                          "id": 1200,
+                          "id": 1326,
                           "name": "_username",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 1183,
+                          "referencedDeclaration": 1309,
                           "src": "539:9:2",
                           "typeDescriptions": {
                             "typeIdentifier": "t_string_memory_ptr",
@@ -816,18 +816,18 @@
                           "argumentTypes": null,
                           "expression": {
                             "argumentTypes": null,
-                            "id": 1201,
+                            "id": 1327,
                             "name": "msg",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 1308,
+                            "referencedDeclaration": 1434,
                             "src": "563:3:2",
                             "typeDescriptions": {
                               "typeIdentifier": "t_magic_message",
                               "typeString": "msg"
                             }
                           },
-                          "id": 1202,
+                          "id": 1328,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -844,7 +844,7 @@
                         {
                           "argumentTypes": null,
                           "hexValue": "30",
-                          "id": 1203,
+                          "id": 1329,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -862,7 +862,7 @@
                         {
                           "argumentTypes": null,
                           "hexValue": "30",
-                          "id": 1204,
+                          "id": 1330,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -880,7 +880,7 @@
                         {
                           "argumentTypes": null,
                           "hexValue": "74727565",
-                          "id": 1205,
+                          "id": 1331,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -898,18 +898,18 @@
                       ],
                       "expression": {
                         "argumentTypes": null,
-                        "id": 1199,
+                        "id": 1325,
                         "name": "Player",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 1157,
+                        "referencedDeclaration": 1283,
                         "src": "516:6:2",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_type$_t_struct$_Player_$1157_storage_ptr_$",
+                          "typeIdentifier": "t_type$_t_struct$_Player_$1283_storage_ptr_$",
                           "typeString": "type(struct Players.Player storage pointer)"
                         }
                       },
-                      "id": 1206,
+                      "id": 1332,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -925,17 +925,17 @@
                       "nodeType": "FunctionCall",
                       "src": "516:122:2",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_struct$_Player_$1157_memory",
+                        "typeIdentifier": "t_struct$_Player_$1283_memory",
                         "typeString": "struct Players.Player memory"
                       }
                     },
                     "src": "494:144:2",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_Player_$1157_storage",
+                      "typeIdentifier": "t_struct$_Player_$1283_storage",
                       "typeString": "struct Players.Player storage ref"
                     }
                   },
-                  "id": 1208,
+                  "id": 1334,
                   "nodeType": "ExpressionStatement",
                   "src": "494:144:2"
                 },
@@ -947,18 +947,18 @@
                         "argumentTypes": null,
                         "expression": {
                           "argumentTypes": null,
-                          "id": 1210,
+                          "id": 1336,
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 1308,
+                          "referencedDeclaration": 1434,
                           "src": "658:3:2",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
                             "typeString": "msg"
                           }
                         },
-                        "id": 1211,
+                        "id": 1337,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -974,11 +974,11 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 1212,
+                        "id": 1338,
                         "name": "_username",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 1183,
+                        "referencedDeclaration": 1309,
                         "src": "670:9:2",
                         "typeDescriptions": {
                           "typeIdentifier": "t_string_memory_ptr",
@@ -989,18 +989,18 @@
                         "argumentTypes": null,
                         "expression": {
                           "argumentTypes": null,
-                          "id": 1213,
+                          "id": 1339,
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 1308,
+                          "referencedDeclaration": 1434,
                           "src": "681:3:2",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
                             "typeString": "msg"
                           }
                         },
-                        "id": 1214,
+                        "id": 1340,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -1030,18 +1030,18 @@
                           "typeString": "uint256"
                         }
                       ],
-                      "id": 1209,
+                      "id": 1335,
                       "name": "NewPlayer",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 1169,
+                      "referencedDeclaration": 1295,
                       "src": "648:9:2",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_event_nonpayable$_t_address_$_t_string_memory_ptr_$_t_uint256_$returns$__$",
                         "typeString": "function (address,string memory,uint256)"
                       }
                     },
-                    "id": 1215,
+                    "id": 1341,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1055,14 +1055,14 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 1216,
+                  "id": 1342,
                   "nodeType": "EmitStatement",
                   "src": "643:48:2"
                 }
               ]
             },
             "documentation": null,
-            "id": 1218,
+            "id": 1344,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -1070,15 +1070,15 @@
             "name": "createAccount",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1184,
+              "id": 1310,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1183,
+                  "id": 1309,
                   "name": "_username",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1218,
+                  "scope": 1344,
                   "src": "414:16:2",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1087,7 +1087,7 @@
                     "typeString": "string"
                   },
                   "typeName": {
-                    "id": 1182,
+                    "id": 1308,
                     "name": "string",
                     "nodeType": "ElementaryTypeName",
                     "src": "414:6:2",
@@ -1104,12 +1104,12 @@
             },
             "payable": true,
             "returnParameters": {
-              "id": 1185,
+              "id": 1311,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "447:0:2"
             },
-            "scope": 1293,
+            "scope": 1419,
             "src": "391:304:2",
             "stateMutability": "payable",
             "superFunction": null,
@@ -1117,7 +1117,7 @@
           },
           {
             "body": {
-              "id": 1245,
+              "id": 1371,
               "nodeType": "Block",
               "src": "737:134:2",
               "statements": [
@@ -1131,34 +1131,34 @@
                           "argumentTypes": null,
                           "baseExpression": {
                             "argumentTypes": null,
-                            "id": 1222,
+                            "id": 1348,
                             "name": "players",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 1161,
+                            "referencedDeclaration": 1287,
                             "src": "749:7:2",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Player_$1157_storage_$",
+                              "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Player_$1283_storage_$",
                               "typeString": "mapping(address => struct Players.Player storage ref)"
                             }
                           },
-                          "id": 1225,
+                          "id": 1351,
                           "indexExpression": {
                             "argumentTypes": null,
                             "expression": {
                               "argumentTypes": null,
-                              "id": 1223,
+                              "id": 1349,
                               "name": "msg",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 1308,
+                              "referencedDeclaration": 1434,
                               "src": "757:3:2",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_magic_message",
                                 "typeString": "msg"
                               }
                             },
-                            "id": 1224,
+                            "id": 1350,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": false,
@@ -1179,18 +1179,18 @@
                           "nodeType": "IndexAccess",
                           "src": "749:19:2",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_Player_$1157_storage",
+                            "typeIdentifier": "t_struct$_Player_$1283_storage",
                             "typeString": "struct Players.Player storage ref"
                           }
                         },
-                        "id": 1226,
+                        "id": 1352,
                         "isConstant": false,
                         "isLValue": true,
                         "isPure": false,
                         "lValueRequested": false,
                         "memberName": "exists",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 1156,
+                        "referencedDeclaration": 1282,
                         "src": "749:26:2",
                         "typeDescriptions": {
                           "typeIdentifier": "t_bool",
@@ -1205,21 +1205,21 @@
                           "typeString": "bool"
                         }
                       ],
-                      "id": 1221,
+                      "id": 1347,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        1311,
-                        1312
+                        1437,
+                        1438
                       ],
-                      "referencedDeclaration": 1311,
+                      "referencedDeclaration": 1437,
                       "src": "741:7:2",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
                         "typeString": "function (bool) pure"
                       }
                     },
-                    "id": 1227,
+                    "id": 1353,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1233,14 +1233,14 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 1228,
+                  "id": 1354,
                   "nodeType": "ExpressionStatement",
                   "src": "741:35:2"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 1236,
+                    "id": 1362,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1251,34 +1251,34 @@
                         "argumentTypes": null,
                         "baseExpression": {
                           "argumentTypes": null,
-                          "id": 1229,
+                          "id": 1355,
                           "name": "players",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 1161,
+                          "referencedDeclaration": 1287,
                           "src": "781:7:2",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Player_$1157_storage_$",
+                            "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Player_$1283_storage_$",
                             "typeString": "mapping(address => struct Players.Player storage ref)"
                           }
                         },
-                        "id": 1232,
+                        "id": 1358,
                         "indexExpression": {
                           "argumentTypes": null,
                           "expression": {
                             "argumentTypes": null,
-                            "id": 1230,
+                            "id": 1356,
                             "name": "msg",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 1308,
+                            "referencedDeclaration": 1434,
                             "src": "789:3:2",
                             "typeDescriptions": {
                               "typeIdentifier": "t_magic_message",
                               "typeString": "msg"
                             }
                           },
-                          "id": 1231,
+                          "id": 1357,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -1299,18 +1299,18 @@
                         "nodeType": "IndexAccess",
                         "src": "781:19:2",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_Player_$1157_storage",
+                          "typeIdentifier": "t_struct$_Player_$1283_storage",
                           "typeString": "struct Players.Player storage ref"
                         }
                       },
-                      "id": 1233,
+                      "id": 1359,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": true,
                       "memberName": "balance",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 1150,
+                      "referencedDeclaration": 1276,
                       "src": "781:27:2",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -1323,18 +1323,18 @@
                       "argumentTypes": null,
                       "expression": {
                         "argumentTypes": null,
-                        "id": 1234,
+                        "id": 1360,
                         "name": "msg",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 1308,
+                        "referencedDeclaration": 1434,
                         "src": "812:3:2",
                         "typeDescriptions": {
                           "typeIdentifier": "t_magic_message",
                           "typeString": "msg"
                         }
                       },
-                      "id": 1235,
+                      "id": 1361,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -1354,7 +1354,7 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 1237,
+                  "id": 1363,
                   "nodeType": "ExpressionStatement",
                   "src": "781:40:2"
                 },
@@ -1366,18 +1366,18 @@
                         "argumentTypes": null,
                         "expression": {
                           "argumentTypes": null,
-                          "id": 1239,
+                          "id": 1365,
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 1308,
+                          "referencedDeclaration": 1434,
                           "src": "845:3:2",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
                             "typeString": "msg"
                           }
                         },
-                        "id": 1240,
+                        "id": 1366,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -1395,18 +1395,18 @@
                         "argumentTypes": null,
                         "expression": {
                           "argumentTypes": null,
-                          "id": 1241,
+                          "id": 1367,
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 1308,
+                          "referencedDeclaration": 1434,
                           "src": "857:3:2",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
                             "typeString": "msg"
                           }
                         },
-                        "id": 1242,
+                        "id": 1368,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -1432,18 +1432,18 @@
                           "typeString": "uint256"
                         }
                       ],
-                      "id": 1238,
+                      "id": 1364,
                       "name": "AccountFunded",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 1175,
+                      "referencedDeclaration": 1301,
                       "src": "831:13:2",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_event_nonpayable$_t_address_$_t_uint256_$returns$__$",
                         "typeString": "function (address,uint256)"
                       }
                     },
-                    "id": 1243,
+                    "id": 1369,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1457,14 +1457,14 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 1244,
+                  "id": 1370,
                   "nodeType": "EmitStatement",
                   "src": "826:41:2"
                 }
               ]
             },
             "documentation": null,
-            "id": 1246,
+            "id": 1372,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -1472,19 +1472,19 @@
             "name": "fundAccount",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1219,
+              "id": 1345,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "719:2:2"
             },
             "payable": true,
             "returnParameters": {
-              "id": 1220,
+              "id": 1346,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "737:0:2"
             },
-            "scope": 1293,
+            "scope": 1419,
             "src": "699:172:2",
             "stateMutability": "payable",
             "superFunction": null,
@@ -1492,7 +1492,7 @@
           },
           {
             "body": {
-              "id": 1291,
+              "id": 1417,
               "nodeType": "Block",
               "src": "913:210:2",
               "statements": [
@@ -1506,34 +1506,34 @@
                           "argumentTypes": null,
                           "baseExpression": {
                             "argumentTypes": null,
-                            "id": 1252,
+                            "id": 1378,
                             "name": "players",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 1161,
+                            "referencedDeclaration": 1287,
                             "src": "925:7:2",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Player_$1157_storage_$",
+                              "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Player_$1283_storage_$",
                               "typeString": "mapping(address => struct Players.Player storage ref)"
                             }
                           },
-                          "id": 1255,
+                          "id": 1381,
                           "indexExpression": {
                             "argumentTypes": null,
                             "expression": {
                               "argumentTypes": null,
-                              "id": 1253,
+                              "id": 1379,
                               "name": "msg",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 1308,
+                              "referencedDeclaration": 1434,
                               "src": "933:3:2",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_magic_message",
                                 "typeString": "msg"
                               }
                             },
-                            "id": 1254,
+                            "id": 1380,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": false,
@@ -1554,18 +1554,18 @@
                           "nodeType": "IndexAccess",
                           "src": "925:19:2",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_Player_$1157_storage",
+                            "typeIdentifier": "t_struct$_Player_$1283_storage",
                             "typeString": "struct Players.Player storage ref"
                           }
                         },
-                        "id": 1256,
+                        "id": 1382,
                         "isConstant": false,
                         "isLValue": true,
                         "isPure": false,
                         "lValueRequested": false,
                         "memberName": "exists",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 1156,
+                        "referencedDeclaration": 1282,
                         "src": "925:26:2",
                         "typeDescriptions": {
                           "typeIdentifier": "t_bool",
@@ -1580,21 +1580,21 @@
                           "typeString": "bool"
                         }
                       ],
-                      "id": 1251,
+                      "id": 1377,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        1311,
-                        1312
+                        1437,
+                        1438
                       ],
-                      "referencedDeclaration": 1311,
+                      "referencedDeclaration": 1437,
                       "src": "917:7:2",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
                         "typeString": "function (bool) pure"
                       }
                     },
-                    "id": 1257,
+                    "id": 1383,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1608,7 +1608,7 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 1258,
+                  "id": 1384,
                   "nodeType": "ExpressionStatement",
                   "src": "917:35:2"
                 },
@@ -1622,7 +1622,7 @@
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
                         },
-                        "id": 1266,
+                        "id": 1392,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -1633,34 +1633,34 @@
                             "argumentTypes": null,
                             "baseExpression": {
                               "argumentTypes": null,
-                              "id": 1260,
+                              "id": 1386,
                               "name": "players",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 1161,
+                              "referencedDeclaration": 1287,
                               "src": "964:7:2",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Player_$1157_storage_$",
+                                "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Player_$1283_storage_$",
                                 "typeString": "mapping(address => struct Players.Player storage ref)"
                               }
                             },
-                            "id": 1263,
+                            "id": 1389,
                             "indexExpression": {
                               "argumentTypes": null,
                               "expression": {
                                 "argumentTypes": null,
-                                "id": 1261,
+                                "id": 1387,
                                 "name": "msg",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 1308,
+                                "referencedDeclaration": 1434,
                                 "src": "972:3:2",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_magic_message",
                                   "typeString": "msg"
                                 }
                               },
-                              "id": 1262,
+                              "id": 1388,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": false,
@@ -1681,18 +1681,18 @@
                             "nodeType": "IndexAccess",
                             "src": "964:19:2",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_struct$_Player_$1157_storage",
+                              "typeIdentifier": "t_struct$_Player_$1283_storage",
                               "typeString": "struct Players.Player storage ref"
                             }
                           },
-                          "id": 1264,
+                          "id": 1390,
                           "isConstant": false,
                           "isLValue": true,
                           "isPure": false,
                           "lValueRequested": false,
                           "memberName": "balance",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 1150,
+                          "referencedDeclaration": 1276,
                           "src": "964:27:2",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -1703,11 +1703,11 @@
                         "operator": ">=",
                         "rightExpression": {
                           "argumentTypes": null,
-                          "id": 1265,
+                          "id": 1391,
                           "name": "_amount",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 1248,
+                          "referencedDeclaration": 1374,
                           "src": "995:7:2",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -1728,21 +1728,21 @@
                           "typeString": "bool"
                         }
                       ],
-                      "id": 1259,
+                      "id": 1385,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        1311,
-                        1312
+                        1437,
+                        1438
                       ],
-                      "referencedDeclaration": 1311,
+                      "referencedDeclaration": 1437,
                       "src": "956:7:2",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
                         "typeString": "function (bool) pure"
                       }
                     },
-                    "id": 1267,
+                    "id": 1393,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1756,14 +1756,14 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 1268,
+                  "id": 1394,
                   "nodeType": "ExpressionStatement",
                   "src": "956:47:2"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 1275,
+                    "id": 1401,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1774,34 +1774,34 @@
                         "argumentTypes": null,
                         "baseExpression": {
                           "argumentTypes": null,
-                          "id": 1269,
+                          "id": 1395,
                           "name": "players",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 1161,
+                          "referencedDeclaration": 1287,
                           "src": "1010:7:2",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Player_$1157_storage_$",
+                            "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Player_$1283_storage_$",
                             "typeString": "mapping(address => struct Players.Player storage ref)"
                           }
                         },
-                        "id": 1272,
+                        "id": 1398,
                         "indexExpression": {
                           "argumentTypes": null,
                           "expression": {
                             "argumentTypes": null,
-                            "id": 1270,
+                            "id": 1396,
                             "name": "msg",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 1308,
+                            "referencedDeclaration": 1434,
                             "src": "1018:3:2",
                             "typeDescriptions": {
                               "typeIdentifier": "t_magic_message",
                               "typeString": "msg"
                             }
                           },
-                          "id": 1271,
+                          "id": 1397,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -1822,18 +1822,18 @@
                         "nodeType": "IndexAccess",
                         "src": "1010:19:2",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_Player_$1157_storage",
+                          "typeIdentifier": "t_struct$_Player_$1283_storage",
                           "typeString": "struct Players.Player storage ref"
                         }
                       },
-                      "id": 1273,
+                      "id": 1399,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": true,
                       "memberName": "balance",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 1150,
+                      "referencedDeclaration": 1276,
                       "src": "1010:27:2",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -1844,11 +1844,11 @@
                     "operator": "-=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 1274,
+                      "id": 1400,
                       "name": "_amount",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 1248,
+                      "referencedDeclaration": 1374,
                       "src": "1041:7:2",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -1861,7 +1861,7 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 1276,
+                  "id": 1402,
                   "nodeType": "ExpressionStatement",
                   "src": "1010:38:2"
                 },
@@ -1871,11 +1871,11 @@
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 1282,
+                        "id": 1408,
                         "name": "_amount",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 1248,
+                        "referencedDeclaration": 1374,
                         "src": "1072:7:2",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -1894,18 +1894,18 @@
                         "argumentTypes": null,
                         "expression": {
                           "argumentTypes": null,
-                          "id": 1277,
+                          "id": 1403,
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 1308,
+                          "referencedDeclaration": 1434,
                           "src": "1052:3:2",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
                             "typeString": "msg"
                           }
                         },
-                        "id": 1280,
+                        "id": 1406,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -1919,7 +1919,7 @@
                           "typeString": "address"
                         }
                       },
-                      "id": 1281,
+                      "id": 1407,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -1933,7 +1933,7 @@
                         "typeString": "function (uint256)"
                       }
                     },
-                    "id": 1283,
+                    "id": 1409,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1947,7 +1947,7 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 1284,
+                  "id": 1410,
                   "nodeType": "ExpressionStatement",
                   "src": "1052:28:2"
                 },
@@ -1959,18 +1959,18 @@
                         "argumentTypes": null,
                         "expression": {
                           "argumentTypes": null,
-                          "id": 1286,
+                          "id": 1412,
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 1308,
+                          "referencedDeclaration": 1434,
                           "src": "1099:3:2",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
                             "typeString": "msg"
                           }
                         },
-                        "id": 1287,
+                        "id": 1413,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -1986,11 +1986,11 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 1288,
+                        "id": 1414,
                         "name": "_amount",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 1248,
+                        "referencedDeclaration": 1374,
                         "src": "1111:7:2",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -2009,18 +2009,18 @@
                           "typeString": "uint256"
                         }
                       ],
-                      "id": 1285,
+                      "id": 1411,
                       "name": "Withdraw",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 1181,
+                      "referencedDeclaration": 1307,
                       "src": "1090:8:2",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_event_nonpayable$_t_address_$_t_uint256_$returns$__$",
                         "typeString": "function (address,uint256)"
                       }
                     },
-                    "id": 1289,
+                    "id": 1415,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -2034,14 +2034,14 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 1290,
+                  "id": 1416,
                   "nodeType": "EmitStatement",
                   "src": "1085:34:2"
                 }
               ]
             },
             "documentation": null,
-            "id": 1292,
+            "id": 1418,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -2049,15 +2049,15 @@
             "name": "withdraw",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1249,
+              "id": 1375,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1248,
+                  "id": 1374,
                   "name": "_amount",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1292,
+                  "scope": 1418,
                   "src": "892:12:2",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2066,7 +2066,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 1247,
+                    "id": 1373,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "892:4:2",
@@ -2083,19 +2083,19 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 1250,
+              "id": 1376,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "913:0:2"
             },
-            "scope": 1293,
+            "scope": 1419,
             "src": "874:249:2",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 1294,
+        "scope": 1420,
         "src": "26:1101:2"
       }
     ],
@@ -2105,14 +2105,14 @@
     "absolutePath": "/Users/nenadpalinkasevic/Desktop/blockchain/StateChannels/solidity/contracts/Players.sol",
     "exportedSymbols": {
       "Players": [
-        1293
+        1419
       ]
     },
-    "id": 1294,
+    "id": 1420,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 1146,
+        "id": 1272,
         "literals": [
           "solidity",
           "^",
@@ -2128,23 +2128,23 @@
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 1293,
+        "id": 1419,
         "linearizedBaseContracts": [
-          1293
+          1419
         ],
         "name": "Players",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "canonicalName": "Players.Player",
-            "id": 1157,
+            "id": 1283,
             "members": [
               {
                 "constant": false,
-                "id": 1148,
+                "id": 1274,
                 "name": "username",
                 "nodeType": "VariableDeclaration",
-                "scope": 1157,
+                "scope": 1283,
                 "src": "65:15:2",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -2153,7 +2153,7 @@
                   "typeString": "string"
                 },
                 "typeName": {
-                  "id": 1147,
+                  "id": 1273,
                   "name": "string",
                   "nodeType": "ElementaryTypeName",
                   "src": "65:6:2",
@@ -2167,10 +2167,10 @@
               },
               {
                 "constant": false,
-                "id": 1150,
+                "id": 1276,
                 "name": "balance",
                 "nodeType": "VariableDeclaration",
-                "scope": 1157,
+                "scope": 1283,
                 "src": "84:12:2",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -2179,7 +2179,7 @@
                   "typeString": "uint256"
                 },
                 "typeName": {
-                  "id": 1149,
+                  "id": 1275,
                   "name": "uint",
                   "nodeType": "ElementaryTypeName",
                   "src": "84:4:2",
@@ -2193,10 +2193,10 @@
               },
               {
                 "constant": false,
-                "id": 1152,
+                "id": 1278,
                 "name": "gamesPlayed",
                 "nodeType": "VariableDeclaration",
-                "scope": 1157,
+                "scope": 1283,
                 "src": "100:16:2",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -2205,7 +2205,7 @@
                   "typeString": "uint256"
                 },
                 "typeName": {
-                  "id": 1151,
+                  "id": 1277,
                   "name": "uint",
                   "nodeType": "ElementaryTypeName",
                   "src": "100:4:2",
@@ -2219,10 +2219,10 @@
               },
               {
                 "constant": false,
-                "id": 1154,
+                "id": 1280,
                 "name": "finishedGames",
                 "nodeType": "VariableDeclaration",
-                "scope": 1157,
+                "scope": 1283,
                 "src": "120:18:2",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -2231,7 +2231,7 @@
                   "typeString": "uint256"
                 },
                 "typeName": {
-                  "id": 1153,
+                  "id": 1279,
                   "name": "uint",
                   "nodeType": "ElementaryTypeName",
                   "src": "120:4:2",
@@ -2245,10 +2245,10 @@
               },
               {
                 "constant": false,
-                "id": 1156,
+                "id": 1282,
                 "name": "exists",
                 "nodeType": "VariableDeclaration",
-                "scope": 1157,
+                "scope": 1283,
                 "src": "142:11:2",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -2257,7 +2257,7 @@
                   "typeString": "bool"
                 },
                 "typeName": {
-                  "id": 1155,
+                  "id": 1281,
                   "name": "bool",
                   "nodeType": "ElementaryTypeName",
                   "src": "142:4:2",
@@ -2272,27 +2272,27 @@
             ],
             "name": "Player",
             "nodeType": "StructDefinition",
-            "scope": 1293,
+            "scope": 1419,
             "src": "47:110:2",
             "visibility": "public"
           },
           {
             "constant": false,
-            "id": 1161,
+            "id": 1287,
             "name": "players",
             "nodeType": "VariableDeclaration",
-            "scope": 1293,
+            "scope": 1419,
             "src": "160:41:2",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Player_$1157_storage_$",
+              "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Player_$1283_storage_$",
               "typeString": "mapping(address => struct Players.Player)"
             },
             "typeName": {
-              "id": 1160,
+              "id": 1286,
               "keyType": {
-                "id": 1158,
+                "id": 1284,
                 "name": "address",
                 "nodeType": "ElementaryTypeName",
                 "src": "168:7:2",
@@ -2304,18 +2304,18 @@
               "nodeType": "Mapping",
               "src": "160:26:2",
               "typeDescriptions": {
-                "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Player_$1157_storage_$",
+                "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Player_$1283_storage_$",
                 "typeString": "mapping(address => struct Players.Player)"
               },
               "valueType": {
                 "contractScope": null,
-                "id": 1159,
+                "id": 1285,
                 "name": "Player",
                 "nodeType": "UserDefinedTypeName",
-                "referencedDeclaration": 1157,
+                "referencedDeclaration": 1283,
                 "src": "179:6:2",
                 "typeDescriptions": {
-                  "typeIdentifier": "t_struct$_Player_$1157_storage_ptr",
+                  "typeIdentifier": "t_struct$_Player_$1283_storage_ptr",
                   "typeString": "struct Players.Player"
                 }
               }
@@ -2326,20 +2326,20 @@
           {
             "anonymous": false,
             "documentation": null,
-            "id": 1169,
+            "id": 1295,
             "name": "NewPlayer",
             "nodeType": "EventDefinition",
             "parameters": {
-              "id": 1168,
+              "id": 1294,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1163,
+                  "id": 1289,
                   "indexed": true,
                   "name": "player",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1169,
+                  "scope": 1295,
                   "src": "221:22:2",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2348,7 +2348,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 1162,
+                    "id": 1288,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "221:7:2",
@@ -2362,11 +2362,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 1165,
+                  "id": 1291,
                   "indexed": false,
                   "name": "username",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1169,
+                  "scope": 1295,
                   "src": "245:15:2",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2375,7 +2375,7 @@
                     "typeString": "string"
                   },
                   "typeName": {
-                    "id": 1164,
+                    "id": 1290,
                     "name": "string",
                     "nodeType": "ElementaryTypeName",
                     "src": "245:6:2",
@@ -2389,11 +2389,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 1167,
+                  "id": 1293,
                   "indexed": false,
                   "name": "balance",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1169,
+                  "scope": 1295,
                   "src": "262:12:2",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2402,7 +2402,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 1166,
+                    "id": 1292,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "262:4:2",
@@ -2422,20 +2422,20 @@
           {
             "anonymous": false,
             "documentation": null,
-            "id": 1175,
+            "id": 1301,
             "name": "AccountFunded",
             "nodeType": "EventDefinition",
             "parameters": {
-              "id": 1174,
+              "id": 1300,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1171,
+                  "id": 1297,
                   "indexed": true,
                   "name": "player",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1175,
+                  "scope": 1301,
                   "src": "298:22:2",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2444,7 +2444,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 1170,
+                    "id": 1296,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "298:7:2",
@@ -2458,11 +2458,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 1173,
+                  "id": 1299,
                   "indexed": false,
                   "name": "value",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1175,
+                  "scope": 1301,
                   "src": "322:10:2",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2471,7 +2471,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 1172,
+                    "id": 1298,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "322:4:2",
@@ -2491,20 +2491,20 @@
           {
             "anonymous": false,
             "documentation": null,
-            "id": 1181,
+            "id": 1307,
             "name": "Withdraw",
             "nodeType": "EventDefinition",
             "parameters": {
-              "id": 1180,
+              "id": 1306,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1177,
+                  "id": 1303,
                   "indexed": true,
                   "name": "player",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1181,
+                  "scope": 1307,
                   "src": "351:22:2",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2513,7 +2513,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 1176,
+                    "id": 1302,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "351:7:2",
@@ -2527,11 +2527,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 1179,
+                  "id": 1305,
                   "indexed": false,
                   "name": "amount",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1181,
+                  "scope": 1307,
                   "src": "375:11:2",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2540,7 +2540,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 1178,
+                    "id": 1304,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "375:4:2",
@@ -2559,7 +2559,7 @@
           },
           {
             "body": {
-              "id": 1217,
+              "id": 1343,
               "nodeType": "Block",
               "src": "447:248:2",
               "statements": [
@@ -2569,7 +2569,7 @@
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 1192,
+                        "id": 1318,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -2584,34 +2584,34 @@
                             "argumentTypes": null,
                             "baseExpression": {
                               "argumentTypes": null,
-                              "id": 1187,
+                              "id": 1313,
                               "name": "players",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 1161,
+                              "referencedDeclaration": 1287,
                               "src": "460:7:2",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Player_$1157_storage_$",
+                                "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Player_$1283_storage_$",
                                 "typeString": "mapping(address => struct Players.Player storage ref)"
                               }
                             },
-                            "id": 1190,
+                            "id": 1316,
                             "indexExpression": {
                               "argumentTypes": null,
                               "expression": {
                                 "argumentTypes": null,
-                                "id": 1188,
+                                "id": 1314,
                                 "name": "msg",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 1308,
+                                "referencedDeclaration": 1434,
                                 "src": "468:3:2",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_magic_message",
                                   "typeString": "msg"
                                 }
                               },
-                              "id": 1189,
+                              "id": 1315,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": false,
@@ -2632,18 +2632,18 @@
                             "nodeType": "IndexAccess",
                             "src": "460:19:2",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_struct$_Player_$1157_storage",
+                              "typeIdentifier": "t_struct$_Player_$1283_storage",
                               "typeString": "struct Players.Player storage ref"
                             }
                           },
-                          "id": 1191,
+                          "id": 1317,
                           "isConstant": false,
                           "isLValue": true,
                           "isPure": false,
                           "lValueRequested": false,
                           "memberName": "exists",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 1156,
+                          "referencedDeclaration": 1282,
                           "src": "460:26:2",
                           "typeDescriptions": {
                             "typeIdentifier": "t_bool",
@@ -2663,21 +2663,21 @@
                           "typeString": "bool"
                         }
                       ],
-                      "id": 1186,
+                      "id": 1312,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        1311,
-                        1312
+                        1437,
+                        1438
                       ],
-                      "referencedDeclaration": 1311,
+                      "referencedDeclaration": 1437,
                       "src": "451:7:2",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
                         "typeString": "function (bool) pure"
                       }
                     },
-                    "id": 1193,
+                    "id": 1319,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -2691,14 +2691,14 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 1194,
+                  "id": 1320,
                   "nodeType": "ExpressionStatement",
                   "src": "451:36:2"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 1207,
+                    "id": 1333,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -2707,34 +2707,34 @@
                       "argumentTypes": null,
                       "baseExpression": {
                         "argumentTypes": null,
-                        "id": 1195,
+                        "id": 1321,
                         "name": "players",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 1161,
+                        "referencedDeclaration": 1287,
                         "src": "494:7:2",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Player_$1157_storage_$",
+                          "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Player_$1283_storage_$",
                           "typeString": "mapping(address => struct Players.Player storage ref)"
                         }
                       },
-                      "id": 1198,
+                      "id": 1324,
                       "indexExpression": {
                         "argumentTypes": null,
                         "expression": {
                           "argumentTypes": null,
-                          "id": 1196,
+                          "id": 1322,
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 1308,
+                          "referencedDeclaration": 1434,
                           "src": "502:3:2",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
                             "typeString": "msg"
                           }
                         },
-                        "id": 1197,
+                        "id": 1323,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -2755,7 +2755,7 @@
                       "nodeType": "IndexAccess",
                       "src": "494:19:2",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_struct$_Player_$1157_storage",
+                        "typeIdentifier": "t_struct$_Player_$1283_storage",
                         "typeString": "struct Players.Player storage ref"
                       }
                     },
@@ -2766,11 +2766,11 @@
                       "arguments": [
                         {
                           "argumentTypes": null,
-                          "id": 1200,
+                          "id": 1326,
                           "name": "_username",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 1183,
+                          "referencedDeclaration": 1309,
                           "src": "539:9:2",
                           "typeDescriptions": {
                             "typeIdentifier": "t_string_memory_ptr",
@@ -2781,18 +2781,18 @@
                           "argumentTypes": null,
                           "expression": {
                             "argumentTypes": null,
-                            "id": 1201,
+                            "id": 1327,
                             "name": "msg",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 1308,
+                            "referencedDeclaration": 1434,
                             "src": "563:3:2",
                             "typeDescriptions": {
                               "typeIdentifier": "t_magic_message",
                               "typeString": "msg"
                             }
                           },
-                          "id": 1202,
+                          "id": 1328,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -2809,7 +2809,7 @@
                         {
                           "argumentTypes": null,
                           "hexValue": "30",
-                          "id": 1203,
+                          "id": 1329,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -2827,7 +2827,7 @@
                         {
                           "argumentTypes": null,
                           "hexValue": "30",
-                          "id": 1204,
+                          "id": 1330,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -2845,7 +2845,7 @@
                         {
                           "argumentTypes": null,
                           "hexValue": "74727565",
-                          "id": 1205,
+                          "id": 1331,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -2863,18 +2863,18 @@
                       ],
                       "expression": {
                         "argumentTypes": null,
-                        "id": 1199,
+                        "id": 1325,
                         "name": "Player",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 1157,
+                        "referencedDeclaration": 1283,
                         "src": "516:6:2",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_type$_t_struct$_Player_$1157_storage_ptr_$",
+                          "typeIdentifier": "t_type$_t_struct$_Player_$1283_storage_ptr_$",
                           "typeString": "type(struct Players.Player storage pointer)"
                         }
                       },
-                      "id": 1206,
+                      "id": 1332,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -2890,17 +2890,17 @@
                       "nodeType": "FunctionCall",
                       "src": "516:122:2",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_struct$_Player_$1157_memory",
+                        "typeIdentifier": "t_struct$_Player_$1283_memory",
                         "typeString": "struct Players.Player memory"
                       }
                     },
                     "src": "494:144:2",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_Player_$1157_storage",
+                      "typeIdentifier": "t_struct$_Player_$1283_storage",
                       "typeString": "struct Players.Player storage ref"
                     }
                   },
-                  "id": 1208,
+                  "id": 1334,
                   "nodeType": "ExpressionStatement",
                   "src": "494:144:2"
                 },
@@ -2912,18 +2912,18 @@
                         "argumentTypes": null,
                         "expression": {
                           "argumentTypes": null,
-                          "id": 1210,
+                          "id": 1336,
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 1308,
+                          "referencedDeclaration": 1434,
                           "src": "658:3:2",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
                             "typeString": "msg"
                           }
                         },
-                        "id": 1211,
+                        "id": 1337,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -2939,11 +2939,11 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 1212,
+                        "id": 1338,
                         "name": "_username",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 1183,
+                        "referencedDeclaration": 1309,
                         "src": "670:9:2",
                         "typeDescriptions": {
                           "typeIdentifier": "t_string_memory_ptr",
@@ -2954,18 +2954,18 @@
                         "argumentTypes": null,
                         "expression": {
                           "argumentTypes": null,
-                          "id": 1213,
+                          "id": 1339,
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 1308,
+                          "referencedDeclaration": 1434,
                           "src": "681:3:2",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
                             "typeString": "msg"
                           }
                         },
-                        "id": 1214,
+                        "id": 1340,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -2995,18 +2995,18 @@
                           "typeString": "uint256"
                         }
                       ],
-                      "id": 1209,
+                      "id": 1335,
                       "name": "NewPlayer",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 1169,
+                      "referencedDeclaration": 1295,
                       "src": "648:9:2",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_event_nonpayable$_t_address_$_t_string_memory_ptr_$_t_uint256_$returns$__$",
                         "typeString": "function (address,string memory,uint256)"
                       }
                     },
-                    "id": 1215,
+                    "id": 1341,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -3020,14 +3020,14 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 1216,
+                  "id": 1342,
                   "nodeType": "EmitStatement",
                   "src": "643:48:2"
                 }
               ]
             },
             "documentation": null,
-            "id": 1218,
+            "id": 1344,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -3035,15 +3035,15 @@
             "name": "createAccount",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1184,
+              "id": 1310,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1183,
+                  "id": 1309,
                   "name": "_username",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1218,
+                  "scope": 1344,
                   "src": "414:16:2",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -3052,7 +3052,7 @@
                     "typeString": "string"
                   },
                   "typeName": {
-                    "id": 1182,
+                    "id": 1308,
                     "name": "string",
                     "nodeType": "ElementaryTypeName",
                     "src": "414:6:2",
@@ -3069,12 +3069,12 @@
             },
             "payable": true,
             "returnParameters": {
-              "id": 1185,
+              "id": 1311,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "447:0:2"
             },
-            "scope": 1293,
+            "scope": 1419,
             "src": "391:304:2",
             "stateMutability": "payable",
             "superFunction": null,
@@ -3082,7 +3082,7 @@
           },
           {
             "body": {
-              "id": 1245,
+              "id": 1371,
               "nodeType": "Block",
               "src": "737:134:2",
               "statements": [
@@ -3096,34 +3096,34 @@
                           "argumentTypes": null,
                           "baseExpression": {
                             "argumentTypes": null,
-                            "id": 1222,
+                            "id": 1348,
                             "name": "players",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 1161,
+                            "referencedDeclaration": 1287,
                             "src": "749:7:2",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Player_$1157_storage_$",
+                              "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Player_$1283_storage_$",
                               "typeString": "mapping(address => struct Players.Player storage ref)"
                             }
                           },
-                          "id": 1225,
+                          "id": 1351,
                           "indexExpression": {
                             "argumentTypes": null,
                             "expression": {
                               "argumentTypes": null,
-                              "id": 1223,
+                              "id": 1349,
                               "name": "msg",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 1308,
+                              "referencedDeclaration": 1434,
                               "src": "757:3:2",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_magic_message",
                                 "typeString": "msg"
                               }
                             },
-                            "id": 1224,
+                            "id": 1350,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": false,
@@ -3144,18 +3144,18 @@
                           "nodeType": "IndexAccess",
                           "src": "749:19:2",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_Player_$1157_storage",
+                            "typeIdentifier": "t_struct$_Player_$1283_storage",
                             "typeString": "struct Players.Player storage ref"
                           }
                         },
-                        "id": 1226,
+                        "id": 1352,
                         "isConstant": false,
                         "isLValue": true,
                         "isPure": false,
                         "lValueRequested": false,
                         "memberName": "exists",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 1156,
+                        "referencedDeclaration": 1282,
                         "src": "749:26:2",
                         "typeDescriptions": {
                           "typeIdentifier": "t_bool",
@@ -3170,21 +3170,21 @@
                           "typeString": "bool"
                         }
                       ],
-                      "id": 1221,
+                      "id": 1347,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        1311,
-                        1312
+                        1437,
+                        1438
                       ],
-                      "referencedDeclaration": 1311,
+                      "referencedDeclaration": 1437,
                       "src": "741:7:2",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
                         "typeString": "function (bool) pure"
                       }
                     },
-                    "id": 1227,
+                    "id": 1353,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -3198,14 +3198,14 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 1228,
+                  "id": 1354,
                   "nodeType": "ExpressionStatement",
                   "src": "741:35:2"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 1236,
+                    "id": 1362,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -3216,34 +3216,34 @@
                         "argumentTypes": null,
                         "baseExpression": {
                           "argumentTypes": null,
-                          "id": 1229,
+                          "id": 1355,
                           "name": "players",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 1161,
+                          "referencedDeclaration": 1287,
                           "src": "781:7:2",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Player_$1157_storage_$",
+                            "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Player_$1283_storage_$",
                             "typeString": "mapping(address => struct Players.Player storage ref)"
                           }
                         },
-                        "id": 1232,
+                        "id": 1358,
                         "indexExpression": {
                           "argumentTypes": null,
                           "expression": {
                             "argumentTypes": null,
-                            "id": 1230,
+                            "id": 1356,
                             "name": "msg",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 1308,
+                            "referencedDeclaration": 1434,
                             "src": "789:3:2",
                             "typeDescriptions": {
                               "typeIdentifier": "t_magic_message",
                               "typeString": "msg"
                             }
                           },
-                          "id": 1231,
+                          "id": 1357,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -3264,18 +3264,18 @@
                         "nodeType": "IndexAccess",
                         "src": "781:19:2",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_Player_$1157_storage",
+                          "typeIdentifier": "t_struct$_Player_$1283_storage",
                           "typeString": "struct Players.Player storage ref"
                         }
                       },
-                      "id": 1233,
+                      "id": 1359,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": true,
                       "memberName": "balance",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 1150,
+                      "referencedDeclaration": 1276,
                       "src": "781:27:2",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -3288,18 +3288,18 @@
                       "argumentTypes": null,
                       "expression": {
                         "argumentTypes": null,
-                        "id": 1234,
+                        "id": 1360,
                         "name": "msg",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 1308,
+                        "referencedDeclaration": 1434,
                         "src": "812:3:2",
                         "typeDescriptions": {
                           "typeIdentifier": "t_magic_message",
                           "typeString": "msg"
                         }
                       },
-                      "id": 1235,
+                      "id": 1361,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -3319,7 +3319,7 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 1237,
+                  "id": 1363,
                   "nodeType": "ExpressionStatement",
                   "src": "781:40:2"
                 },
@@ -3331,18 +3331,18 @@
                         "argumentTypes": null,
                         "expression": {
                           "argumentTypes": null,
-                          "id": 1239,
+                          "id": 1365,
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 1308,
+                          "referencedDeclaration": 1434,
                           "src": "845:3:2",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
                             "typeString": "msg"
                           }
                         },
-                        "id": 1240,
+                        "id": 1366,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -3360,18 +3360,18 @@
                         "argumentTypes": null,
                         "expression": {
                           "argumentTypes": null,
-                          "id": 1241,
+                          "id": 1367,
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 1308,
+                          "referencedDeclaration": 1434,
                           "src": "857:3:2",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
                             "typeString": "msg"
                           }
                         },
-                        "id": 1242,
+                        "id": 1368,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -3397,18 +3397,18 @@
                           "typeString": "uint256"
                         }
                       ],
-                      "id": 1238,
+                      "id": 1364,
                       "name": "AccountFunded",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 1175,
+                      "referencedDeclaration": 1301,
                       "src": "831:13:2",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_event_nonpayable$_t_address_$_t_uint256_$returns$__$",
                         "typeString": "function (address,uint256)"
                       }
                     },
-                    "id": 1243,
+                    "id": 1369,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -3422,14 +3422,14 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 1244,
+                  "id": 1370,
                   "nodeType": "EmitStatement",
                   "src": "826:41:2"
                 }
               ]
             },
             "documentation": null,
-            "id": 1246,
+            "id": 1372,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -3437,19 +3437,19 @@
             "name": "fundAccount",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1219,
+              "id": 1345,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "719:2:2"
             },
             "payable": true,
             "returnParameters": {
-              "id": 1220,
+              "id": 1346,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "737:0:2"
             },
-            "scope": 1293,
+            "scope": 1419,
             "src": "699:172:2",
             "stateMutability": "payable",
             "superFunction": null,
@@ -3457,7 +3457,7 @@
           },
           {
             "body": {
-              "id": 1291,
+              "id": 1417,
               "nodeType": "Block",
               "src": "913:210:2",
               "statements": [
@@ -3471,34 +3471,34 @@
                           "argumentTypes": null,
                           "baseExpression": {
                             "argumentTypes": null,
-                            "id": 1252,
+                            "id": 1378,
                             "name": "players",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 1161,
+                            "referencedDeclaration": 1287,
                             "src": "925:7:2",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Player_$1157_storage_$",
+                              "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Player_$1283_storage_$",
                               "typeString": "mapping(address => struct Players.Player storage ref)"
                             }
                           },
-                          "id": 1255,
+                          "id": 1381,
                           "indexExpression": {
                             "argumentTypes": null,
                             "expression": {
                               "argumentTypes": null,
-                              "id": 1253,
+                              "id": 1379,
                               "name": "msg",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 1308,
+                              "referencedDeclaration": 1434,
                               "src": "933:3:2",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_magic_message",
                                 "typeString": "msg"
                               }
                             },
-                            "id": 1254,
+                            "id": 1380,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": false,
@@ -3519,18 +3519,18 @@
                           "nodeType": "IndexAccess",
                           "src": "925:19:2",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_Player_$1157_storage",
+                            "typeIdentifier": "t_struct$_Player_$1283_storage",
                             "typeString": "struct Players.Player storage ref"
                           }
                         },
-                        "id": 1256,
+                        "id": 1382,
                         "isConstant": false,
                         "isLValue": true,
                         "isPure": false,
                         "lValueRequested": false,
                         "memberName": "exists",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 1156,
+                        "referencedDeclaration": 1282,
                         "src": "925:26:2",
                         "typeDescriptions": {
                           "typeIdentifier": "t_bool",
@@ -3545,21 +3545,21 @@
                           "typeString": "bool"
                         }
                       ],
-                      "id": 1251,
+                      "id": 1377,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        1311,
-                        1312
+                        1437,
+                        1438
                       ],
-                      "referencedDeclaration": 1311,
+                      "referencedDeclaration": 1437,
                       "src": "917:7:2",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
                         "typeString": "function (bool) pure"
                       }
                     },
-                    "id": 1257,
+                    "id": 1383,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -3573,7 +3573,7 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 1258,
+                  "id": 1384,
                   "nodeType": "ExpressionStatement",
                   "src": "917:35:2"
                 },
@@ -3587,7 +3587,7 @@
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
                         },
-                        "id": 1266,
+                        "id": 1392,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -3598,34 +3598,34 @@
                             "argumentTypes": null,
                             "baseExpression": {
                               "argumentTypes": null,
-                              "id": 1260,
+                              "id": 1386,
                               "name": "players",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 1161,
+                              "referencedDeclaration": 1287,
                               "src": "964:7:2",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Player_$1157_storage_$",
+                                "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Player_$1283_storage_$",
                                 "typeString": "mapping(address => struct Players.Player storage ref)"
                               }
                             },
-                            "id": 1263,
+                            "id": 1389,
                             "indexExpression": {
                               "argumentTypes": null,
                               "expression": {
                                 "argumentTypes": null,
-                                "id": 1261,
+                                "id": 1387,
                                 "name": "msg",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 1308,
+                                "referencedDeclaration": 1434,
                                 "src": "972:3:2",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_magic_message",
                                   "typeString": "msg"
                                 }
                               },
-                              "id": 1262,
+                              "id": 1388,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": false,
@@ -3646,18 +3646,18 @@
                             "nodeType": "IndexAccess",
                             "src": "964:19:2",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_struct$_Player_$1157_storage",
+                              "typeIdentifier": "t_struct$_Player_$1283_storage",
                               "typeString": "struct Players.Player storage ref"
                             }
                           },
-                          "id": 1264,
+                          "id": 1390,
                           "isConstant": false,
                           "isLValue": true,
                           "isPure": false,
                           "lValueRequested": false,
                           "memberName": "balance",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 1150,
+                          "referencedDeclaration": 1276,
                           "src": "964:27:2",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -3668,11 +3668,11 @@
                         "operator": ">=",
                         "rightExpression": {
                           "argumentTypes": null,
-                          "id": 1265,
+                          "id": 1391,
                           "name": "_amount",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 1248,
+                          "referencedDeclaration": 1374,
                           "src": "995:7:2",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -3693,21 +3693,21 @@
                           "typeString": "bool"
                         }
                       ],
-                      "id": 1259,
+                      "id": 1385,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        1311,
-                        1312
+                        1437,
+                        1438
                       ],
-                      "referencedDeclaration": 1311,
+                      "referencedDeclaration": 1437,
                       "src": "956:7:2",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
                         "typeString": "function (bool) pure"
                       }
                     },
-                    "id": 1267,
+                    "id": 1393,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -3721,14 +3721,14 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 1268,
+                  "id": 1394,
                   "nodeType": "ExpressionStatement",
                   "src": "956:47:2"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 1275,
+                    "id": 1401,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -3739,34 +3739,34 @@
                         "argumentTypes": null,
                         "baseExpression": {
                           "argumentTypes": null,
-                          "id": 1269,
+                          "id": 1395,
                           "name": "players",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 1161,
+                          "referencedDeclaration": 1287,
                           "src": "1010:7:2",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Player_$1157_storage_$",
+                            "typeIdentifier": "t_mapping$_t_address_$_t_struct$_Player_$1283_storage_$",
                             "typeString": "mapping(address => struct Players.Player storage ref)"
                           }
                         },
-                        "id": 1272,
+                        "id": 1398,
                         "indexExpression": {
                           "argumentTypes": null,
                           "expression": {
                             "argumentTypes": null,
-                            "id": 1270,
+                            "id": 1396,
                             "name": "msg",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 1308,
+                            "referencedDeclaration": 1434,
                             "src": "1018:3:2",
                             "typeDescriptions": {
                               "typeIdentifier": "t_magic_message",
                               "typeString": "msg"
                             }
                           },
-                          "id": 1271,
+                          "id": 1397,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -3787,18 +3787,18 @@
                         "nodeType": "IndexAccess",
                         "src": "1010:19:2",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_Player_$1157_storage",
+                          "typeIdentifier": "t_struct$_Player_$1283_storage",
                           "typeString": "struct Players.Player storage ref"
                         }
                       },
-                      "id": 1273,
+                      "id": 1399,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": true,
                       "memberName": "balance",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 1150,
+                      "referencedDeclaration": 1276,
                       "src": "1010:27:2",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -3809,11 +3809,11 @@
                     "operator": "-=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 1274,
+                      "id": 1400,
                       "name": "_amount",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 1248,
+                      "referencedDeclaration": 1374,
                       "src": "1041:7:2",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -3826,7 +3826,7 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 1276,
+                  "id": 1402,
                   "nodeType": "ExpressionStatement",
                   "src": "1010:38:2"
                 },
@@ -3836,11 +3836,11 @@
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 1282,
+                        "id": 1408,
                         "name": "_amount",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 1248,
+                        "referencedDeclaration": 1374,
                         "src": "1072:7:2",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -3859,18 +3859,18 @@
                         "argumentTypes": null,
                         "expression": {
                           "argumentTypes": null,
-                          "id": 1277,
+                          "id": 1403,
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 1308,
+                          "referencedDeclaration": 1434,
                           "src": "1052:3:2",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
                             "typeString": "msg"
                           }
                         },
-                        "id": 1280,
+                        "id": 1406,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -3884,7 +3884,7 @@
                           "typeString": "address"
                         }
                       },
-                      "id": 1281,
+                      "id": 1407,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -3898,7 +3898,7 @@
                         "typeString": "function (uint256)"
                       }
                     },
-                    "id": 1283,
+                    "id": 1409,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -3912,7 +3912,7 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 1284,
+                  "id": 1410,
                   "nodeType": "ExpressionStatement",
                   "src": "1052:28:2"
                 },
@@ -3924,18 +3924,18 @@
                         "argumentTypes": null,
                         "expression": {
                           "argumentTypes": null,
-                          "id": 1286,
+                          "id": 1412,
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 1308,
+                          "referencedDeclaration": 1434,
                           "src": "1099:3:2",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
                             "typeString": "msg"
                           }
                         },
-                        "id": 1287,
+                        "id": 1413,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -3951,11 +3951,11 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 1288,
+                        "id": 1414,
                         "name": "_amount",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 1248,
+                        "referencedDeclaration": 1374,
                         "src": "1111:7:2",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -3974,18 +3974,18 @@
                           "typeString": "uint256"
                         }
                       ],
-                      "id": 1285,
+                      "id": 1411,
                       "name": "Withdraw",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 1181,
+                      "referencedDeclaration": 1307,
                       "src": "1090:8:2",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_event_nonpayable$_t_address_$_t_uint256_$returns$__$",
                         "typeString": "function (address,uint256)"
                       }
                     },
-                    "id": 1289,
+                    "id": 1415,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -3999,14 +3999,14 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 1290,
+                  "id": 1416,
                   "nodeType": "EmitStatement",
                   "src": "1085:34:2"
                 }
               ]
             },
             "documentation": null,
-            "id": 1292,
+            "id": 1418,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -4014,15 +4014,15 @@
             "name": "withdraw",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1249,
+              "id": 1375,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1248,
+                  "id": 1374,
                   "name": "_amount",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1292,
+                  "scope": 1418,
                   "src": "892:12:2",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -4031,7 +4031,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 1247,
+                    "id": 1373,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "892:4:2",
@@ -4048,19 +4048,19 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 1250,
+              "id": 1376,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "913:0:2"
             },
-            "scope": 1293,
+            "scope": 1419,
             "src": "874:249:2",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 1294,
+        "scope": 1420,
         "src": "26:1101:2"
       }
     ],
@@ -4072,5 +4072,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.0",
-  "updatedAt": "2018-07-24T09:38:23.503Z"
+  "updatedAt": "2018-07-25T12:14:59.130Z"
 }

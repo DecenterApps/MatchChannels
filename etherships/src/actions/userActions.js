@@ -30,7 +30,7 @@ import short from 'short-uuid';
 
 import ethers from 'ethers';
 import { closeModal, openModal } from './modalActions';
-import { receivedGuess, guessResponse, setOpponentTree, gameIsStarted, getCircularReplacer } from './boardActions';
+import { receivedGuess, guessResponse, setOpponentTree, gameIsStarted, getCircularReplacer, resetBoard } from './boardActions';
 
 const createWallet = () => ({ wallet: ethers.Wallet.createRandom() });
 
@@ -82,7 +82,11 @@ export const newGame = (price) => (dispatch) => {
 
     dispatch({type: SET_WALLET, payload: newWallet});
 
+    console.log('reset board');
+
     browserHistory.push('/game');
+
+    resetBoard()(dispatch);
 };
 
 export const fundAccount = (amount) => async (dispatch) => {

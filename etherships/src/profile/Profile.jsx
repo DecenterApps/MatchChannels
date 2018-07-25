@@ -70,7 +70,7 @@ class Profile extends Component {
                            value={this.state.fundValue} />
                   </div>
                   <div id="inner2">
-                    <button className='btn' onClick={this.fundAccount}>Fund</button>
+                    <button className='btn' onClick={this.fundAccount}>Deposit</button>
                   </div>
                 </div>
 

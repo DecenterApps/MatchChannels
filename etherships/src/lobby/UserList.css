@@ -63,7 +63,6 @@ input {
 }
 
 .lobby-header button {
-    position: absolute;
     right: 0;
     bottom: 5px;
 }
@@ -123,6 +122,23 @@ input {
     padding: 8px;
     box-shadow: 0px 5px #5D9314;
     font-size: 14px;
+    margin-top: 40px;
+}
+
+.btn-matches {
+    background: #73B816;
+    border-radius: 6.26484px;
+    font-family: Boogaloo;
+    font-weight: bold;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: #FFFFFF;
+    border: none;
+    width: 120px;
+    padding: 8px;
+    box-shadow: 0px 5px #5D9314;
+    font-size: 14px;
+    margin-top: 40px;
 }
 
 .user-list-item {
