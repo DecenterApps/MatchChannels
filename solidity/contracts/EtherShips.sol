@@ -247,12 +247,10 @@ contract EtherShips is Players, ECTools {
 
 	function didUserSetShips(bytes32[35] _paths, uint[5] _pos, uint[5] _nonces, bytes32 _root) private {
 		for(uint i = 0; i < 5; ++i) {
-			bytes32 n = keccak256(abi.encodePacked(_pos[i], 1, _nonces[i]));
+			bytes32 startNode = keccak256(abi.encodePacked(_pos[i], 1, _nonces[i]));
 			
-			assert(n == _paths[i*7]);
-			
-			bytes32 startNode = _paths[i * 7];
-		
+			assert(startNode == _paths[i*7]);
+					
 			for (uint j=1; j<7; j++) {
 				startNode = keccak256(abi.encodePacked(startNode, _paths[(i*7) + j]));
 			}
