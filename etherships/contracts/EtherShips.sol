@@ -3,6 +3,8 @@ pragma solidity ^0.4.24;
 import "./ECTools.sol";
 import "./Players.sol";
 
+import './MerkleProof.sol';
+
 /// @title State channel implementation for the clasic Battleship game
 contract EtherShips is Players, ECTools {
 
@@ -27,7 +29,11 @@ contract EtherShips is Players, ECTools {
 	Channel[] public channels;
 	mapping(address => address) public signAddresses;
 
+	event Log(bytes32 root, bytes32 startNode);
+
 	uint TIMEOUT_NUM_BLOCKS = 50; // TODO: this number is used for testing
+
+	uint HIT_SHIP = 1;
 
 	/// @dev User opens a channel and waits for the opponent to join
 	/// @param _merkleRoot The root node of your boards state
@@ -247,15 +253,29 @@ contract EtherShips is Players, ECTools {
 
 	function didUserSetShips(bytes32[35] _paths, uint[5] _pos, uint[5] _nonces, bytes32 _root) private {
 		for(uint i = 0; i < 5; ++i) {
-			bytes32 startNode = keccak256(abi.encodePacked(_pos[i], 1, _nonces[i]));
+			bytes32 startNode = keccak256(abi.encodePacked(_pos[i] - 1, HIT_SHIP, _nonces[i]));
 			
 			assert(startNode == _paths[i*7]);
-					
-			for (uint j=1; j<7; j++) {
-				startNode = keccak256(abi.encodePacked(startNode, _paths[(i*7) + j]));
+
+			bytes32 computedHash = startNode;
+
+			for (uint j = 1; j < 7; j++) {
+				bytes32 proofElement = _paths[(i * 7) + j];
+
+				if (_pos[i] % 2 == 0) {
+					// Hash(current computed hash + current element of the proof)
+					computedHash = keccak256(abi.encodePacked(proofElement, computedHash));
+					_pos[i] = _pos[i] / 2;
+				} else {
+					// Hash(current element of the proof + current computed hash)
+					computedHash = keccak256(abi.encodePacked(computedHash, proofElement));
+					_pos[i] = uint(_pos[i])/2 + 1;
+				}
+
 			}
 			
-			assert(startNode == _root);
+			assert(computedHash == _root);
+			
 		}
 	}
 }

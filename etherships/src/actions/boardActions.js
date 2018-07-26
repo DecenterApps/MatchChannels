@@ -11,7 +11,7 @@ import { SET_FIELD,
         START_GAME,
         } from '../constants/actionTypes';
 
-import { generateTree, checkGuess, checkResult, checkMerklePath } from '../services/boardService';
+import { generateTree, checkGuess, checkResult, checkMerklePath, findShipsPaths } from '../services/boardService';
 import { openChannel, joinChannel, closeChannel, getChannelInfo, disputeAnswer } from '../services/ethereumService';
 import { getRoot } from '../util/merkle';
 import * as webrtc from '../services/webrtcService';
@@ -190,7 +190,11 @@ export const submitScore = () => async (dispatch, getState) => {
 
     console.log(opponentChannel, signatureNumOfGuesses, numOfGuesses);
 
-    const res = await closeChannel(opponentChannel, signatureNumOfGuesses, numOfGuesses);
+    const { tree, board, nonces } = state.board;
+
+    const closeInfo = findShipsPaths(tree, board, nonces);
+
+    const res = await closeChannel(opponentChannel, signatureNumOfGuesses, numOfGuesses, closeInfo);
 
     console.log(res);
 

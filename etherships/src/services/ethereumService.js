@@ -1,7 +1,7 @@
 import {NUM_BLOCKS_FOR_CHANNEL, DEFAULT_PRICE, ETHERSHIP_ADDRESS} from '../constants/config';
 import contract from "truffle-contract";
 import Web3 from 'web3';
-import EtherShips from '../../../solidity/build/contracts/EtherShips';
+import EtherShips from '../../build/contracts/EtherShips.json';
 
 export const openChannel = async (markelRoot, webrtcId, signAddress, amount) => {
     let priceInWei = amount === '' ? DEFAULT_PRICE : window.web3.toWei(amount, 'ether');
@@ -39,9 +39,20 @@ export const joinChannel = async (id, markelRoot, webrtcId, signAddress, amount)
         webrtcId, priceInWei, signAddress, {from: addr, value: toPay});
 };
 
-export const closeChannel = async (id, sig, numGuesses) => {
+export const closeChannel = async (id, sig, numGuesses, shipsInfo) => {
     let addr = await getCurrAddr();
-    const res = await window.ethershipContract.closeChannel(id, sig, numGuesses, {from: addr});
+
+    let { pos, nonces, paths } = shipsInfo;
+
+    console.log('Ships info: ', pos, nonces, paths);
+
+    paths = paths.reduce((a, b) => a.concat(b), []);
+
+    pos = pos.map(p => p + 1);
+
+    console.log(paths);
+
+    const res = await window.ethershipContract.closeChannel(id, sig, numGuesses, paths, pos, nonces, {from: addr});
 
     return res;
 };

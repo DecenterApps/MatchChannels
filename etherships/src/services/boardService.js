@@ -55,6 +55,37 @@ export const checkMerklePath = (opponentTree, pos, isHit, nonce) => {
 	return path.length === 0 ? false : true;
 };
 
+export const findShipsPaths = (tree, board, nonces) => {
+	const positions = [];
+
+	for(let i = 0; i < board.length; ++i) {
+		if (board[i] === 1 || board[i] === 3) {
+			positions.push(i);
+		}
+	}
+
+	const myNonces = [];
+
+	for(let i = 0; i < 5; ++i) {
+		myNonces.push(nonces[positions[i]]);
+	}
+
+	console.log('Tree: ', tree);
+
+	const paths = [];
+
+	for(let i = 0; i < 5; ++i) {
+		paths.push(findPath(tree, tree[0][positions[i]]));
+	}
+
+	return {
+		pos: positions,
+		nonces: myNonces,
+		paths,
+	}
+
+}
+
 // get the result of your opponent, and check sig. and answer
 // if the result is wrong format data so we can call the dispute
 export const checkResult = async (channelId, signedScore, myAddress, opponentAddr, numOfGuesses) => {

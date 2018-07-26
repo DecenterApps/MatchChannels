@@ -57,6 +57,16 @@ export const findPath = (tree, elem) => {
 
       let path = [tree[0][index]];
 
+    //   if (index % 2 === 0) {
+    //     path.push(tree[0][index]);
+    //     path.push(tree[0][index+1]);
+    //   } else {
+    //     path.push(tree[0][index-1]);
+    //     path.push(tree[0][index]);
+    //   }
+
+    //   index = Math.floor(index / 2);
+
       for (let i = 0; i < tree.length-1; ++i) {          
           if (index % 2 === 0) {
             path.push(tree[i][index+1]);
