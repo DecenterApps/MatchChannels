@@ -5,8 +5,26 @@ import { browserHistory } from 'react-router'
 import { editName, editPrice, register } from './actions/userActions';
 
 class Home extends Component {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      loading: false,
+    };
+  }
+
   componentWillMount() {
     if (this.props.user.registered) browserHistory.push('/users');
+  }
+
+  registerUser = () => {
+
+    this.setState({
+      loading: true
+    });
+
+    this.props.register();
   }
 
   render() {
@@ -33,7 +51,22 @@ class Home extends Component {
                 </div>
               </div>
 
-              <button className="register-btn" onClick={register}>start</button>
+              {
+                this.state.loading && 
+                  <button className="register-btn waiting-btn">
+                    <div className="lds-ring-small">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
+                  </button>
+              }
+
+              {
+                !this.state.loading && 
+                  <button className="register-btn" onClick={this.registerUser}>start</button>
+              }
             </div>
           }
 

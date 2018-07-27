@@ -77,7 +77,7 @@ export const timeout = async (channelId) => {
 
 export const createUser = async (username, price) => {
 
-    const priceInWei = price === '' ? DEFAULT_PRICE : window.web3.toWei(price, 'ether');
+    const priceInWei = price === '' ? 0 : window.web3.toWei(price, 'ether');
     let addr = await getCurrAddr();
     const res = await window.ethershipContract.createAccount(username, {from: addr, value: priceInWei});
 
