@@ -27,6 +27,8 @@ export const joinChannel = async (id, markelRoot, webrtcId, signAddress, amount)
     let toPay = new window.web3.BigNumber(priceInWei);
     priceInWei = new window.web3.BigNumber(priceInWei);
 
+    console.log('Amount: ', amount)
+
     let addr = await getCurrAddr();
     const balance = await getUserCtxBalance(addr);
     if (balance.greaterThan(0)) {
@@ -34,6 +36,8 @@ export const joinChannel = async (id, markelRoot, webrtcId, signAddress, amount)
         toPay = toPay.minus(balance);
         if (toPay.lessThan(0)) toPay = new window.web3.BigNumber('0');
     }
+
+    console.log('To Pay: ', toPay);
 
     return window.ethershipContract.joinChannel(id, markelRoot,
         webrtcId, priceInWei, signAddress, {from: addr, value: toPay});

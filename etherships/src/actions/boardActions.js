@@ -201,7 +201,7 @@ export const submitScore = () => async (dispatch, getState) => {
     localStorage.removeItem('user');
     localStorage.removeItem('board');
 
-    browserHistory.push('/users');
+    browserHistory.push('/history');
 
     closeModal()(dispatch);
 };

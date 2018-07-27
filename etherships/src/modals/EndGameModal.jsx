@@ -64,9 +64,19 @@ class EndGameModal extends Component {
                                 <button className="modal-create-btn" onClick={this.submit}>submit</button>
                             }
 
-                            <div className="modal-warning-text">
-                                You must submit the score to close the channel!
-                            </div>
+                            {
+                                !this.state.waiting &&
+                                    <div className="modal-warning-text">
+                                        You must submit the score to close the channel!
+                                    </div>
+                            }
+
+                            {
+                                this.state.waiting &&
+                                    <div className="modal-warning-text">
+                                        If your opponent doesn't close his game you get all the money!
+                                    </div>
+                            }
                         </div>
             </Modal>
         );
