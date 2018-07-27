@@ -3,8 +3,6 @@ pragma solidity ^0.4.24;
 import "./ECTools.sol";
 import "./Players.sol";
 
-import './MerkleProof.sol';
-
 /// @title State channel implementation for the clasic Battleship game
 contract EtherShips is Players, ECTools {
 
@@ -28,8 +26,6 @@ contract EtherShips is Players, ECTools {
 
 	Channel[] public channels;
 	mapping(address => address) public signAddresses;
-
-	event Log(bytes32 root, bytes32 startNode);
 
 	uint TIMEOUT_NUM_BLOCKS = 50; // TODO: this number is used for testing
 
@@ -110,7 +106,7 @@ contract EtherShips is Players, ECTools {
     	require(!c.finished);
     	require(msg.sender != c.halfFinisher);
 
-		didUserSetShips(_paths, _pos, _nonces, c.p1 == msg.sender ? c.p1root : c.p2root);
+		_didUserSetShips(_paths, _pos, _nonces, c.p1 == msg.sender ? c.p1root : c.p2root);
     	
     	address opponent = c.p1 == msg.sender ? c.p2 : c.p1;
     	bytes32 hash = keccak256(abi.encodePacked(_channelId, msg.sender, _numberOfGuesses));
@@ -123,9 +119,9 @@ contract EtherShips is Players, ECTools {
     	if (c.halfFinisher != address(0)) {
     		c.finished = true;
 
-			addScore(msg.sender, _numberOfGuesses, _channelId);
+			_setScore(msg.sender, _numberOfGuesses, _channelId);
 
-			addBalanceToPlayer(msg.sender, wonAmount, _channelId);
+			_addBalanceToPlayer(msg.sender, wonAmount, _channelId);
 
 			// sombody won the game
 			if (c.p1Score == 5 || c.p2Score == 5) {
@@ -134,22 +130,22 @@ contract EtherShips is Players, ECTools {
 
 				// if game ended we send rest of stake to winner
 				if (c.p1Score == 5) {
-					addBalanceToPlayer(c.p1, c.stake * (5 - c.p2Score) / 5, _channelId);
+					_addBalanceToPlayer(c.p1, c.stake * (5 - c.p2Score) / 5, _channelId);
 				} else {
-					addBalanceToPlayer(c.p2, c.stake * (5 - c.p1Score) / 5, _channelId);
+					_addBalanceToPlayer(c.p2, c.stake * (5 - c.p1Score) / 5, _channelId);
 				}
 			}
 			// nobody has won the game distribute the rest of the money accordingly
 			else {
-				addBalanceToPlayer(c.p1, c.stake * (5 - c.p2Score) / 5, _channelId);
-				addBalanceToPlayer(c.p2, c.stake * (5 - c.p1Score) / 5, _channelId);
+				_addBalanceToPlayer(c.p1, c.stake * (5 - c.p2Score) / 5, _channelId);
+				_addBalanceToPlayer(c.p2, c.stake * (5 - c.p1Score) / 5, _channelId);
 			}
 
     	} else { // the first time close is called on this channel
 			c.halfFinisher = msg.sender;
 
-			addScore(msg.sender, _numberOfGuesses, _channelId);
-			addBalanceToPlayer(msg.sender, wonAmount, _channelId);
+			_setScore(msg.sender, _numberOfGuesses, _channelId);
+			_addBalanceToPlayer(msg.sender, wonAmount, _channelId);
     	}
 
     	emit CloseChannel(_channelId, msg.sender, c.finished);
@@ -166,7 +162,7 @@ contract EtherShips is Players, ECTools {
 
 		// If nobody joined the channel let the user retreive the money
 		if (c.p2 == 0x0) {
-			addBalanceToPlayer(c.p1, c.stake, _channelId);
+			_addBalanceToPlayer(c.p1, c.stake, _channelId);
 
 			c.finished = true;
 			emit CloseChannel(_channelId, msg.sender, c.finished);
@@ -174,7 +170,7 @@ contract EtherShips is Players, ECTools {
 		// If one of the players hasn't closed the game
 		else if (c.halfFinisher != 0x0) {
 			// the user gets all the left over money in the channel
-			addBalanceToPlayer(c.halfFinisher, c.balance, _channelId);
+			_addBalanceToPlayer(c.halfFinisher, c.balance, _channelId);
 
 			c.finished = true;
 			c.balance = 0;
@@ -207,12 +203,12 @@ contract EtherShips is Players, ECTools {
     	require(_recoverSig(hash, _sig) == signAddresses[opponent]);
 
     	bytes32 opponentRoot = c.p1 == msg.sender ? c.p2root : c.p1root;
-    	if (keccak256(abi.encodePacked(_pos, _type, _nonce)) != _path[0] || _getRoot(_path) != opponentRoot) {
+    	if (keccak256(abi.encodePacked(_pos, _type, _nonce)) != _path[0] || _getRoot(_path, (_pos + 1)) != opponentRoot) {
     		// only player that didn't cheat get plus one on finished games
     		players[msg.sender].finishedGames += 1;
 
 			// gets all the leftover money from the channel
-			addBalanceToPlayer(msg.sender, c.balance, _channelId);
+			_addBalanceToPlayer(msg.sender, c.balance, _channelId);
     		
     		c.p1Score = c.p1 == msg.sender ? 5 : 0;
     		c.p2Score = c.p2 == msg.sender ? 5 : 0;
@@ -225,39 +221,17 @@ contract EtherShips is Players, ECTools {
 
 	/** PRIVATE METHODS */
 
-	function addBalanceToPlayer(address _p, uint _amount, uint _channelId) private {
-		assert(_amount <= channels[_channelId].balance);
-		players[_p].balance += _amount;
-		channels[_channelId].balance -= _amount;
-	}
-
-	function addScore(address _sender, uint _numberOfGuesses, uint _channelId) private {
-		if (_sender == channels[_channelId].p1) {
-			channels[_channelId].p1Score = _numberOfGuesses;
-		} else {
-			channels[_channelId].p2Score = _numberOfGuesses;
-		}
-	}
-
-    function _recoverSig(bytes32 _hash, bytes _sig) private pure returns (address) {
-		return prefixedRecover(_hash, _sig);
-	}
-
-	function _getRoot(bytes32[7] _path) private pure returns(bytes32 _root) {
-	    _root = _path[0];
-	    
-	    for (uint i=1; i<7; i++) {
-	        _root = keccak256(abi.encodePacked(_root, _path[i]));
-	    }
-    }
-
-	function didUserSetShips(bytes32[35] _paths, uint[5] _pos, uint[5] _nonces, bytes32 _root) private {
+	/// @dev Checks if the user has set 5 ships in it's board
+	/// @notice Used for unsorted merkle tree, the first element in _path is the leaf node
+	/// @param _paths Merkle tree paths for the five nodes where ships are set
+	/// @param _pos The position of those ships starting from 1-N
+	/// @param _nonces The random nonce added to each node
+	/// @param _root The root node of the tree we are checking
+	function _didUserSetShips(bytes32[35] _paths, uint[5] _pos, uint[5] _nonces, bytes32 _root) private {
 		for(uint i = 0; i < 5; ++i) {
-			bytes32 startNode = keccak256(abi.encodePacked(_pos[i] - 1, HIT_SHIP, _nonces[i]));
+			bytes32 computedHash = keccak256(abi.encodePacked(_pos[i] - 1, HIT_SHIP, _nonces[i]));
 			
-			assert(startNode == _paths[i*7]);
-
-			bytes32 computedHash = startNode;
+			assert(computedHash == _paths[i*7]);
 
 			for (uint j = 1; j < 7; j++) {
 				bytes32 proofElement = _paths[(i * 7) + j];
@@ -276,6 +250,51 @@ contract EtherShips is Players, ECTools {
 			
 			assert(computedHash == _root);
 			
+		}
+	}
+
+	/// @dev Returns the address that signed
+	/// @param _hash The hashed value thats signed
+	/// @param _sig The signature we are checking
+    function _recoverSig(bytes32 _hash, bytes _sig) private pure returns (address) {
+		return prefixedRecover(_hash, _sig);
+	}
+
+	/// @dev Gets the root node from a merkle path
+	/// @notice Used for unsorted merkle tree, the first element in _path is the leaf node
+	/// @param _path The merkle tree path we are checking
+	/// @param _pos Position of the starting node, goes 1-N
+	function _getRoot(bytes32[7] _path, uint _pos) private pure returns(bytes32 _root) {
+	    _root = _path[0];
+	    
+	    for (uint i = 1; i<7; i++) {
+			if (_pos % 2 == 0) {
+				_root = keccak256(abi.encodePacked(_path[i], _root));
+			} else {
+				_root = keccak256(abi.encodePacked(_root, _path[i]));
+			}
+	    }
+    }
+
+	/// @dev Helper method to add to user balance and check for overflow in channels balance
+	/// @param _playerAddr The players address we are funding
+	/// @param _amount Amount in wei we are adding
+	/// @param _channelId The current channel the players in
+	function _addBalanceToPlayer(address _playerAddr, uint _amount, uint _channelId) private {
+		assert(_amount <= channels[_channelId].balance);
+		players[_playerAddr].balance += _amount;
+		channels[_channelId].balance -= _amount;
+	}
+
+	/// @dev Helper method to add to user score
+	/// @param _sender The address of the user who we are updating the score for
+	/// @param _numberOfGuesses Amount of guesses to set
+	/// @param _channelId The current channel the players in
+	function _setScore(address _sender, uint _numberOfGuesses, uint _channelId) private {
+		if (_sender == channels[_channelId].p1) {
+			channels[_channelId].p1Score = _numberOfGuesses;
+		} else {
+			channels[_channelId].p2Score = _numberOfGuesses;
 		}
 	}
 }
