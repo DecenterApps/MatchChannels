@@ -1,3 +1,6 @@
+require('babel-register');
+require('babel-polyfill');
+
 const dotenv           = require('dotenv').config();
 const HDWalletProvider = require('truffle-hdwallet-provider-privkey');
 

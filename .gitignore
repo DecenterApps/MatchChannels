@@ -5,3 +5,5 @@ build
 .idea
 yarn.lock
 yarn-error.log
+etherships/.babelrc
+
