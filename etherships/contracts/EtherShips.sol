@@ -227,31 +227,37 @@ contract EtherShips is Players, ECTools {
 	/// @param _pos The position of those ships starting from 1-N
 	/// @param _nonces The random nonce added to each node
 	/// @param _root The root node of the tree we are checking
-	function _didUserSetShips(bytes32[35] _paths, uint[5] _pos, uint[5] _nonces, bytes32 _root) private {
-		for(uint i = 0; i < 5; ++i) {
-			bytes32 computedHash = keccak256(abi.encodePacked(_pos[i] - 1, HIT_SHIP, _nonces[i]));
-			
-			assert(computedHash == _paths[i*7]);
+    function _didUserSetShips(bytes32[35] _paths, uint[5] _pos, uint[5] _nonces, bytes32 _root) private view {
+        
+        for(uint i = 0; i < 5; ++i) {
+            bytes32 computedHash = keccak256(abi.encodePacked(_pos[i] - 1, HIT_SHIP, _nonces[i]));
+            
+            assert(computedHash == _paths[i*7]);
 
-			for (uint j = 1; j < 7; j++) {
-				bytes32 proofElement = _paths[(i * 7) + j];
+            uint posCopy = _pos[i];
+            if (i>0) {
+                assert(posCopy > _pos[i-1]);
+            }
 
-				if (_pos[i] % 2 == 0) {
-					// Hash(current computed hash + current element of the proof)
-					computedHash = keccak256(abi.encodePacked(proofElement, computedHash));
-					_pos[i] = _pos[i] / 2;
-				} else {
-					// Hash(current element of the proof + current computed hash)
-					computedHash = keccak256(abi.encodePacked(computedHash, proofElement));
-					_pos[i] = uint(_pos[i])/2 + 1;
-				}
+            for (uint j = 1; j < 7; j++) {
+                bytes32 proofElement = _paths[(i * 7) + j];
 
-			}
-			
-			assert(computedHash == _root);
-			
-		}
-	}
+                if (posCopy % 2 == 0) {
+                    // Hash(current computed hash + current element of the proof)
+                    computedHash = keccak256(abi.encodePacked(proofElement, computedHash));
+                    posCopy = posCopy / 2;
+                } else {
+                    // Hash(current element of the proof + current computed hash)
+                    computedHash = keccak256(abi.encodePacked(computedHash, proofElement));
+                    posCopy = uint(posCopy)/2 + 1;
+                }
+
+            }
+            
+            assert(computedHash == _root);
+        }
+    }
+
 
 	/// @dev Returns the address that signed
 	/// @param _hash The hashed value thats signed
