@@ -130,15 +130,16 @@ contract EtherShips is Players, ECTools {
 
 				// if game ended we send rest of stake to winner
 				if (c.p1Score == 5) {
-					_addBalanceToPlayer(c.p1, c.stake * (5 - c.p2Score) / 5, _channelId);
+					_addBalanceToPlayer(c.p1, c.balance, _channelId);
 				} else {
-					_addBalanceToPlayer(c.p2, c.stake * (5 - c.p1Score) / 5, _channelId);
+					_addBalanceToPlayer(c.p2, c.balance, _channelId);
 				}
 			}
 			// nobody has won the game distribute the rest of the money accordingly
 			else {
-				_addBalanceToPlayer(c.p1, c.stake * (5 - c.p2Score) / 5, _channelId);
-				_addBalanceToPlayer(c.p2, c.stake * (5 - c.p1Score) / 5, _channelId);
+				uint amount = c.balance/2;
+				_addBalanceToPlayer(c.p1, amount, _channelId);
+				_addBalanceToPlayer(c.p2, amount, _channelId);
 			}
 
     	} else { // the first time close is called on this channel
