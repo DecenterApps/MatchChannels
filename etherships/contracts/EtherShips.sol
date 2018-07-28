@@ -174,12 +174,12 @@ contract EtherShips is Players, ECTools {
 
 			c.finished = true;
 			c.balance = 0;
-			c.p1Score = c.p1 == msg.sender ? 5 : 0;
-    		c.p2Score = c.p2 == msg.sender ? 5 : 0;
+			c.p1Score = c.p1 == c.halfFinisher ? 5 : 0;
+    		c.p2Score = c.p2 == c.halfFinisher ? 5 : 0;
 			
-			players[msg.sender].finishedGames += 1;
+			players[c.halfFinisher].finishedGames += 1;
 
-			emit CloseChannel(_channelId, msg.sender, c.finished);
+			emit CloseChannel(_channelId, c.halfFinisher, c.finished);
 		}
 	}
 
