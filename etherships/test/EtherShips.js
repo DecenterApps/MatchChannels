@@ -153,4 +153,36 @@ contract('Ether Ships', async (accounts) => {
 
     assert.equal(parseInt(p1balance) + (numberOfGuesses / 10) * (stake*2), p1balanceNew, "Balance should be bigger for one stake same");
   });
+
+  it('Should fail if two same positions are sent', async() => {
+    const channelId = 3;
+    const stake = 10;
+    
+    await etherShips.openChannel(merkle.getRoot(generatedTree1.tree), "0", stake, wallet1.address, {from: user1});
+    await etherShips.joinChannel(channelId, merkle.getRoot(generatedTree2.tree), "0", stake,  wallet2.address, {from: user2});
+    
+    const numberOfGuesses = 5;
+    
+    const hash = merkle.keccak256(channelId, user1, numberOfGuesses);
+    const signature = wallet2.signMessage(ethers.utils.arrayify(hash));
+
+    const info = await boardService.findShipsPaths(generatedTree1.tree, board1, generatedTree1.nonces);
+    let { pos, nonces, paths } = info;
+
+    paths = paths.reduce((a, b) => a.concat(b), []);
+
+    pos = pos.map(p => p + 1);
+
+    pos[2] = pos[3];
+
+    const res = await etherShips.closeChannel(
+      channelId, // channelId
+      signature, //signature
+      numberOfGuesses, // _pos
+      paths, // paths
+      pos, // positions
+      nonces, // nonces
+      { from: user1}
+    );
+  });
 });
