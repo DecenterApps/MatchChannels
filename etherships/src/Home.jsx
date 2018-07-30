@@ -45,10 +45,6 @@ class Home extends Component {
                 <div>
                   <input type="text" maxLength="14" className="name-input" placeholder="Name" onChange={editName} value={userNameEdit} />
                 </div>
-
-                <div>
-                  <input type="number" className="stake-input" onChange={editPrice} value={priceEdit} placeholder="Credits (ETH)" />
-                </div>
               </div>
 
               {

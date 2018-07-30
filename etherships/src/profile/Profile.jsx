@@ -89,7 +89,7 @@ class Profile extends Component {
                 games
               </div>
               <div className="big-label">
-                {this.props.user.finishedGames}/{this.props.user.gamesPlayed}
+                <span className='inner-text'> wins </span> {this.props.user.finishedGames}/{this.props.user.gamesPlayed} loses
               </div>
             </div>
             </div>
