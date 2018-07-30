@@ -13,6 +13,8 @@
     font-size: 52px;
     letter-spacing: 0.03em;
     text-transform: uppercase;
+    display: flex;
+    justify-content: center;
 
     color: #73B816;
 }
@@ -137,6 +139,17 @@ input {
 button:active {
     outline: none;
     border: none;
+}
+
+.inner-text {
+    font-family: Roboto;
+    font-size: 15px;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    margin: 25px 10px 0px 10px;
+
+
+    color: #73B816;
 }
 
 ::-webkit-scrollbar {
