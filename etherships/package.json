@@ -53,6 +53,7 @@
     "whatwg-fetch": "1.0.0"
   },
   "dependencies": {
+    "babel-preset-react": "^6.24.1",
     "ethereumjs-util": "^5.2.0",
     "ethers": "^3.0.17",
     "express": "^4.16.3",
