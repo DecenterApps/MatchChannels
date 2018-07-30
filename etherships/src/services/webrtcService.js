@@ -14,7 +14,7 @@ export const createPeer = (peerId) => {
       debug: 3,
       host: WEBRTC_SERVER,
       port: WEBRTC_PORT,
-      secure: false
+      secure: true,
     });
 
     peer.on('error', (err) => {
