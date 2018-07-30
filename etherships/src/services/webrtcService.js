@@ -10,9 +10,9 @@ let conn;
 export const createPeer = (peerId) => {
   try {
     peer = new Peer(peerId, {
-      // key: WEBRTC_API_KEY,
+      key: WEBRTC_API_KEY,
       debug: 3,
-      // host: WEBRTC_SERVER,
+      host: WEBRTC_SERVER,
       port: WEBRTC_PORT,
       secure: false
     });
