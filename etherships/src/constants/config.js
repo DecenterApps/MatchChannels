@@ -1,6 +1,6 @@
 
 export const BOARD_LENGTH = 8;
-export const WEBRTC_SERVER = 'reddapp.decenter.com';
+export const WEBRTC_SERVER = '139.59.146.81';
 export const WEBRTC_API_KEY = 'asdf';
 export const WEBRTC_PORT = 9000;
 
