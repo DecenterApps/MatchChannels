@@ -1,7 +1,7 @@
 
 export const BOARD_LENGTH = 8;
 export const WEBRTC_SERVER = 'gametest.decenter.com';
-export const WEBRTC_API_KEY = 'asdf';
+export const WEBRTC_API_KEY = 'peerjs';
 export const WEBRTC_PORT = 4443;
 
 export const ETHERSHIP_ADDRESS = '0x09fbf94451873ed5c1bbc5d7c9e13dc75624c171';
