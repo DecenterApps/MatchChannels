@@ -4,7 +4,7 @@ import Web3 from 'web3';
 import EtherShips from '../../build/contracts/EtherShips.json';
 
 export const openChannel = async (markelRoot, webrtcId, signAddress, amount) => {
-    let priceInWei = amount === '' ? DEFAULT_PRICE : window.web3.toWei(amount, 'ether');
+    let priceInWei = amount === '' ? DEFAULT_PRICE : amount;
     let toPay = new window.web3.BigNumber(priceInWei);
     priceInWei = new window.web3.BigNumber(priceInWei);
 

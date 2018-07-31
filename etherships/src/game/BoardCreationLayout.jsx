@@ -34,6 +34,8 @@ class BoardCreationLayout extends Component {
     render() {
         const fieldsLeft = Array.from({length: 5 - this.props.board.numPicked}, (_, k) => k++);
 
+        const {  gameBetAmount } = this.props.user;
+
         let btnStyle = "next-btn grey-btn";
 
         if (this.props.board.numPicked === 5) {
@@ -48,12 +50,27 @@ class BoardCreationLayout extends Component {
                 </div>
                 <div className="board-area">
                     <Board type="my-board" state="setup" />
-                    <div className="slots">
-                      {
-                          fieldsLeft.map(f =>
-                              <div key={f} className="field slot-field" />
-                          )
-                      }
+
+                    <div className='board-right-area'>
+                        <div className="slots">
+                        {
+                            fieldsLeft.map(f =>
+                                <div key={f} className="field slot-field" />
+                            )
+                        }
+                        </div>
+
+                        <div>
+                            <div className="stake-info-title">
+                                Match stake:
+                                <div className="stake-info-value"> { window.web3.fromWei(gameBetAmount, 'ether') } <span className='eth-value-text'>eth</span> </div>
+                            </div>
+
+                            <div className="stake-info-title">
+                                Ship value:
+                                <div className="stake-info-value"> { window.web3.fromWei(gameBetAmount/5, 'ether') } <span className='eth-value-text'>eth</span> </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 

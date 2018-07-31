@@ -357,10 +357,11 @@
 }
 
 .slots {
-    padding-top: 42px;
+    padding-top: 32px;
     width: 60px;
     display: flex;
     flex-direction: column;
+    height: 380px;
 }
 
 .score-tiles {
@@ -374,4 +375,43 @@
 .timer-area {
     display: flex;
 
+}
+
+.stake-info-title {
+    font-family: Boogaloo;
+    font-size: 26px;
+    text-align: left;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.stake-info-value {
+    font-family: Boogaloo;
+    font-size: 26px;
+    text-align: left;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+
+    color: #FFFFFF;
+}
+
+.eth-value-text {
+    font-family: Boogaloo;
+
+    font-size: 20px;
+    text-align: center;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.board-right-area {
+    justify-content: space-between;
+    display: flex;
+    flex-direction: column;
+    height: 556px;
 }

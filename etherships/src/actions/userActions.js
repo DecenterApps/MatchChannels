@@ -70,7 +70,9 @@ export const register = () => async (dispatch, getState) => {
 };
 
 export const newGame = (price) => (dispatch) => {
-    dispatch({ type: NEW_GAME, payload:  {price } });
+
+    console.log('Price: ', price);
+    dispatch({ type: NEW_GAME, payload: {price: window.web3.toWei(price, 'ether') } });
 
     // remove data stored from the previous game
     localStorage.removeItem('user');
