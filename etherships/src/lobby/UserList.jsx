@@ -12,22 +12,31 @@ import { openModal } from '../actions/modalActions';
 import './UserList.css';
 
 class UserList extends Component {
-  async componentDidMount() {
+  componentDidMount() {
     this.props.addUsersToLobby();
   }
 
   render() {
 
-    const { usersList, userAddr } = this.props.user;
+    const { usersList } = this.props.user;
 
     return (
       <div>
         <div className="user-list">
-          <div className="user-list-header">
+          <div className="user-list-title">
             or choose opponent player
           </div>
 
           <div className="user-list-body">
+
+            {
+              usersList.length !== 0 && 
+                <div className="user-list-header">
+                  <div className="id-text">ID</div>
+                  <div className="nickname-text">Nickname</div>
+                  <div className="match-text">Match stake</div>
+                </div>
+            }
 
             {
               usersList.map(user =>
@@ -37,25 +46,9 @@ class UserList extends Component {
                   <span
                     className='user-list-value'> ETH {window.web3.fromWei(user.args.amount.valueOf(), 'ether')} </span>
 
-                  {
-                    user.args.addr !== userAddr && 
-                    <button className='user-list-btn'
-                          onClick={() => this.props.connectToPlayer(user.args)}>Battle
+                  <button className='user-list-btn'
+                        onClick={() => this.props.connectToPlayer(user.args)}>Battle
                   </button>
-                  }
-
-                  {
-                    user.args.addr === userAddr && 
-                    <button className='user-list-btn grey-btn waiting-btn'>
-                      <div className="lds-ring-small">
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                      </div>
-                    </button>
-                  }
-
                 </div>)
             }
 

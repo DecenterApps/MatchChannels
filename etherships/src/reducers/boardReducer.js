@@ -9,6 +9,7 @@ import {
     GUESS_RESPONSE,
     SET_OPPONENT_TREE,
     START_GAME,
+    GAME_FINISHED,
   } from '../constants/actionTypes';
 
 import { EMPTY_FIELD, MISSED_SHIP, SUNK_SHIP, PLAYERS_SHIP, SECONDS_PER_TURN, TIMEOUT_WAIT_PERIOD } from '../constants/config';
@@ -149,6 +150,12 @@ export default (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 gameInProgress: true,
+            };
+
+        case GAME_FINISHED:
+            return {
+                ...state,
+                gameInProgress: false,
             };
 
         default:

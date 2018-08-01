@@ -28,6 +28,7 @@
     font-size: 22px;
     color: gray;
     font-family: Boogaloo;
+    outline: none;
 }
 
 input {
@@ -86,7 +87,7 @@ input {
     color: #FFFFFF;
 }
 
-.user-list-header {
+.user-list-title {
     font-family: Boogaloo;
     font-style: normal;
     font-weight: normal;
@@ -263,4 +264,43 @@ button:active {
     text-transform: uppercase;
     color: #FFFFFF;
     opacity: 0.2;
+}
+
+.waiting-text {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.user-list-header {
+    display: flex;
+
+
+    font-family: Roboto;
+    font-weight: bold;
+    font-size: 11px;
+    letter-spacing: 0.03em;
+
+    color: #FFFFFF;
+    opacity: 0.2;
+}
+
+.id-text {
+    margin-left: 20px;
+    width: 40px;
+    text-align: center;
+}
+
+.nickname-text {
+    width: 80px;
+    text-align: center;
+}
+
+.match-text {
+    width: 100px;
+    text-align: center;
+}
+
+.warning-input {
+    border: solid 2px red;
 }

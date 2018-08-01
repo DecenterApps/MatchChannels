@@ -9,6 +9,7 @@ import { SET_FIELD,
         INCREMENT_SECONDS,
         SET_OPPONENT_TREE,
         START_GAME,
+        GAME_FINISHED,
         } from '../constants/actionTypes';
 
 import { generateTree, checkGuess, checkResult, checkMerklePath, findShipsPaths } from '../services/boardService';
@@ -17,6 +18,8 @@ import { getRoot } from '../util/merkle';
 import * as webrtc from '../services/webrtcService';
 
 import { openModal, closeModal } from './modalActions';
+
+import { matchStarted } from './userActions';
 
 import { SUNK_SHIP } from '../constants/config';
 
@@ -59,6 +62,8 @@ export const generateBoard = (board) => async (dispatch, getState) => {
         await openChannel(getRoot(state.board.tree), state.user.peerId, walletAddress, state.user.gameBetAmount);
 
         browserHistory.push('/users');
+
+        matchStarted()(dispatch);
     } else {
         await joinChannel(state.user.opponentChannel, getRoot(state.board.tree), state.user.peerId, walletAddress, state.user.gameBetAmount);
 
@@ -188,8 +193,6 @@ export const submitScore = () => async (dispatch, getState) => {
     const opponentChannel = state.user.opponentChannel;
     const { signatureNumOfGuesses, numOfGuesses } = state.board;
 
-    console.log(opponentChannel, signatureNumOfGuesses, numOfGuesses);
-
     const { tree, board, nonces } = state.board;
 
     const closeInfo = findShipsPaths(tree, board, nonces);
@@ -200,6 +203,8 @@ export const submitScore = () => async (dispatch, getState) => {
 
     localStorage.removeItem('user');
     localStorage.removeItem('board');
+
+    dispatch({ type: GAME_FINISHED });
 
     browserHistory.push('/history');
 

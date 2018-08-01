@@ -8,6 +8,7 @@ export const LOAD_BOARD = 'load_board';
 export const RESET_BOARD = 'reset_board';
 export const GUESS_RESPONSE = 'guess_response';
 export const SET_OPPONENT_TREE = 'set_opponent_tree';
+export const GAME_FINISHED ='game_finished';
 
 // User reducer
 export const EDIT_NAME = 'edit_name';
@@ -30,3 +31,4 @@ export const CLOSE_MODAL = 'close_modal';
 export const SET_WALLET = 'set_wallet';
 export const SET_BALANCE = 'set_balance';
 export const START_GAME = 'start_game';
+export const MATCH_STARTED = 'match_started';

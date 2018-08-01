@@ -14,6 +14,7 @@ import {
     ADD_NEW_USER_TO_LOBBY,
     SET_WALLET,
     SET_BALANCE,
+    MATCH_STARTED,
     } from '../constants/actionTypes';
 
 import * as webrtc from '../services/webrtcService';
@@ -255,6 +256,10 @@ export const declineChallenge = () => (dispatch) => {
   closeModal()(dispatch);
 
   webrtc.send({type: 'decline_challenge'});
+};
+
+export const matchStarted = () => (dispatch) => {
+  dispatch({type: MATCH_STARTED});
 };
 
 export const msgReceived = (message) => (dispatch, getState) => {

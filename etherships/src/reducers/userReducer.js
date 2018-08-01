@@ -15,6 +15,7 @@ import { SET_NAME,
         ADD_NEW_USER_TO_LOBBY,
         SET_WALLET,
         SET_BALANCE,
+        MATCH_STARTED,
         } from '../constants/actionTypes';
 
 const INITIAL_STATE = {
@@ -155,7 +156,7 @@ export default (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 usersList: payload,
-                hasCreatedMatch,
+                // hasCreatedMatch,
             };
         
         case ADD_NEW_USER_TO_LOBBY:
@@ -175,6 +176,12 @@ export default (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 userWallet: payload,
+            };
+
+        case MATCH_STARTED:
+            return {
+                ...state,
+                hasCreatedMatch: true,
             };
 
         default:

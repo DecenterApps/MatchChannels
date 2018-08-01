@@ -13,7 +13,8 @@ class Lobby extends Component {
     super(props);
 
     this.state = {
-      ethAmount: 0.01
+      ethAmount: '',
+      isError: false,
     };
   }
 
@@ -22,11 +23,27 @@ class Lobby extends Component {
   }
 
   handleChange = (event) => {
-    this.setState({ ethAmount: event.target.value });
+
+    const value = event.target.value;
+
+    if (!this.isNumber(value)) {
+      this.setState({
+        isError: true,
+     });
+    } else {
+      this.setState({
+         ethAmount: value,
+         isError: false,
+      });
+    }
   };
 
   createNewGame = () => {
-    this.props.newGame(this.state.ethAmount);
+    if (this.state.ethAmount === '') {
+      this.setState({ isError: true });
+    } else {
+      this.props.newGame(this.state.ethAmount);
+    }
   };
 
   gotoProfile = () => {
@@ -37,8 +54,17 @@ class Lobby extends Component {
     browserHistory.push('/history');
   };
 
+  isNumber(n) {
+    return !isNaN(parseFloat(n)) && isFinite(n);
+  }
+
   render() {
     const { hasCreatedMatch } = this.props.user;
+
+    const { isError } = this.state;
+
+    let inputStyle = isError ? 'user-list-input warning-input' : 'user-list-input';
+    let placeholderText = isError ? 'Enter a number' : 'Match Stake';
 
     return (
       <div>
@@ -49,26 +75,28 @@ class Lobby extends Component {
         </div>
 
         <div className='lobby-container'>
-          <div className='lobby-list'>
-            <div className="user-list-item">
-              <input className='user-list-input' value={this.state.ethAmount} onChange={this.handleChange} type="number" placeholder="Amount (ETH)" />
-              <span className="eth-text">ETH</span>
-              {
-                !hasCreatedMatch && 
-                <button className='user-list-btn' onClick={this.createNewGame}>Create Game</button>
+          {
+            !hasCreatedMatch && 
+              <div className='lobby-list'>
+                <div className="user-list-item">
+                  <input className={inputStyle} value={this.state.ethAmount} onChange={this.handleChange} type="text" placeholder={placeholderText} />
+                  <span className="eth-text">ETH</span>
+              
+                  <button className='user-list-btn' onClick={this.createNewGame}>Create Game</button>
 
-              }
+                </div>
 
-              {
-                hasCreatedMatch && 
-                <button className='user-list-btn grey-btn'>created</button>
-              }
+                <UserList />
+
             </div>
+          }
 
-            <UserList />
-
-          </div>
-
+          {
+            hasCreatedMatch && 
+            <div className="user-list-title waiting-text">
+              waiting for your opponent to connect...
+            </div>
+          }
         </div>
 
         <div className="left-ship" />
