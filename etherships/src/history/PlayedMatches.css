@@ -36,6 +36,7 @@
     font-family: Boogaloo;
     color: white;
     width: 80%;
+    z-index: 1;
 }
 
 .match-list {
@@ -53,7 +54,7 @@
 }
 
 .back-btn-pos {
-    top: 40px;
+    top: 58px;
 }
 
 .btn-timeout {

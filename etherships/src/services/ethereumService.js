@@ -276,7 +276,44 @@ export const getWeb3 = () =>
     }
 });
 
-
-export const hasOngoingMatch = () => {
+export const calculateWinsAndLoses = () => {
 
 };
+
+export const hasOngoingMatch = async () =>
+    new Promise(async (resolve, reject) => {
+        const addr = await getCurrAddr();
+
+        console.log(addr);
+
+        window.ethershipContract.CloseChannel({player: addr}, {fromBlock: 100000,
+            toBlock: 'latest'}).get(async (err, res) => {
+            if (!err) {
+                const channelIds = res.map(r => r.args.channelId.valueOf());
+
+                const channelPromises = channelIds.map(c => getChannelInfo(c));
+
+                const channels = await Promise.all(channelPromises);
+
+                let numWins = 0;
+                let numLosses = 0;
+
+                channels.forEach(c => {
+                    const userScore = c.p1 === addr ? c.p1Score : c.p2Score;
+
+                    if (userScore === '5') {
+                        numWins++;
+                    } else if (c.p1Score === '5' || c.p2Score === '5') {
+                        numLosses++;
+                    }
+                });
+
+                resolve({
+                    numWins,
+                    numLosses,
+                });
+            } else {
+                reject(err);
+            }
+        });
+    });

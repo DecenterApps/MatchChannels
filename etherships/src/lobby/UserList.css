@@ -126,6 +126,18 @@ input {
     margin-top: 40px;
 }
 
+.btn-profile:active {
+    background-color: #73B816;
+    box-shadow: 0 2px #5D9314;
+    transform: translateY(3px);
+}
+
+.btn-matches:active {
+    background-color: #73B816;
+    box-shadow: 0 2px #5D9314;
+    transform: translateY(3px);
+}
+
 .btn-matches {
     background: #73B816;
     border-radius: 6.26484px;
@@ -148,6 +160,7 @@ input {
     flex-direction: row;
     justify-content: space-evenly;
     padding-bottom: 15px;
+    z-index: 1;
 }
 
 .user-list-name {
@@ -178,9 +191,28 @@ input {
     outline: none;
 }
 
-button:active {
-    outline: none;
+.user-list-btn-grey {
+    background: #B7B7B7;
+    border-radius: 7.28352px;
+
+    font-family: Boogaloo;
+    font-weight: bold;
+    font-size: 16px;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: #FFFFFF;
     border: none;
+    padding: 8px;
+    box-shadow: 0px 5px #7E7E7E;
+    width: 110px;
+    outline: none;
+    cursor: not-allowed;
+}
+
+.user-list-btn:active {
+    background-color: #FF3546;
+    box-shadow: 0 2px #BB2A36;
+    transform: translateY(3px);
 }
 
 .user-list-id {
@@ -194,7 +226,7 @@ button:active {
 }
 
 .logo {
-    width: 258px;
+    width: 268px;
     height: 67px;
     background: url('../images/logo.png') center center no-repeat;
     /*margin-top: 40px;*/
@@ -215,6 +247,7 @@ button:active {
     align-items: center;
     justify-content: center;
     margin: 0 auto;
+    z-index: 1;
 }
 
 .right-ship {

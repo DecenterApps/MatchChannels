@@ -5,7 +5,6 @@
     -webkit-text-stroke-width: 2px;
     -webkit-text-stroke-color: #73B816;
     margin-top: 10px;
-    margin-bottom: 10px;
     font-family: Boogaloo;
     font-style: normal;
     font-weight: normal;
@@ -29,7 +28,6 @@
     text-align: center;
     letter-spacing: 0.03em;
     text-transform: uppercase;
-    margin-top: 10px;
     margin-bottom: 10px;
     color: #FFFFFF;
 }
@@ -67,8 +65,8 @@
 .back-button {
     width: 90px;
     height: 32.61px;
-    left: 95px;
-    top: 78px;
+    left: 110px;
+    top: 58px;
 
     background: #B7B7B7;
     border-radius: 6.26484px;
@@ -86,6 +84,12 @@
     color: #FFFFFF;
     border: 0;
     box-shadow: 0px 5px #7E7E7E;
+}
+
+.back-button:active {
+    background-color: #B7B7B7;
+    box-shadow: 0 2px #7E7E7E;
+    transform: translateY(3px);
 }
 
 .input {
@@ -108,7 +112,7 @@ input {
 .btn {
     background: #73B816;
     border-radius: 6.26484px;
-    font-family: Boogaloo;
+    font-family: Roboto;
     font-weight: bold;
     letter-spacing: 0.03em;
     text-transform: uppercase;
@@ -118,6 +122,13 @@ input {
     box-shadow: 0px 5px #5D9314;
     width: 50%;
     font-size: 14px;
+    outline: none;
+}
+
+.btn:active {
+    background-color: #FF3546;
+    box-shadow: 0 2px #BB2A36;
+    transform: translateY(3px);
 }
 
 ::-webkit-input-placeholder {
@@ -150,6 +161,33 @@ button:active {
 
 
     color: #73B816;
+}
+
+.profile-input {
+    width: 180px;
+    height: 40px;
+    margin-right: 30px;
+    margin-left: 30px;
+}
+
+.games-finished {
+    font-family: Roboto;
+    font-size: 15px;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+
+    color: #73B816;
+}
+
+.games-left {
+    font-family: Roboto;
+    font-weight: bold;
+    font-size: 15px;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+
+    color: #FF3546;
+    margin-top: 5px;
 }
 
 ::-webkit-scrollbar {

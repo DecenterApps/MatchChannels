@@ -36,7 +36,7 @@ class Field extends Component {
         } else if (board[this.props.id] === MISSED_SHIP) {
             fieldClass = 'field-miss';
         } else if(board[this.props.id] === SUNK_SHIP) {
-            fieldClass = 'field-hit';
+            fieldClass = 'field-hit-red';
         }
 
         let guessFieldClass = 'red-field';

@@ -112,6 +112,8 @@ class PlayedMatches extends Component {
 
             </div>
           </div>
+          <div className="left-ship" />
+        <div className="right-ship" />
         </div>
       </div>
     );

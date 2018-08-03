@@ -29,7 +29,7 @@ class Home extends Component {
 
   render() {
     const { userNameEdit, registered } = this.props.user;
-    const { editName, priceEdit, editPrice, register } = this.props;
+    const { editName } = this.props;
 
     return (
       <main>

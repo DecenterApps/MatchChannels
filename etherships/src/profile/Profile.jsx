@@ -5,17 +5,28 @@ import { connect } from 'react-redux';
 
 import './Profile.css';
 
+import { hasOngoingMatch } from '../services/ethereumService';
 import { fundAccount, withdrawFunds } from '../actions/userActions';
 
 class Profile extends Component {
-
-	constructor(props) {
+    constructor(props) {
         super(props);
 
         this.state = {
-			fundValue: 0,
-			withdrawValue: 0
+          fundValue: 0,
+          withdrawValue: 0,
+          numWins: 0,
+          numLosses: 0,
         };
+    }
+
+    async componentDidMount() {
+      const res = await hasOngoingMatch();
+
+      this.setState({
+        numWins: res.numWins,
+        numLosses: res.numLosses,
+      });
     }
 
     fundAccount = () => {
@@ -41,7 +52,10 @@ class Profile extends Component {
     }
 
     render() {
+      const { fundValue, withdrawValue, numWins, numLosses } = this.state;
+
         return (
+          <div>
         	<div className='container'>
             <div>
               <button className="back-button" onClick={this.handleClick}>back</button>
@@ -66,8 +80,8 @@ class Profile extends Component {
               <div className="div-flex">
                 <div className="wrapper">
                   <div id="inner1">
-                    <input className="input" type="text" onChange={this.handleFundChange}
-                           value={this.state.fundValue} />
+                    <input className="name-input profile-input" type="text" onChange={this.handleFundChange}
+                           value={fundValue} />
                   </div>
                   <div id="inner2">
                     <button className='btn' onClick={this.fundAccount}>Deposit</button>
@@ -76,8 +90,8 @@ class Profile extends Component {
 
                 <div className="wrapper">
                   <div id="inner1">
-                    <input className="input" type="text" onChange={this.handleWithdrawChange}
-                           value={this.state.withdrawValue} />
+                    <input className="name-input profile-input" type="text" onChange={this.handleWithdrawChange}
+                           value={withdrawValue} />
                   </div>
                   <div id="inner2">
                     <button className='btn' onClick={this.withdrawFunds}>Withdraw</button>
@@ -89,9 +103,20 @@ class Profile extends Component {
                 games
               </div>
               <div className="big-label">
-                <span className='inner-text'> win </span> {this.props.user.finishedGames}/{this.props.user.gamesPlayed} <span className='inner-text'>lose </span>
+                <span className='inner-text'> win </span> {numWins}/{numLosses} <span className='inner-text'>lose </span>
               </div>
+
+              <div className="big-label">
+                {this.props.user.gamesPlayed}
+              </div>
+
+              <div className='games-finished'> games finished </div>
+              <div className='games-left'> games left {this.props.user.gamesPlayed - this.props.user.finishedGames} </div>
+
             </div>
+            </div>
+              <div className="left-ship" />
+              <div className="right-ship" />
             </div>
         );
     }

@@ -48,6 +48,12 @@
     text-transform: uppercase;
 }
 
+.modal-create-btn:active {
+  background-color: #73B816;
+  box-shadow: 0 2px #5D9314;
+  transform: translateY(3px);
+}
+
 .end-game-content {
   padding: 10px 50px 10px 50px;
 }
@@ -138,6 +144,12 @@
   text-align: center;
   letter-spacing: 0.03em;
   text-transform: uppercase;
+}
+
+.modal-decline-btn:active {
+  background-color: #FF3546;
+  box-shadow: 0 2px #BB2A36;
+  transform: translateY(3px);
 }
 
 .lds-ring {

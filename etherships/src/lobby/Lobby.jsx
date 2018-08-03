@@ -61,7 +61,7 @@ class Lobby extends Component {
   render() {
     const { hasCreatedMatch } = this.props.user;
 
-    const { isError } = this.state;
+    const { isError, ethAmount } = this.state;
 
     let inputStyle = isError ? 'user-list-input warning-input' : 'user-list-input';
     let placeholderText = isError ? 'Enter a number' : 'Match Stake';
@@ -79,10 +79,18 @@ class Lobby extends Component {
             !hasCreatedMatch && 
               <div className='lobby-list'>
                 <div className="user-list-item">
-                  <input className={inputStyle} value={this.state.ethAmount} onChange={this.handleChange} type="text" placeholder={placeholderText} />
+                  <input className={inputStyle} value={ethAmount} onChange={this.handleChange} type="text" placeholder={placeholderText} />
                   <span className="eth-text">ETH</span>
               
-                  <button className='user-list-btn' onClick={this.createNewGame}>Create Game</button>
+                  {
+                    ethAmount === "" && 
+                    <button className='user-list-btn-grey' onClick={this.createNewGame}>Create Game</button>
+                  }
+
+                  {
+                    ethAmount !== "" && 
+                    <button className='user-list-btn' onClick={this.createNewGame}>Create Game</button>
+                  }
 
                 </div>
 
