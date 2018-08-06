@@ -9,6 +9,15 @@
     margin: 30px 30px 30px 90px;
 }
 
+.setup-board {
+    padding: 12px;
+    background: #302E38;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 1px 10px #24202E;
+    margin: 30px 30px 30px 180px;
+}
+
 .waiting-board {
     opacity: 0.5;
 }
@@ -289,7 +298,7 @@
     padding: 12px;
     box-shadow: 0px 5px #BB2A36;
     width: 140px;
-    margin: 8px 0px 40px 295px;
+    margin: 8px 0px 40px 382px;
 }
 
 .next-btn:active {

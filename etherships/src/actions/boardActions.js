@@ -205,9 +205,10 @@ export const submitScore = () => async (dispatch, getState) => {
     localStorage.removeItem('board');
 
     dispatch({ type: GAME_FINISHED });
+};
 
-    browserHistory.push('/history');
-
+export const playAgain = () => (dispatch) => {
+    browserHistory.push('/users#finished');
     closeModal()(dispatch);
 };
 

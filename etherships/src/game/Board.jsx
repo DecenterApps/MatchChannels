@@ -19,6 +19,8 @@ class Board extends Component {
 
         if (this.props.state === 'waiting') {
             boardStyle = 'board waiting-board';
+        } else if (this.props.state === 'setup') {
+            boardStyle = 'setup-board';
         }
 
         return (

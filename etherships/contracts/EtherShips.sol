@@ -22,7 +22,7 @@ contract EtherShips is Players, ECTools {
 
 	event OpenChannel(uint channelId, bytes32 root, string webrtcId, uint amount, string username, address indexed addr);
 	event JoinChannel(uint channelId, bytes32 root, string webrtcId, uint amount, address indexed addr);
-	event CloseChannel(uint channelId, address indexed player, bool finished);
+	event CloseChannel(uint indexed channelId, address indexed player, bool finished);
 
 	Channel[] public channels;
 	mapping(address => address) public signAddresses;
@@ -71,6 +71,7 @@ contract EtherShips is Players, ECTools {
 		require((channels[_channelId].p1 != 0x0) && (channels[_channelId].p2 == 0x0));
 		require(players[msg.sender].exists);
 		require(_amount <= players[msg.sender].balance + msg.value);
+		require(block.number <= channels[_channelId].blockStarted + TIMEOUT_NUM_BLOCKS);
 
 		if (msg.value > 0) {
 			players[msg.sender].balance += msg.value;

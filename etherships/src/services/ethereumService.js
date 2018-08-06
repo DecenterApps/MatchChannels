@@ -276,15 +276,22 @@ export const getWeb3 = () =>
     }
 });
 
-export const calculateWinsAndLoses = () => {
+export const monitorChannel = (channelId) =>
+new Promise(async (resolve, reject) => {
+    window.ethershipContract.CloseChannel({channelId: channelId}, {fromBlock: 100000,
+        toBlock: 'latest'}).watch(async (err, res) => {
+            if (!err) {
 
-};
+            }
+        });
+
+    });
+
+
 
 export const hasOngoingMatch = async () =>
     new Promise(async (resolve, reject) => {
         const addr = await getCurrAddr();
-
-        console.log(addr);
 
         window.ethershipContract.CloseChannel({player: addr}, {fromBlock: 100000,
             toBlock: 'latest'}).get(async (err, res) => {
