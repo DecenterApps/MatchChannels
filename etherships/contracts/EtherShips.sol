@@ -15,9 +15,9 @@ contract EtherShips is Players, ECTools {
 		address halfFinisher;
 		uint blockStarted;
 		uint balance;
-		uint p1Score;  //------|
-		uint p2Score;  //      | TODO: squeeze this into one memory slot
-		bool finished; //------|
+		uint p1Score;
+		uint p2Score;
+		bool finished;
 	}
 
 	event OpenChannel(uint channelId, bytes32 root, string webrtcId, uint amount, string username, address indexed addr);
@@ -106,7 +106,7 @@ contract EtherShips is Players, ECTools {
     	require(!c.finished);
     	require(msg.sender != c.halfFinisher);
 
-		_didUserSetShips(_paths, _pos, _nonces, c.p1 == msg.sender ? c.p1root : c.p2root);
+		_assertUserSetShips(_paths, _pos, _nonces, c.p1 == msg.sender ? c.p1root : c.p2root);
     	
     	address opponent = c.p1 == msg.sender ? c.p2 : c.p1;
     	bytes32 hash = keccak256(abi.encodePacked(_channelId, msg.sender, _numberOfGuesses));
@@ -228,7 +228,7 @@ contract EtherShips is Players, ECTools {
 	/// @param _pos The position of those ships starting from 1-N
 	/// @param _nonces The random nonce added to each node
 	/// @param _root The root node of the tree we are checking
-    function _didUserSetShips(bytes32[35] _paths, uint[5] _pos, uint[5] _nonces, bytes32 _root) private view {
+    function _assertUserSetShips(bytes32[35] _paths, uint[5] _pos, uint[5] _nonces, bytes32 _root) private view {
         
         for(uint i = 0; i < 5; ++i) {
             bytes32 computedHash = keccak256(abi.encodePacked(_pos[i] - 1, HIT_SHIP, _nonces[i]));

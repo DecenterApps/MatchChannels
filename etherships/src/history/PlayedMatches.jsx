@@ -23,7 +23,7 @@ class PlayedMatches extends Component {
     const blockNum = await getCurrentBlockNumber();
 
     this.setState({
-      matches: [...openChannels, ...joinChannels].sort((a, b) => a.channelId < b.channelId),
+      matches: [...openChannels, ...joinChannels].sort((a, b) => parseInt(b.channelId, 10) - parseInt(a.channelId, 10)),
       blockNum,
     });
 
@@ -37,12 +37,12 @@ class PlayedMatches extends Component {
 
   renderMatchState(match) {
     if (match.finished) {
-      return <span className='status red'>Closed</span>;
+      return <td className='status red'>Closed</td>;
     } else {
       if (match.halfFinisher === "0x0000000000000000000000000000000000000000") {
-        return <span className='status green'>Active</span>;
+        return <td className='status green'>Active</td>;
       } else {
-        return <span className='status grey'>Half Closed</span>;
+        return <td className='status grey'>Half Closed</td>;
       }
     }
   }
@@ -66,6 +66,9 @@ class PlayedMatches extends Component {
 
     return (
       <div>
+        {/* <div className="left-ship" />
+        <div className="right-ship" /> */}
+
         <div>
          <button className="back-button back-btn-pos" onClick={this.goBack}>back</button>
 
@@ -75,45 +78,44 @@ class PlayedMatches extends Component {
             </div>
 
             
+            <table>
+              <thead>
+                <tr className="match-header"> 
+                  <th>ID</th>
+                  <th>Opponent address</th>
+                  <th>Stake</th>
+                  <th>Status</th>
+                  <th>Score</th>
+                </tr>
+              </thead>
 
-            <div className="match-header"> 
-              <span>ID</span>
-              <span>Opponent address</span>
-              <span>Stake</span>
-              <span>Status</span>
-              <span>Score</span>
-            </div>
+              <tbody>
+                {
+                  matches.map(m =>
+                    <tr className="match-item" key={m.channelId}>
+                      <td className='id'>#{m.channelId}</td>
+                      <td className='opponent'> {m.p1} </td>
+                      <td
+                        className='stake'> ETH {window.web3.fromWei(m.stake, 'ether')} </td>
 
-            <div className="match-list">
+                      {this.renderMatchState(m)}
 
-              {
-                matches.map(m =>
-                  <div className="match-item" key={m.channelId}>
-                    <span className='id'>#{m.channelId}</span>
-                    <span className='opponent'> {m.p1} </span>
-                    <span
-                      className='stake'> ETH {window.web3.fromWei(m.stake, 'ether')} </span>
+                      {
+                        !this.canBeTimeouted(m) && 
+                          <td className='score'>{m.p1Score} / {m.p2Score}</td>
+                      }
 
-                     {this.renderMatchState(m)}
-
-                     {
-                      !this.canBeTimeouted(m) && 
-                        <span className='score'>{m.p1Score} / {m.p2Score}</span>
-                     }
-
-                    {
-                      this.canBeTimeouted(m) && 
-                        <button className="btn-timeout" onClick={() => this.callTimeout(m.channelId)}>Close</button>
-                    }
+                      {
+                        this.canBeTimeouted(m) && 
+                          <td><button className="btn-timeout" onClick={() => this.callTimeout(m.channelId)}>Close</button></td>
+                      }
 
 
-                  </div>)
-              }
-
-            </div>
+                    </tr>)
+                }
+                </tbody>
+              </table>
           </div>
-          <div className="left-ship" />
-        <div className="right-ship" />
         </div>
       </div>
     );
