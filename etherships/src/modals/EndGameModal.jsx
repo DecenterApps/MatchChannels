@@ -93,16 +93,13 @@ class EndGameModal extends Component {
                     </div>
                     <div className="lds-ring"><div></div><div></div><div></div><div></div></div>
                     <div className="modal-warning-text">
-                    If your opponent doesn't close his game you get all the money!
+                    Both players must close the channel...
                     </div>
                 </div>
             );
         } else if (stage === 'opponent-waiting') {
             modalContent = (
                 <div className="end-modal-content">
-                    <div className="modal-title end-game-title">
-                        score
-                    </div>
                     <div className="small-titles">
                         You have hit {numOpponentHits} ships and won {window.web3.fromWei(this.props.user.gameBetAmount / numOpponentHits, "ether")} ether
                     </div>

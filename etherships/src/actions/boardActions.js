@@ -94,6 +94,7 @@ export const receivedGuess = pos => (dispatch, getState) => {
     const numHits = state.board.board.filter(b => b === SUNK_SHIP).length;
 
     if (numHits >= 5) {
+        browserHistory.push('/users');
         openModal('endgame', {})(dispatch);
     }
 
@@ -143,6 +144,7 @@ export const guessResponse = payload => async (dispatch, getState) => {
             console.log('Guess Response: ', numHits, payload);
 
             if (numHits >= 5) {
+                browserHistory.push('/users');
                 openModal('endgame', {})(dispatch);
             }
 
@@ -208,8 +210,8 @@ export const submitScore = () => async (dispatch, getState) => {
 };
 
 export const playAgain = () => (dispatch) => {
-    browserHistory.push('/users#finished');
     closeModal()(dispatch);
+    window.location.reload();
 };
 
 export const resetTurn = () => (dispatch, getState) => {

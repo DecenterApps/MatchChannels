@@ -48,8 +48,6 @@ class Timer extends Component {
             countdown: newProps.countdown,
             seconds: 0,
         });
-
-
     }
 
     componentWillUnmount() {

@@ -22,6 +22,10 @@ class PlayedMatches extends Component {
 
     const blockNum = await getCurrentBlockNumber();
 
+    if ([...openChannels, ...joinChannels].length === 0) {
+
+    }
+
     this.setState({
       matches: [...openChannels, ...joinChannels].sort((a, b) => parseInt(b.channelId, 10) - parseInt(a.channelId, 10)),
       blockNum,
@@ -72,12 +76,13 @@ class PlayedMatches extends Component {
         <div>
          <button className="back-button back-btn-pos" onClick={this.goBack}>back</button>
 
-          <div className="match-area">
+         <div className="match-area">
             <div className="match-title">
               Your matches
             </div>
 
-            
+          {
+            matches.length !== 0 &&  
             <table>
               <thead>
                 <tr className="match-header"> 
@@ -115,8 +120,15 @@ class PlayedMatches extends Component {
                 }
                 </tbody>
               </table>
+          }
+
+          {
+            matches.length === 0 &&  
+            <div className="small-titles">You don't have any played matches.</div>
+          }
+
           </div>
-        </div>
+       </div>
       </div>
     );
   }
