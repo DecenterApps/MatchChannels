@@ -228,7 +228,7 @@ contract EtherShips is Players, ECTools {
     /// @dev Checks if the user has set 5 ships in it's board
     /// @notice Used for unsorted merkle tree, the first element in _path is the leaf node
     /// @param _paths Merkle tree paths for the five nodes where ships are set
-    /// @param _pos The position of those ships starting from 1-N
+    /// @param _pos The position of those ships starting from 1-N, sorted in ascending order
     /// @param _nonces The random nonce added to each node
     /// @param _root The root node of the tree we are checking
     function _assertUserSetShips(bytes32[35] _paths, uint[5] _pos, uint[5] _nonces, bytes32 _root) private view {
@@ -255,7 +255,6 @@ contract EtherShips is Players, ECTools {
                     computedHash = keccak256(abi.encodePacked(computedHash, proofElement));
                     posCopy = uint(posCopy) / 2 + 1;
                 }
-
             }
             
             assert(computedHash == _root);
