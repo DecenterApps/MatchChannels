@@ -94,7 +94,7 @@ contract('Ether Ships', async (accounts) => {
     await etherShips.openChannel(merkle.getRoot(generatedTree1.tree), "0", 10, wallet1.address, {from: user1});
     await etherShips.joinChannel(channelId, merkle.getRoot(generatedTree2.tree), "0", 10,  wallet2.address, {from: user2});
 
-    const pos = 0;
+    const pos = 17;
     const type = board2[pos];
     const path = merkle.joinPath(generatedTree2.tree, generatedTree2.hashedBoard, pos);
     const seq = 0;
@@ -175,14 +175,19 @@ contract('Ether Ships', async (accounts) => {
 
     pos[2] = pos[3];
 
-    const res = await etherShips.closeChannel(
-      channelId, // channelId
-      signature, //signature
-      numberOfGuesses, // _pos
-      paths, // paths
-      pos, // positions
-      nonces, // nonces
-      { from: user1}
-    );
+    try {
+      const res = await etherShips.closeChannel(
+        channelId, // channelId
+        signature, //signature
+        numberOfGuesses, // _pos
+        paths, // paths
+        pos, // positions
+        nonces, // nonces
+        { from: user1}
+      );
+      assert.equal(true, true, "It shouldn't pass to close channel because two same positions are sent");      
+    } catch (error) {
+    }
+
   });
 });
