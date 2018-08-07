@@ -8,7 +8,8 @@ export const LOAD_BOARD = 'load_board';
 export const RESET_BOARD = 'reset_board';
 export const GUESS_RESPONSE = 'guess_response';
 export const SET_OPPONENT_TREE = 'set_opponent_tree';
-export const GAME_FINISHED ='game_finished';
+export const GAME_FINISHED = 'game_finished';
+export const SET_BLOCK_NUMBER = 'set_block_number';
 
 // User reducer
 export const EDIT_NAME = 'edit_name';

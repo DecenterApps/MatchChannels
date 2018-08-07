@@ -60,9 +60,12 @@ class PlayedMatches extends Component {
   }
 
   callTimeout = async (channelId) => {
-    const res = await timeout(channelId);
+    await timeout(channelId);
 
-    console.log(res);
+    localStorage.removeItem('board');
+    localStorage.removeItem('user');
+
+    window.location.reload();
   }
 
   renderMatchState(match) {
@@ -123,7 +126,7 @@ class PlayedMatches extends Component {
                   matches.map((m, i) =>
                     <tr className="match-item" key={m.channelId}>
                       <td className='id'>#{m.channelId}</td>
-                      <td className='opponent'> { this.state.names[i] } </td>
+                      <td className='opponent'> { this.state.names[i] || '' } </td>
                       <td
                         className='stake'> ETH {window.web3.fromWei(m.stake, 'ether')} </td>
 

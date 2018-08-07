@@ -22,11 +22,22 @@ class Lobby extends Component {
     if (!this.props.user.registered) browserHistory.push('/');
   }
 
-  handleChange = (event) => {
+  async componentDidMount() {
+    // setInterval(async () => {
+    //   const currBlockNum = await getCurrentBlockNumber();
+      
+    //   if ((parseInt(currBlockNum, 10) > parseInt(this.props.board.blockNumber, 10) + NUM_BLOCKS_FOR_CHANNEL) && localStorage.getItem('board')) {
+    //     localStorage.removeItem('user');
+    //     localStorage.removeItem('board');
+    //     window.location.reload();
+    //   }
+    // }, 3000);
+  }
 
+  handleChange = (event) => {
     const value = event.target.value;
 
-    if (!this.isNumber(value)) {
+    if (!this.isNumber(value) && value !== '') {
       this.setState({
         isError: true,
      });
@@ -64,7 +75,7 @@ class Lobby extends Component {
     const { isError, ethAmount } = this.state;
 
     let inputStyle = isError ? 'user-list-input warning-input' : 'user-list-input';
-    let placeholderText = isError ? 'Enter a number' : 'Match Stake';
+    let placeholderText = isError ? 'Enter a number' : 'Match Stake (in ETH)';
 
     return (
       <div>
@@ -80,7 +91,6 @@ class Lobby extends Component {
               <div className='lobby-list'>
                 <div className="user-list-item">
                   <input className={inputStyle} value={ethAmount} onChange={this.handleChange} type="text" placeholder={placeholderText} />
-                  <span className="eth-text">ETH</span>
               
                   {
                     ethAmount === "" && 

@@ -44,10 +44,12 @@ class Timer extends Component {
     componentWillReceiveProps(newProps) {
         console.log('New Props', newProps, this.state);
 
-        this.setState({
-            countdown: newProps.countdown,
-            seconds: 0,
-        });
+        if (newProps.type !== 'timeout') {
+            this.setState({
+                countdown: newProps.countdown,
+                seconds: 0,
+            });
+        }
     }
 
     componentWillUnmount() {
