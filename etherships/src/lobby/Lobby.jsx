@@ -101,9 +101,11 @@ class Lobby extends Component {
 
           {
             hasCreatedMatch && 
-            <div className="user-list-title waiting-text">
-              waiting for your opponent to connect...
-            </div>
+              <div className="user-list-title waiting-text">
+                waiting for your opponent to connect...
+
+                <div className="lds-ring loader-margin"><div></div><div></div><div></div><div></div></div>
+              </div>
           }
         </div>
 

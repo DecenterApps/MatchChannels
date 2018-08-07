@@ -30,8 +30,6 @@ class PlayedMatches extends Component {
 
     const sortedMatches = [...openChannels, ...joinChannels].sort((a, b) => parseInt(b.channelId, 10) - parseInt(a.channelId, 10));
 
-    console.log(sortedMatches);
-
     const currUser = this.props.user.userAddr;
 
     sortedMatches.map(m => {
@@ -52,8 +50,6 @@ class PlayedMatches extends Component {
     const namesPromises = sortedMatches.map(m => getNickname(m.p1 === currUser ? m.p2 : m.p1));
 
     const names = await Promise.all(namesPromises);
-
-    console.log(names);
 
     this.setState({
       matches: sortedMatches,

@@ -302,7 +302,13 @@ input {
 .waiting-text {
     display: flex;
     justify-content: center;
+    align-items: center;
     width: 100%;
+    flex-direction: column;
+}
+
+.loader-margin {
+    margin-top: 20px;
 }
 
 .user-list-header {
