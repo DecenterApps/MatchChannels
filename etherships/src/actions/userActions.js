@@ -143,7 +143,7 @@ export const initAccount = () => (dispatch, getState) =>  {
 
       _conn.on('open', (d) => {
         console.log('Conn open - receiver side', d);
-        closeModal()(dispatch);
+        // closeModal()(dispatch);
       });
 
       _conn.on('close', () => {
@@ -243,13 +243,33 @@ export const connectToPlayer = (user) => (dispatch, getState) => {
 export const acceptChallenge = () => (dispatch, getState) => {
   const state = getState();
 
-  webrtc.send({
-    type: 'challenge_accepted',
-    channelId: state.modal.modalData.channelId,
-    amount: state.modal.modalData.amount,
-    addr: state.user.userAddr,
-    opponentTree: state.board.tree,
-  })
+  const conn = webrtc.connectToPlayer(state.user.opponentPeerId);
+
+  conn.on('open', () => {
+    console.log('Conn open - challenger side');
+    setConnection(conn, state.user.opponentPeerId, state.user.opponentChannel.valueOf())(dispatch);
+
+    conn.on('close', () => {
+      if(getState().board.gameInProgress) {
+        openModal('timeout', {})(dispatch);
+    } else {
+      browserHistory.push('/');
+    }
+    });
+
+    getState().user.peer.disconnect();
+
+    webrtc.send({
+      type: 'challenge_accepted',
+      channelId: state.modal.modalData.channelId,
+      amount: state.modal.modalData.amount,
+      addr: state.user.userAddr,
+      opponentTree: state.board.tree,
+    })
+  });
+  conn.on('data', (message) => {
+    msgReceived(message)(dispatch, getState);
+  });
 };
 
 export const declineChallenge = () => (dispatch) => {
@@ -278,9 +298,11 @@ export const msgReceived = (message) => (dispatch, getState) => {
     case 'challenge_accepted':
       pickFields(message.channelId, message.amount, message.addr)(dispatch);
       setOpponentTree(message.opponentTree, message.channelId)(dispatch, getState);
+
       break;
 
     case 'decline_challenge': 
+      console.log("DECLINED");
       closeModal()(dispatch);
       break;
 
