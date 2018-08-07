@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 import './Profile.css';
 
-import { hasOngoingMatch } from '../services/ethereumService';
+import { getWinsAndLosses } from '../services/ethereumService';
 import { fundAccount, withdrawFunds } from '../actions/userActions';
 
 class Profile extends Component {
@@ -21,7 +21,7 @@ class Profile extends Component {
     }
 
     async componentDidMount() {
-      const res = await hasOngoingMatch();
+      const res = await getWinsAndLosses();
 
       this.setState({
         numWins: res.numWins,

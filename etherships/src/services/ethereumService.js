@@ -168,6 +168,12 @@ export const getChannelInfo = async (channelId) => {
     };
 };
 
+export const getNickname = async (addr) => {
+    const user = await window.ethershipContract.players(addr);
+    
+    return user[0];
+};
+
 
 export const getUserChannels = async (type) =>
     new Promise( async (resolve, reject) => {
@@ -277,19 +283,31 @@ export const getWeb3 = () =>
 });
 
 export const monitorChannel = (channelId) =>
-new Promise(async (resolve, reject) => {
-    window.ethershipContract.CloseChannel({channelId: channelId}, {fromBlock: 100000,
-        toBlock: 'latest'}).watch(async (err, res) => {
-            if (!err) {
+    new Promise(async (resolve, reject) => {
+        window.ethershipContract.CloseChannel({channelId: channelId}, {fromBlock: 100000,
+            toBlock: 'latest'}).watch(async (err, res) => {
+                if (!err) {
 
-            }
-        });
+                }
+            });
 
     });
 
 
+export const isChannelStillValid = () =>
+    new Promise(async (resolve, reject) => {
+        const addr = await getCurrAddr();
 
-export const hasOngoingMatch = async () =>
+        window.ethershipContract.OpenChannel({addr: addr}, {fromBlock: 100000,
+            toBlock: 'latest'}).get(async (err, res) => {
+                if (!err) {
+
+                }
+            });
+
+    });
+
+export const getWinsAndLosses = async () =>
     new Promise(async (resolve, reject) => {
         const addr = await getCurrAddr();
 
