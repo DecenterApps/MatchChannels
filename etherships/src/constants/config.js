@@ -4,7 +4,7 @@ export const WEBRTC_SERVER = 'gametest.decenter.com';
 export const WEBRTC_API_KEY = 'peerjs';
 export const WEBRTC_PORT = 4443;
 
-export const ETHERSHIP_ADDRESS = '0x29f701b901fe9b954e42ddfb707dfd215f51c2ac';
+export const ETHERSHIP_ADDRESS = '0x06c1ce66d747823ac01ec064840d8391170ec6a7';
 
 export const NUM_BLOCKS_FOR_CHANNEL = 60;
 
