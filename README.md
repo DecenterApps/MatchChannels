@@ -32,3 +32,7 @@ To run the frontend library code, navigate to /library folde and run the followi
 * TicTacToeResolver (an example of a resolver that handles the state of a tic tac toe game)
 * ECTools (utility contract for signature verification)
 
+## Etherships
+
+We wrote article about this, if you want to read more, go to:
+[Introducing Etherships – Using state channels to scale Ethereum games](https://blog.decenter.com/2018/08/07/introducing-etherships-using-state-channels-scale-ethereum-games/)
