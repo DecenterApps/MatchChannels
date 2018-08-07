@@ -8,13 +8,13 @@ Having initially set out to create a new state channels framework that anyone co
 
 ## Build procedure
 
-Code consists of 2 main parts the solidity code located in /solidity folder and the library code located in /library.
+Code consists of 2 main parts: the Solidity code located in /solidity folder and the library code located in /library.
 
 To run the smart contract run `truffle develop` (you'll need the latest version of truffle installed)
 
 In the `truffle develop` console run `migrate --reset` to compile and deploy the contracts to local testnet.
 
-To deploy on the kovan testnet run `migrate --network=kovan --reset`
+To deploy on the Kovan testnet run `migrate --network=kovan --reset`
 
 In order to run tests first run `yarn install` or `npm install` and then `test` in truffle develop console.
 
@@ -26,7 +26,7 @@ To run the the whole game, just run from etherships folder:
 ## Contracts
 
 * EtherShips (Main contract, used for opening, joining channels and also disputing game)
-* Player (contract that handles stuff for player, ability to fund account or withdraw your money)
+* Player (contract that handles stuff for the player, ability to fund account or withdraw ETH)
 * ECTools (utility contract for signature verification)
 
 ## Frontend
@@ -42,5 +42,3 @@ We are using a so-called commit-reveal scheme, where each side has all their boa
 ## Want to read more?
 We wrote article about this, if you want to read more, go to:
 [Introducing Etherships – Using state channels to scale Ethereum games](https://blog.decenter.com/2018/08/07/introducing-etherships-using-state-channels-scale-ethereum-games/)
-
-Contact us at info@decenter.com
