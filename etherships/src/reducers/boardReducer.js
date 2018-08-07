@@ -10,6 +10,7 @@ import {
     SET_OPPONENT_TREE,
     START_GAME,
     GAME_FINISHED,
+    SET_BLOCK_NUMBER,
   } from '../constants/actionTypes';
 
 import { EMPTY_FIELD, MISSED_SHIP, SUNK_SHIP, PLAYERS_SHIP, SECONDS_PER_TURN, TIMEOUT_WAIT_PERIOD } from '../constants/config';
@@ -50,6 +51,7 @@ const INITIAL_STATE = {
     signatureNumOfGuesses: "",
     signatureResponse: {},
     gameInProgress: false,
+    blockNumber: 0,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -156,6 +158,12 @@ export default (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 gameInProgress: false,
+            };
+
+        case SET_BLOCK_NUMBER:
+            return {
+                ...state,
+                blockNumber: payload,
             };
 
         default:

@@ -80,7 +80,6 @@ export const timeout = async (channelId) => {
 };
 
 export const createUser = async (username, price) => {
-
     const priceInWei = price === '' ? 0 : window.web3.toWei(price, 'ether');
     let addr = await getCurrAddr();
     const res = await window.ethershipContract.createAccount(username, {from: addr, value: priceInWei});
@@ -301,7 +300,20 @@ export const isChannelStillValid = () =>
         window.ethershipContract.OpenChannel({addr: addr}, {fromBlock: 100000,
             toBlock: 'latest'}).get(async (err, res) => {
                 if (!err) {
+                    const channel = await getChannelInfo(res[res.length - 1].args.channelId.valueOf());
 
+                    const currBlockNum = await getCurrentBlockNumber();
+
+                    if (channel.p2 === "0x0000000000000000000000000000000000000000" 
+                        && parseInt(currBlockNum, 10) > parseInt((channel.blockStarted), 10) + 50) {
+
+                        resolve(false);
+                    } else {
+                        resolve(true);
+                    }
+
+                } else {
+                    reject(err);
                 }
             });
 

@@ -18,7 +18,7 @@ import { browserHistory } from 'react-router';
 
 class App extends Component {
 
-  componentDidMount() {
+  async componentDidMount() {
     if (this.props.user.userAddr) {
       this.props.initAccount();
       this.props.initBoard();
@@ -26,9 +26,9 @@ class App extends Component {
 
     const board = localStorage.getItem("board");
 
-    if (board && JSON.parse(board).gameInProgress) {
-      browserHistory.push('/match');
-    }
+    // if (board && JSON.parse(board).gameInProgress) {
+    //   browserHistory.push('/match');
+    // }
   }
 
   componentDidUpdate(prevProps) {

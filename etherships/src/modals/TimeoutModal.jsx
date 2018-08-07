@@ -8,7 +8,8 @@ import { customModalStyles } from '../constants/config';
 import './Modal.css';
 import Timer from '../game/Timer';
 
-import { submitScore } from '../actions/boardActions';
+import { submitScore, playAgain } from '../actions/boardActions';
+import { browserHistory } from '../../node_modules/react-router/lib';
 
 class TimeoutModal extends Component {
 
@@ -20,8 +21,12 @@ class TimeoutModal extends Component {
         };
     }
 
-    submitTimeout = () => {
-        this.props.submitScore();
+    submitTimeout = async () => {
+        await this.props.submitScore();
+
+        browserHistory.push('/');
+
+        this.props.playAgain();
     }
 
     onTimerEnd = () => {
@@ -49,7 +54,7 @@ class TimeoutModal extends Component {
 
                             {
                                 this.state.waiting && 
-                                <Timer countdown={timeoutTimer} onTimerEnd={this.onTimerEnd}/>
+                                <Timer countdown={timeoutTimer} onTimerEnd={this.onTimerEnd} type='timeout' />
                             }
 
                             {
@@ -75,6 +80,7 @@ const mapStateToProps = (props) => ({
 
 const mapDispatchToProps = {
     submitScore,
+    playAgain,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TimeoutModal);

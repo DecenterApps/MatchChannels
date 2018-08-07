@@ -61,8 +61,9 @@ export const createPeer = (peerId) => {
       if(err.message.indexOf('is taken') !== -1) {
         localStorage.setItem('peer', short.uuid());
         window.location.reload();
-      } else {
-        // localStorage.setItem('peer', short.uuid());
+      } else if(err.message.indexOf('Could not connect to peer ') !== -1) {
+         localStorage.removeItem('user');
+         localStorage.removeItem('board');
       }
     });
 

@@ -10,6 +10,7 @@ import { SET_FIELD,
         SET_OPPONENT_TREE,
         START_GAME,
         GAME_FINISHED,
+        SET_BLOCK_NUMBER,
         } from '../constants/actionTypes';
 
 import { generateTree, checkGuess, checkResult, checkMerklePath, findShipsPaths } from '../services/boardService';
@@ -59,13 +60,19 @@ export const generateBoard = (board) => async (dispatch, getState) => {
     console.log(state.user.opponentChannel, getRoot(state.board.tree), state.user.peerId, walletAddress, state.user.gameBetAmount);
 
     if (state.user.opponentChannel === -1) {
-        await openChannel(getRoot(state.board.tree), state.user.peerId, walletAddress, state.user.gameBetAmount);
+        const tx = await openChannel(getRoot(state.board.tree), state.user.peerId, walletAddress, state.user.gameBetAmount);
+
+        console.log("tx: ", tx.receipt.blockNumber);
+
+        setBlockNumber(tx.receipt.blockNumber)(dispatch);
 
         browserHistory.push('/users');
 
         matchStarted()(dispatch);
     } else {
-        await joinChannel(state.user.opponentChannel, getRoot(state.board.tree), state.user.peerId, walletAddress, state.user.gameBetAmount);
+        const tx = await joinChannel(state.user.opponentChannel, getRoot(state.board.tree), state.user.peerId, walletAddress, state.user.gameBetAmount);
+
+        setBlockNumber(tx.receipt.blockNumber)(dispatch);
 
         dispatch({ type: SET_PLAYER_TURN, payload: true });
 
@@ -231,6 +238,10 @@ export const submitDispute = (channelId, sig, pos, seq, type, nonce, path) => as
     browserHistory.push('/');
 
     closeModal()(dispatch);
+};
+
+export const setBlockNumber = (blockNum) => (dispatch) => {
+    dispatch({ type: SET_BLOCK_NUMBER, payload: blockNum})
 };
 
 // helper function to help stringify deal with circual referencing in json
