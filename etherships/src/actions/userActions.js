@@ -270,7 +270,9 @@ export const msgReceived = (message) => (dispatch, getState) => {
         console.log(message);
         setOpponentData(message.addr, message.channelId, message.opponentPeerId)(dispatch, getState);
         openModal('challenge', message)(dispatch);
-      } 
+      } else {
+        webrtc.send({type: 'decline_challenge'});
+      }
       break;
       
     case 'challenge_accepted':
