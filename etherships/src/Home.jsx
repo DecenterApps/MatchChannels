@@ -14,7 +14,7 @@ class Home extends Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     if (this.props.user.registered) browserHistory.push('/users');
   }
 

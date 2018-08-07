@@ -266,9 +266,11 @@ export const msgReceived = (message) => (dispatch, getState) => {
 
   switch(message.type) {
     case 'challenge':
-      console.log(message);
-      setOpponentData(message.addr, message.channelId, message.opponentPeerId)(dispatch, getState);
-      openModal('challenge', message)(dispatch);
+      if (getState().user.opponentChannel === -1) {
+        console.log(message);
+        setOpponentData(message.addr, message.channelId, message.opponentPeerId)(dispatch, getState);
+        openModal('challenge', message)(dispatch);
+      } 
       break;
       
     case 'challenge_accepted':
