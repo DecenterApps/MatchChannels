@@ -28,7 +28,8 @@ contract EtherShips is Players, ECTools {
     Channel[] public channels;
     mapping(address => address) public signAddresses;
 
-    uint public TIMEOUT_NUM_BLOCKS = 50; // TODO: this number is used for testing
+    uint public BLOCKS_TO_JOIN = 60; // TODO: this number is used for testing
+    uint public BLOCKS_TO_TIMEOUT = 60;
     uint public HIT_SHIP = 1;
 
     /// @dev User opens a channel and waits for the opponent to join
@@ -68,10 +69,10 @@ contract EtherShips is Players, ECTools {
     /// @param _signAddress Opens channel with one MetaMask address, sign state with anoother
     function joinChannel(uint _channelId, bytes32 _merkleRoot, string _webrtcId, uint _amount, address _signAddress) public payable {
         require(_channelId < channels.length);
-        require((channels[_channelId].p1 != 0x0) && (channels[_channelId].p2 == 0x0));
+        require((channels[_channelId].p1 != address(0)) && (channels[_channelId].p2 == address(0)));
         require(players[msg.sender].exists);
         require(_amount <= players[msg.sender].balance + msg.value);
-        require(block.number <= channels[_channelId].blockStarted + TIMEOUT_NUM_BLOCKS);
+        require(block.number <= channels[_channelId].blockStarted + BLOCKS_TO_JOIN);
 
         if (msg.value > 0) {
             players[msg.sender].balance += msg.value;
@@ -109,7 +110,7 @@ contract EtherShips is Players, ECTools {
 
         _assertUserSetShips(_paths, _pos, _nonces, c.p1 == msg.sender ? c.p1root : c.p2root);
         
-        address opponent = c.p1 == msg.sender ? c.p2 : c.p1;
+        address opponent = (c.p1 == msg.sender) ? c.p2 : c.p1;
         bytes32 hash = keccak256(abi.encodePacked(_channelId, msg.sender, _numberOfGuesses));
 
         require(_recoverSig(hash, _sig) == signAddresses[opponent]);
@@ -136,13 +137,14 @@ contract EtherShips is Players, ECTools {
                     _addBalanceToPlayer(c.p2, c.balance, _channelId);
                 }
             } else { // nobody has won the game distribute the rest of the money accordingly
-                uint amount = c.balance/2;
+                uint amount = c.balance / 2;
                 _addBalanceToPlayer(c.p1, amount, _channelId);
                 _addBalanceToPlayer(c.p2, amount, _channelId);
             }
 
         } else { // the first time close is called on this channel
             c.halfFinisher = msg.sender;
+            c.blockStarted = block.number;
 
             _setScore(msg.sender, _numberOfGuesses, _channelId);
             _addBalanceToPlayer(msg.sender, wonAmount, _channelId);
@@ -157,7 +159,7 @@ contract EtherShips is Players, ECTools {
         Channel storage c = channels[_channelId];
 
         require(c.p1 == msg.sender || c.p2 == msg.sender);
-        require(block.number > (c.blockStarted + TIMEOUT_NUM_BLOCKS));
+        require(block.number > (c.blockStarted + BLOCKS_TO_TIMEOUT));
         require(!c.finished);
 
         // If nobody joined the channel let the user retreive the money
@@ -165,16 +167,15 @@ contract EtherShips is Players, ECTools {
             _addBalanceToPlayer(c.p1, c.stake, _channelId);
 
             c.finished = true;
+
             emit CloseChannel(_channelId, msg.sender, c.finished);
         } else if (c.halfFinisher != 0x0) { // If one of the players hasn't closed the game
             // the user gets all the left over money in the channel
             _addBalanceToPlayer(c.halfFinisher, c.balance, _channelId);
-
-            c.finished = true;
-            c.balance = 0;
-            c.p1Score = c.p1 == c.halfFinisher ? 5 : 0;
-            c.p2Score = c.p2 == c.halfFinisher ? 5 : 0;
             
+            (c.p1 == c.halfFinisher) ? _setScore(c.p1, 5, _channelId) : _setScore(c.p2, 5, _channelId);
+            c.finished = true;
+
             players[c.halfFinisher].finishedGames += 1;
 
             emit CloseChannel(_channelId, c.halfFinisher, c.finished);
@@ -195,23 +196,29 @@ contract EtherShips is Players, ECTools {
         require(c.p1 == msg.sender || c.p2 == msg.sender);
         require(!c.finished);
 
-        address opponent = c.p1 == msg.sender ? c.p2 : c.p1;
+        address opponent = (c.p1 == msg.sender) ? c.p2 : c.p1;
         
         bytes32 hash = keccak256(abi.encodePacked(_channelId, _pos, _seq, _type, _nonce, _path));
         require(_recoverSig(hash, _sig) == signAddresses[opponent]);
 
-        bytes32 opponentRoot = c.p1 == msg.sender ? c.p2root : c.p1root;
-        if (keccak256(abi.encodePacked(_pos, _type, _nonce)) != _path[0] || _getRoot(_path, (_pos + 1)) != opponentRoot) {
+        bytes32 opponentRoot = (c.p1 == msg.sender) ? c.p2root : c.p1root;
+        if (keccak256(abi.encodePacked(_pos, _type, _nonce)) != _path[0] || _getRoot(_path, _pos) != opponentRoot) {
             // only player that didn't cheat get plus one on finished games
             players[msg.sender].finishedGames += 1;
 
             // gets all the leftover money from the channel
             _addBalanceToPlayer(msg.sender, c.balance, _channelId);
+
+            // if other player close channel before, we need to set his score to 0
+            if (c.p1 == msg.sender) {
+                _setScore(c.p1, 5, _channelId);
+                _setScore(c.p2, 0, _channelId);
+            } else {
+                _setScore(c.p1, 0, _channelId);
+                _setScore(c.p2, 5, _channelId);
+            }
             
-            c.p1Score = c.p1 == msg.sender ? 5 : 0;
-            c.p2Score = c.p2 == msg.sender ? 5 : 0;
             c.finished = true;
-            c.balance = 0;
 
             emit CloseChannel(_channelId, msg.sender, true);
         }
@@ -246,7 +253,7 @@ contract EtherShips is Players, ECTools {
                 } else {
                     // Hash(current element of the proof + current computed hash)
                     computedHash = keccak256(abi.encodePacked(computedHash, proofElement));
-                    posCopy = uint(posCopy)/2 + 1;
+                    posCopy = uint(posCopy) / 2 + 1;
                 }
 
             }
@@ -267,13 +274,17 @@ contract EtherShips is Players, ECTools {
     /// @param _path The merkle tree path we are checking
     /// @param _pos Position of the starting node, goes 1-N
     function _getRoot(bytes32[7] _path, uint _pos) private pure returns(bytes32 _root) {
+        // positions are from 1-N
+        uint pos = _pos + 1;
         _root = _path[0];
         
         for (uint i = 1; i < 7; i++) {
-            if (_pos % 2 == 0) {
+            if (pos % 2 == 0) {
                 _root = keccak256(abi.encodePacked(_path[i], _root));
+                pos = pos / 2;
             } else {
                 _root = keccak256(abi.encodePacked(_root, _path[i]));
+                pos = uint(pos) / 2 + 1;
             }
         }
     }
