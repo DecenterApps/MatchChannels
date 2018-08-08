@@ -100,9 +100,9 @@ class PlayedMatches extends Component {
     return (
       <div>
         <div>
-         <button className="back-button back-btn-pos" onClick={this.goBack}>back</button>
 
          <div className="match-area">
+         <button className="back-button back-btn-pos" onClick={this.goBack}>back</button>
             <div className="match-title">
               Your matches
             </div>
@@ -157,6 +157,11 @@ class PlayedMatches extends Component {
           }
 
           </div>
+
+          <div className="left-ship" />
+          <div className="right-ship" />
+
+
        </div>
       </div>
     );

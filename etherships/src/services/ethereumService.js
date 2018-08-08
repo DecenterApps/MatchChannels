@@ -117,6 +117,10 @@ export const getUserInfo = async (addr) => {
     return user;
 };
 
+export const userExists = async () => {
+
+};
+
 // wei balance
 export const getUserCtxBalance = async (addr) => {
     const user = await window.ethershipContract.players(addr);

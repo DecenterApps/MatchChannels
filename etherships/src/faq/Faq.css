@@ -1,0 +1,40 @@
+.faq-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.question-area {
+    width: 45%;
+    height: 500px;
+    margin-top: 40px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.question {
+    margin-bottom: 15px;
+    padding: 10px 10px 10px 10px;
+}
+
+.question-title {
+    font-family: Boogaloo;
+    font-size: 26px;
+    text-align: center;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    text-align: left;
+
+    margin: 10px 0px 15px 0px;
+
+    color: #FFFFFF;
+}
+
+.question-text {
+    font-family: Roboto;
+
+    font-size: 13px;
+    letter-spacing: 0.03em;
+
+    color: #C6C6C6;
+}

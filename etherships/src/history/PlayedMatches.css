@@ -40,6 +40,7 @@
     flex-direction: column;
     align-items: center;
     z-index: 10;
+    position: relative;
 }
 
 
@@ -51,6 +52,7 @@ tbody {
 
 .back-btn-pos {
     top: 58px;
+    left: 144px;
 }
 
 .btn-timeout {

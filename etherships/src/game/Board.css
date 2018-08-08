@@ -211,7 +211,7 @@
     border-radius: 10px;
     margin: 4px;
     justify-content: center;
-    background: url('../images/target.svg') center center no-repeat;
+    background: url('../images/target_2.svg') center center no-repeat;
     box-shadow: none;
 }
 
@@ -261,7 +261,7 @@
 
 .red-field:not(.nohover):hover {
     cursor: pointer;
-    background: url('../images/target.svg') center center no-repeat;
+    background: url('../images/target_2.svg') center center no-repeat;
     box-shadow: none;
     margin: 4px;
     height: 54px;
