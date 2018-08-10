@@ -28,9 +28,10 @@ contract EtherShips is Players, ECTools {
     Channel[] public channels;
     mapping(address => address) public signAddresses;
 
-    uint public BLOCKS_TO_JOIN = 60; // TODO: this number is used for testing
-    uint public BLOCKS_TO_TIMEOUT = 60;
-    uint public HIT_SHIP = 1;
+    uint public constant BLOCKS_TO_JOIN = 60; // TODO: this number is used for testing
+    uint public constant BLOCKS_TO_TIMEOUT = 60;
+    uint public constant HIT_SHIP = 1;
+    uint public constant NUM_FIELDS_SET = 12;
 
     /// @dev User opens a channel and waits for the opponent to join
     /// @param _merkleRoot The root node of your boards state
@@ -101,7 +102,7 @@ contract EtherShips is Players, ECTools {
     /// @param _channelId The id of the channel you want to close
     /// @param _sig The signature of the other user confirming how many ships you hit
     /// @param _numberOfGuesses Number of ships you hit
-    function closeChannel(uint _channelId, bytes _sig, uint _numberOfGuesses, bytes32[35] _paths, uint[5] _pos, uint[5] _nonces) public {
+    function closeChannel(uint _channelId, bytes _sig, uint _numberOfGuesses, bytes32[84] _paths, uint[NUM_FIELDS_SET] _pos, uint[NUM_FIELDS_SET] _nonces) public {
         Channel storage c = channels[_channelId];
 
         require(c.p1 == msg.sender || c.p2 == msg.sender);
@@ -115,7 +116,7 @@ contract EtherShips is Players, ECTools {
 
         require(_recoverSig(hash, _sig) == signAddresses[opponent]);
 
-        uint wonAmount = c.stake * _numberOfGuesses / 5;
+        uint wonAmount = c.stake * _numberOfGuesses / NUM_FIELDS_SET;
 
         // one player already submitted score
         if (c.halfFinisher != address(0)) {
@@ -126,12 +127,12 @@ contract EtherShips is Players, ECTools {
             _addBalanceToPlayer(msg.sender, wonAmount, _channelId);
 
             // sombody won the game
-            if (c.p1Score == 5 || c.p2Score == 5) {
+            if (c.p1Score == NUM_FIELDS_SET || c.p2Score == NUM_FIELDS_SET) {
                 players[c.p1].finishedGames += 1;
                 players[c.p2].finishedGames += 1;
 
                 // if game ended we send rest of stake to winner
-                if (c.p1Score == 5) {
+                if (c.p1Score == NUM_FIELDS_SET) {
                     _addBalanceToPlayer(c.p1, c.balance, _channelId);
                 } else {
                     _addBalanceToPlayer(c.p2, c.balance, _channelId);
@@ -173,7 +174,7 @@ contract EtherShips is Players, ECTools {
             // the user gets all the left over money in the channel
             _addBalanceToPlayer(c.halfFinisher, c.balance, _channelId);
             
-            (c.p1 == c.halfFinisher) ? _setScore(c.p1, 5, _channelId) : _setScore(c.p2, 5, _channelId);
+            (c.p1 == c.halfFinisher) ? _setScore(c.p1, NUM_FIELDS_SET, _channelId) : _setScore(c.p2, NUM_FIELDS_SET, _channelId);
             c.finished = true;
 
             players[c.halfFinisher].finishedGames += 1;
@@ -211,11 +212,11 @@ contract EtherShips is Players, ECTools {
 
             // if other player close channel before, we need to set his score to 0
             if (c.p1 == msg.sender) {
-                _setScore(c.p1, 5, _channelId);
+                _setScore(c.p1, NUM_FIELDS_SET, _channelId);
                 _setScore(c.p2, 0, _channelId);
             } else {
                 _setScore(c.p1, 0, _channelId);
-                _setScore(c.p2, 5, _channelId);
+                _setScore(c.p2, NUM_FIELDS_SET, _channelId);
             }
             
             c.finished = true;
@@ -231,9 +232,13 @@ contract EtherShips is Players, ECTools {
     /// @param _pos The position of those ships starting from 1-N, sorted in ascending order
     /// @param _nonces The random nonce added to each node
     /// @param _root The root node of the tree we are checking
-    function _assertUserSetShips(bytes32[35] _paths, uint[5] _pos, uint[5] _nonces, bytes32 _root) private view {
+    function _assertUserSetShips(bytes32[84] _paths, uint[NUM_FIELDS_SET] _pos, uint[NUM_FIELDS_SET] _nonces, bytes32 _root) private pure {
+        checkAdjacent(_pos, 0, 4);
+        checkAdjacent(_pos, 4, 7);
+        checkAdjacent(_pos, 7, 9);
+        checkAdjacent(_pos, 9, 11);
         
-        for (uint i = 0; i < 5; ++i) {
+        for (uint i = 0; i < NUM_FIELDS_SET; ++i) {
             bytes32 computedHash = keccak256(abi.encodePacked(_pos[i] - 1, HIT_SHIP, _nonces[i]));
             
             assert(computedHash == _paths[i*7]);
@@ -258,6 +263,26 @@ contract EtherShips is Players, ECTools {
             }
             
             assert(computedHash == _root);
+        }
+    }
+
+    function checkAdjacent(uint[NUM_FIELDS_SET] _pos, uint _startPos, uint _shipSize) private pure {
+        uint amount = 0;
+
+        if (_pos[_startPos] + 8 == _pos[_startPos + 1]) {
+            amount = 8;
+        }
+         
+        if (_pos[_startPos] + 1 == _pos[_startPos + 1]) {
+            amount = 1;
+        }
+         
+        assert(amount != 0);
+        
+        for (uint i = _startPos; i < _shipSize - 1; ++i) {
+            if (_pos[i] + amount != _pos[i + 1]) {
+                revert();
+            }
         }
     }
 
