@@ -116,7 +116,7 @@
 }
 
 .field.not-chosen:hover {
-    background: url('../images/green_ship.svg') center center no-repeat;
+    background: url('../images/small_ship.svg') center center no-repeat;
     box-shadow: none;
     cursor: pointer;
     opacity: 0.5;
@@ -373,9 +373,8 @@
 
 .slots {
     padding-top: 32px;
-    width: 60px;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     height: 380px;
 }
 
@@ -429,4 +428,52 @@
     display: flex;
     flex-direction: column;
     height: 556px;
+}
+
+.one-square-ship {
+    height: 54px;
+    width: 54px;
+    display: -ms-flexbox;
+    background: url('../images/small_ship.svg') center center no-repeat;
+    box-shadow: none;
+    border-radius: 10px;
+    margin: 10px 0px 0px 8px;
+    cursor: pointer;
+}
+
+.two-square-ship {
+    height: 108px;
+    width: 54px;
+    display: -ms-flexbox;
+    background: url('../images/medium_ship.svg') center center no-repeat;
+    box-shadow: none;
+    border-radius: 10px;
+    margin: 10px 0px 0px 8px;
+    cursor: pointer;
+}
+
+.three-square-ship {
+    height: 162px;
+    width: 54px;
+    display: -ms-flexbox;
+    background: url('../images/large_ship.svg') center center no-repeat;
+    box-shadow: none;
+    border-radius: 10px;
+    margin: 10px 0px 0px 8px;
+    cursor: pointer;
+}
+
+.four-square-ship {
+    height: 244px;
+    width: 54px;
+    display: -ms-flexbox;
+    background: url('../images/huge_ship.svg') center center no-repeat;
+    box-shadow: none;
+    border-radius: 10px;
+    margin: 10px 0px 0px 8px;
+    cursor: pointer;
+}
+
+.selected {
+    border: 2px solid #78ede5;
 }

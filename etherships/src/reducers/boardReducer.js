@@ -11,6 +11,7 @@ import {
     START_GAME,
     GAME_FINISHED,
     SET_BLOCK_NUMBER,
+    SELECT_SHIP,
   } from '../constants/actionTypes';
 
 import { EMPTY_FIELD, MISSED_SHIP, SUNK_SHIP, PLAYERS_SHIP, SECONDS_PER_TURN, TIMEOUT_WAIT_PERIOD } from '../constants/config';
@@ -52,6 +53,8 @@ const INITIAL_STATE = {
     signatureResponse: {},
     gameInProgress: false,
     blockNumber: 0,
+    selectedShipType: 0,
+    shipsPlaced: [false, false, false, false, false],
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -62,15 +65,33 @@ export default (state = INITIAL_STATE, action) => {
             const pos = payload;
             const board = state.board;
 
-            let currPicked = state.numPicked;
+            // populate board with the ship that is placed
+            if (pos + ((state.selectedShipType - 1) * 8) < 64) {
+                for (let i = 0; i < state.selectedShipType; ++i) {
+                    board[pos + (i * 8)] = 1;
+                }
+            } else {
+                return {
+                    ...state,
+                };
+            }
 
-            board[pos] = board[pos] ? EMPTY_FIELD : PLAYERS_SHIP;
-            currPicked += board[pos] ? 1 : -1;
+            const places = state.shipsPlaced;
+
+            // TODO: refactor this, used to keep track which ships are already on board
+            if (state.selectedShipType === 2 && places[2] === true) {
+                places[1] = true;
+            } else if(state.selectedShipType === 1) {
+                places[0] = true;
+            }
+            else {
+                places[state.selectedShipType] = true;
+            }
 
             return {
                 ...state,
-                numPicked: currPicked,
-                board
+                board,
+                shipsPlaced: places
             }
 
         case CREATE_TREE:
@@ -165,6 +186,12 @@ export default (state = INITIAL_STATE, action) => {
                 ...state,
                 blockNumber: payload,
             };
+
+        case SELECT_SHIP:
+            return {
+                ...state,
+                selectedShipType: payload,
+            }
 
         default:
             return {

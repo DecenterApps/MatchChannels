@@ -1,0 +1,18 @@
+<svg width="54" height="240" viewBox="0 0 54 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="54" height="240" fill="black" fill-opacity="0"/>
+<rect width="54" height="240" fill="black" fill-opacity="0"/>
+<rect width="54" height="240" rx="10" fill="#77C000"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M44 235C49.5229 235 54 230.523 54 225V230C54 235.523 49.5229 240 44 240H10C4.47705 240 0 235.523 0 230V225C0 230.523 4.47705 235 10 235H44Z" fill="#201D28" fill-opacity="0.23"/>
+<rect width="12" height="12" fill="black" fill-opacity="0" transform="translate(21 207)"/>
+<circle cx="27" cy="213" r="6" fill="#446D00"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M27 207C23.6865 207 21 209.686 21 213C21 213.341 21.0283 213.675 21.083 214C21.5591 211.162 24.0273 209 27 209C29.9727 209 32.4409 211.162 32.917 214C32.9717 213.675 33 213.341 33 213C33 209.686 30.3135 207 27 207Z" fill="#639B09"/>
+<rect width="12" height="12" fill="black" fill-opacity="0" transform="translate(21 145)"/>
+<circle cx="27" cy="151" r="6" fill="#446D00"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M27 145C23.6865 145 21 147.686 21 151C21 151.341 21.0283 151.675 21.083 152C21.5591 149.162 24.0273 147 27 147C29.9727 147 32.4409 149.162 32.917 152C32.9717 151.675 33 151.341 33 151C33 147.686 30.3135 145 27 145Z" fill="#639B09"/>
+<rect width="12" height="12" fill="black" fill-opacity="0" transform="translate(21 82)"/>
+<circle cx="27" cy="88" r="6" fill="#446D00"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M27 82C23.6865 82 21 84.6863 21 88C21 88.3407 21.0283 88.6748 21.083 89C21.5591 86.1623 24.0273 84 27 84C29.9727 84 32.4409 86.1623 32.917 89C32.9717 88.6748 33 88.3407 33 88C33 84.6863 30.3135 82 27 82Z" fill="#639B09"/>
+<rect width="12" height="12" fill="black" fill-opacity="0" transform="translate(21 19)"/>
+<circle cx="27" cy="25" r="6" fill="#446D00"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M27 19C23.6865 19 21 21.6863 21 25C21 25.3407 21.0283 25.6748 21.083 26C21.5591 23.1623 24.0273 21 27 21C29.9727 21 32.4409 23.1623 32.917 26C32.9717 25.6748 33 25.3407 33 25C33 21.6863 30.3135 19 27 19Z" fill="#639B09"/>
+</svg>

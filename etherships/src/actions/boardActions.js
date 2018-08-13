@@ -11,6 +11,7 @@ import { SET_FIELD,
         START_GAME,
         GAME_FINISHED,
         SET_BLOCK_NUMBER,
+        SELECT_SHIP,
         } from '../constants/actionTypes';
 
 import { generateTree, checkGuess, checkResult, checkMerklePath, findShipsPaths } from '../services/boardService';
@@ -242,6 +243,10 @@ export const submitDispute = (channelId, sig, pos, seq, type, nonce, path) => as
 
 export const setBlockNumber = (blockNum) => (dispatch) => {
     dispatch({ type: SET_BLOCK_NUMBER, payload: blockNum})
+};
+
+export const selectShip = (type) => (dispatch) => {
+    dispatch({ type: SELECT_SHIP, payload: type});
 };
 
 // helper function to help stringify deal with circual referencing in json

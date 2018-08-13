@@ -1,0 +1,12 @@
+<svg width="54" height="116" viewBox="0 0 54 116" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="54" height="116" fill="black" fill-opacity="0"/>
+<rect width="54" height="116" fill="black" fill-opacity="0"/>
+<rect width="54" height="116" rx="10" fill="#77C000"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M44 111C49.5229 111 54 106.523 54 101V106C54 111.523 49.5229 116 44 116H10C4.47705 116 0 111.523 0 106V101C0 106.523 4.47705 111 10 111H44Z" fill="#201D28" fill-opacity="0.23"/>
+<rect width="12" height="12" fill="black" fill-opacity="0" transform="translate(21 82)"/>
+<circle cx="27" cy="88" r="6" fill="#446D00"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M27 82C23.6865 82 21 84.6863 21 88C21 88.3407 21.0283 88.6748 21.083 89C21.5591 86.1623 24.0273 84 27 84C29.9727 84 32.4409 86.1623 32.917 89C32.9717 88.6748 33 88.3407 33 88C33 84.6863 30.3135 82 27 82Z" fill="#639B09"/>
+<rect width="12" height="12" fill="black" fill-opacity="0" transform="translate(21 19)"/>
+<circle cx="27" cy="25" r="6" fill="#446D00"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M27 19C23.6865 19 21 21.6863 21 25C21 25.3407 21.0283 25.6748 21.083 26C21.5591 23.1623 24.0273 21 27 21C29.9727 21 32.4409 23.1623 32.917 26C32.9717 25.6748 33 25.3407 33 25C33 21.6863 30.3135 19 27 19Z" fill="#639B09"/>
+</svg>

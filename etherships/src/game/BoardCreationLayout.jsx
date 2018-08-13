@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { generateBoard, resetBoard } from '../actions/boardActions';
+import { generateBoard, resetBoard, selectShip } from '../actions/boardActions';
 
 import Board from './Board';
 
@@ -12,6 +12,7 @@ class BoardCreationLayout extends Component {
 
         this.state = {
             loading: false,
+            selected: [false, false, false, false, false],
         };
     }
 
@@ -30,11 +31,23 @@ class BoardCreationLayout extends Component {
     componentDidMount() {
         this.props.resetBoard();
     }
+    
+    selectShip = (index, type) => {
+        let newSelection = this.state.selected.map(s => s = false);
+
+        newSelection[index] = true;
+
+        this.setState({
+            selected: newSelection
+        });
+
+        this.props.selectShip(type);
+    }
 
     render() {
-        const fieldsLeft = Array.from({length: 5 - this.props.board.numPicked}, (_, k) => k++);
+        const { gameBetAmount } = this.props.user;
 
-        const {  gameBetAmount } = this.props.user;
+        const { selected } = this.state;
 
         let btnStyle = "next-btn grey-btn";
 
@@ -53,11 +66,34 @@ class BoardCreationLayout extends Component {
 
                     <div className='board-right-area'>
                         <div className="slots">
-                        {
-                            fieldsLeft.map(f =>
-                                <div key={f} className="field slot-field" />
-                            )
-                        }
+                           {
+                               !this.props.board.shipsPlaced[0] &&
+                               <div className={selected[0] === true ? ' one-square-ship selected' : 'one-square-ship'} onClick={() => this.selectShip(0, 1)}></div>
+
+                           }
+
+                            <div>
+                                {
+                                    !this.props.board.shipsPlaced[1] &&
+                                    <div className={selected[1] === true ? ' two-square-ship selected' : 'two-square-ship'} onClick={() => this.selectShip(1, 2)}></div>
+                                }
+
+                                {
+                                    !this.props.board.shipsPlaced[2] &&
+                                    <div className={selected[2] === true ? ' two-square-ship selected' : 'two-square-ship'} onClick={() => this.selectShip(2, 2)}></div>
+                                }
+                            </div>
+
+                            {
+                                !this.props.board.shipsPlaced[3] &&
+                                <div className={selected[3] === true ? ' three-square-ship selected' : 'three-square-ship'} onClick={() => this.selectShip(3, 3)}></div>
+
+                            }
+
+                            {
+                                !this.props.board.shipsPlaced[4] &&
+                                <div className={selected[4] === true ? ' four-square-ship selected' : 'four-square-ship'} onClick={() => this.selectShip(4, 4)}></div>
+                            }
                         </div>
 
                         <div>
@@ -108,6 +144,7 @@ const mapStateToProps = (props) => ({
 const mapDispatchToProps = {
     generateBoard,
     resetBoard,
+    selectShip,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(BoardCreationLayout);
