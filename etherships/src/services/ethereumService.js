@@ -237,46 +237,45 @@ export const getCurrAddr = async () =>
 export const getWeb3 = () =>
   new Promise(async (resolve, reject) => {
     var results;
-    var web3 = window.web3;
+    var web3 = window.ethereum;
 
     // Checking if Web3 has been injected by the browser (Mist/MetaMask)
     if (typeof web3 !== 'undefined') {
         // Use Mist/MetaMask's provider.
-        web3 = new Web3(web3.currentProvider);
+        web3 = new Web3(web3);
 
-        web3.eth.getAccounts(async (err, accounts) => {
-            if (err) return reject(err.message);
-            if (!accounts.length) return reject("Please unlock MetaMask");
+        const accounts = await window.ethereum.enable();
 
-            let addr = accounts[0];
+        if (!accounts.length) return reject("Please unlock MetaMask");
 
-            web3.version.getNetwork(async (err, network) => {
+        let addr = accounts[0];
 
-                if (err) {
-                    return reject(err);
-                }
+        web3.version.getNetwork(async (err, network) => {
 
-                if (network !== '42') {
-                    return reject("Please switch over to kovan testnet");
-                }
+            if (err) {
+                return reject(err);
+            }
 
-                const ethershipContract = contract(EtherShips);
-                ethershipContract.setProvider(web3.currentProvider);
-                window.ethershipContract = ethershipContract.at(ETHERSHIP_ADDRESS);
+            if (network !== '42') {
+                return reject("Please switch over to kovan testnet");
+            }
 
-                const reg = await getUserInfo(accounts[0]);
+            const ethershipContract = contract(EtherShips);
+            ethershipContract.setProvider(web3.currentProvider);
+            window.ethershipContract = ethershipContract.at(ETHERSHIP_ADDRESS);
 
-                const user = {
-                    userAddr: addr,
-                    username: reg[0],
-                    balance: reg[1].valueOf(),
-                    gamesPlayed: reg[2].valueOf(),
-                    finishedGames: reg[3].valueOf(),
-                    registered: reg[4].valueOf()
-                };
+            const reg = await getUserInfo(accounts[0]);
 
-                resolve(user);
-            });
+            const user = {
+                userAddr: addr,
+                username: reg[0],
+                balance: reg[1].valueOf(),
+                gamesPlayed: reg[2].valueOf(),
+                finishedGames: reg[3].valueOf(),
+                registered: reg[4].valueOf()
+            };
+
+            resolve(user);
         });
 
     } else {
