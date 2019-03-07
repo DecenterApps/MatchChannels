@@ -34,7 +34,10 @@ class Landing extends Component {
                   Etherships is a 1v1 peer-to-peer game based on the classic guessing game
                   Battleships that runs on the Ethereum blockchain. It utilizes state channels to
                   minimize the number of required interactions with the blockchain and to provide a
-                  seemingless, uninterrupted gameplay experience to users.
+                  seemingless, uninterrupted gameplay experience to users. You can read the <a
+                  href="https://blog.decenter.com/2018/08/07/introducing-etherships-using-state-channels-scale-ethereum-games/"
+                  target="_blank">blog
+                  post</a> we wrote about it if you’re interested in the techy details.
                   <br /><br />
                   The game is currently running on the Kovan test network, so you’ll need to switch
                   MetaMask to it in order to play. If you need Kovan ETH, you can get some from <a
@@ -43,7 +46,9 @@ class Landing extends Component {
 
                 <div className="button-group">
                   <button className="btn" onClick={this.redirect}>Play game</button>
-                  <a href="https://github.com/DecenterApps/MatchChannels" target="_blank"><button className="btn gray">Github</button></a>
+                  <a href="https://github.com/DecenterApps/MatchChannels" target="_blank">
+                    <button className="btn gray">Github</button>
+                  </a>
                 </div>
                 <div className="landing-text link-area">
                   Developed by <a href="https://decenter.com/" target="_blank">Decenter</a>
