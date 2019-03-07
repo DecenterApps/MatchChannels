@@ -238,7 +238,7 @@ input {
     background: url('../images/ship_left.svg') center center no-repeat;
     width: 533px;
     height: 533px;
-    position: absolute;
+    position: fixed;
     bottom: 0;
     pointer-events: none;
     z-index: 0;
@@ -255,7 +255,7 @@ input {
     background: url('../images/ship_right.svg') center center no-repeat;
     width: 549px;
     height: 549px;
-    position: absolute;
+    position: fixed;
     bottom: 0;
     right: 0;
     float: right;
