@@ -1,0 +1,124 @@
+.landing-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.landing-content .content-wrapper {
+    display: flex;
+    width: 100%;
+    max-width: 1113px;
+    justify-content: space-between;
+}
+
+.landing-logo {
+    margin-bottom: 20px;
+}
+
+.landing-right-content img {
+    max-width: 435px;
+}
+
+.landing-left-content {
+    max-width: 535px;
+}
+
+.landing-title {
+    font-family: Boogaloo;
+    font-size: 26px;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    text-align: left;
+
+    color: #FFFFFF;
+}
+
+.landing-text {
+    font-family: Roboto;
+
+    font-size: 13px;
+    letter-spacing: 0.03em;
+    font-weight: 300;
+    line-height: 16px;
+
+    color: #C6C6C6;
+}
+
+.landing-text.link-area {
+    margin-top: 23px;
+    font-weight: 300;
+}
+
+.landing-text a {
+    color: #73B816;
+}
+
+.button-group .btn {
+    margin-right: 20px;
+}
+
+.btn {
+    background: #73B816;
+    border-radius: 6.26484px;
+    font-family: Boogaloo;
+    font-weight: bold;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: #FFFFFF;
+    border: none;
+    padding: 8px;
+    box-shadow: 0px 5px #5D9314;
+    width: 140px;
+    margin-top: 30px;
+    font-size: 18px;
+    outline: none;
+}
+
+.btn.gray {
+    background-color: #A9A9A9;
+    box-shadow: 0 5px #89898B;
+}
+
+@media all and (max-width: 1150px) {
+    .landing-right-content img {
+        max-width: 40vw;
+    }
+    .landing-left-content {
+        max-width: 40vw;
+    }
+
+    .landing-content {
+        padding: 50px 50px;
+    }
+}
+
+@media all and (max-width: 860px) {
+    .landing-right-content img {
+        max-width: 100%;
+    }
+    .landing-left-content {
+        max-width: none;
+    }
+    .landing-content .content-wrapper {
+        display: block;
+    }
+    .landing-content .content-wrapper > div {
+        text-align: center;
+        margin: 0 auto;
+    }
+
+    .landing-right-content {
+        margin-top: 50px !important;
+    }
+
+    .landing-title {
+        text-align: center;
+    }
+
+    .landing-text {
+        text-align: center;
+    }
+}

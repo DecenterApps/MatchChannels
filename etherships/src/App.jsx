@@ -24,7 +24,7 @@ class App extends Component {
       this.props.initBoard();
     }
 
-    const board = localStorage.getItem("board");
+    const board = localStorage.getItem('board');
 
     // if (board && JSON.parse(board).gameInProgress) {
     //   browserHistory.push('/match');
@@ -39,15 +39,16 @@ class App extends Component {
   }
 
   render() {
+    const { pathname } = this.props.router.location;
     return (
       <div className="App">
         {
-          this.props.user.userAddr &&
+          (this.props.user.userAddr || pathname === '/') &&
           this.props.children
         }
         {
-          this.props.user.userError &&
-          <div className="user-error">{ this.props.user.userError }</div>
+          this.props.user.userError && pathname !== '/' &&
+          <div className="user-error">{this.props.user.userError}</div>
         }
         {
           this.props.modalShown === 'challenge' &&

@@ -90,7 +90,7 @@ class PlayedMatches extends Component {
   }
 
   goBack = () => {
-    browserHistory.push('/');
+    browserHistory.push('/play');
   };
 
   render() {

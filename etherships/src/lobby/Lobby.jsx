@@ -19,7 +19,7 @@ class Lobby extends Component {
   }
 
   componentWillMount() {
-    if (!this.props.user.registered) browserHistory.push('/');
+    if (!this.props.user.registered) browserHistory.push('/play');
   }
 
   async componentDidMount() {

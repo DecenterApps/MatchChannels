@@ -24,7 +24,7 @@ class TimeoutModal extends Component {
     submitTimeout = async () => {
         await this.props.submitScore();
 
-        browserHistory.push('/');
+        browserHistory.push('/play');
 
         this.props.playAgain();
     }

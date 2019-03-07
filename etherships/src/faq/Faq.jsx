@@ -7,7 +7,7 @@ import './Faq.css';
 class Faq extends Component {
 
     goBack = () => {
-        browserHistory.push('/');
+        browserHistory.push('/play');
     };
 
     render() {

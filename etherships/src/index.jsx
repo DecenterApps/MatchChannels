@@ -10,6 +10,7 @@ import Home from './Home';
 import BoardCreationLayout from './game/BoardCreationLayout';
 import Lobby from './lobby/Lobby';
 import Profile from './profile/Profile';
+import Landing from './landing/Landing';
 import Match from './game/Match';
 import Page404 from './Page404';
 import Faq from './faq/Faq';
@@ -26,14 +27,15 @@ const history = syncHistoryWithStore(browserHistory, store);
 
 // Initialize web3
 window.addEventListener('load', async () => {
-  setUpWeb3()(store.dispatch)
+  setUpWeb3()(store.dispatch);
 });
 
 ReactDOM.render((
     <Provider store={store}>
       <Router history={history}>
         <Route path="/" component={App}>
-          <IndexRoute component={Home} />
+          <IndexRoute component={Landing} />
+          <Route path="play" component={Home} />
           <Route path="game" component={BoardCreationLayout} />
           <Route path="users" component={Lobby} />
           <Route path="profile" component={Profile} />

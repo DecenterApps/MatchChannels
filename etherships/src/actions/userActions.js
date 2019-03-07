@@ -150,7 +150,7 @@ export const initAccount = () => (dispatch, getState) =>  {
         if(getState().board.gameInProgress) {
           openModal('timeout', {})(dispatch);
         } else {
-          browserHistory.push('/');
+          browserHistory.push('/play');
         }
       });
 
@@ -216,7 +216,7 @@ export const connectToPlayer = (user) => (dispatch, getState) => {
       if(getState().board.gameInProgress) {
         openModal('timeout', {})(dispatch);
     } else {
-      browserHistory.push('/');
+      browserHistory.push('/play');
     }
     });
 
@@ -253,7 +253,7 @@ export const acceptChallenge = () => (dispatch, getState) => {
       if(getState().board.gameInProgress) {
         openModal('timeout', {})(dispatch);
     } else {
-      browserHistory.push('/');
+      browserHistory.push('/play');
     }
     });
 

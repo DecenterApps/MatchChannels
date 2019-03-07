@@ -184,7 +184,7 @@ export const setOpponentTree = (opponentTree, channelId) => async (dispatch, get
         dispatch({type: RESET_BOARD});
 
         closeModal()(dispatch);
-        browserHistory.push('/');
+        browserHistory.push('/play');
     } else {
         console.log('You good fam!');
     }
@@ -235,7 +235,7 @@ export const submitDispute = (channelId, sig, pos, seq, type, nonce, path) => as
 
     dispatch({type: RESET_BOARD});
 
-    browserHistory.push('/');
+    browserHistory.push('/play');
 
     closeModal()(dispatch);
 };
